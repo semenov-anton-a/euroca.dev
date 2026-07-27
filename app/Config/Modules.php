@@ -78,7 +78,7 @@ class Modules extends BaseModules
         'registrars',
         'routes',
         'services',
-        'auth',
-        'cargo',
+        // 'auth',
+        // 'cargo',
     ];
 }

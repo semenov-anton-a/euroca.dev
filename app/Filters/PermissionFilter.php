@@ -43,7 +43,11 @@ class PermissionFilter implements FilterInterface
         return null;
     }
 
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null): ?ResponseInterface
+    public function after(
+        RequestInterface $request, 
+        ResponseInterface $response, 
+        $arguments = null
+    ): ?ResponseInterface
     {
         return null;
     }

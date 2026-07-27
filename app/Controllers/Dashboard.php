@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use CodeIgniter\Controller;
-
 /**
  * Dashboard controller.
  * Main landing page for authenticated users.
  */
-class Dashboard extends Controller
+class Dashboard extends BaseController
 {
     public function index(): string
     {
-        $menuService = new \App\Services\MenuService();
-        $menu = $menuService->getMenu(session('permissions', []));
+        $menu = $this->buildMenu();
 
         return view('welcome_message', [
             'menu' => $menu,

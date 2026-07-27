@@ -4,21 +4,29 @@ declare(strict_types=1);
 
 namespace App\Modules\Cargo\Controllers;
 
-use CodeIgniter\Controller;
+use App\Controllers\BaseController;
+use CodeIgniter\HTTP\ResponseInterface;
+use App\Modules\Cargo\Services\CargoService;
 
 /**
  * Cargo controller for logistics operations.
  * Handles cargo listing, creation, editing, and viewing.
  */
-class Cargo extends Controller
+class Cargo extends BaseController
 {
+    protected CargoService $cargoService;
+
+    public function __construct()
+    {
+        $this->cargoService = new CargoService();
+    }
+
     /**
      * List all cargo items.
      */
     public function index(): string
     {
-        $cargoService = new \App\Modules\Cargo\Services\CargoService();
-        $cargos = $cargoService->getAll();
+        $cargos = $this->cargoService->getAll();
         
         return view('index', ['cargos' => $cargos]);
     }
@@ -34,9 +42,10 @@ class Cargo extends Controller
     /**
      * Store new cargo.
      */
-    public function store(): void
+    public function store(): ResponseInterface
     {
         // To be implemented
+        return redirect()->to('/cargo');
     }
 
     /**
@@ -44,8 +53,7 @@ class Cargo extends Controller
      */
     public function show(int $id): string
     {
-        $cargoService = new \App\Modules\Cargo\Services\CargoService();
-        $cargo = $cargoService->find($id);
+        $cargo = $this->cargoService->find($id);
         
         return view('show', ['cargo' => $cargo]);
     }
@@ -55,8 +63,7 @@ class Cargo extends Controller
      */
     public function edit(int $id): string
     {
-        $cargoService = new \App\Modules\Cargo\Services\CargoService();
-        $cargo = $cargoService->find($id);
+        $cargo = $this->cargoService->find($id);
         
         return view('edit', ['cargo' => $cargo]);
     }
@@ -64,17 +71,19 @@ class Cargo extends Controller
     /**
      * Update cargo.
      */
-    public function update(int $id): void
+    public function update(int $id): ResponseInterface
     {
         // To be implemented
+        return redirect()->to('/cargo');
     }
 
     /**
      * Delete cargo.
      */
-    public function delete(int $id): void
+    public function delete(int $id): ResponseInterface
     {
         // To be implemented
+        return redirect()->to('/cargo');
     }
 
     /**
@@ -82,9 +91,8 @@ class Cargo extends Controller
      */
     public function apiIndex(): string
     {
-        $cargoService = new \App\Modules\Cargo\Services\CargoService();
-        $cargos = $cargoService->getAll();
+        $cargos = $this->cargoService->getAll();
         
-        return view('parts/list', ['cargos' => $cargos]);
+        return view('Cargo::parts/list', ['cargos' => $cargos]);
     }
 }

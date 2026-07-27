@@ -7,27 +7,35 @@
     <link rel="stylesheet" href="<?= base_url('css/app.css') ?>">
 </head>
 <body>
-    <div class="container">
-        <div class="page-header">
-            <h1>Cargo</h1>
-            <button 
-                type="button" 
-                class="btn btn-primary"
-                hx-get="/cargo/create"
-                hx-target="#modal-container"
-                hx-swap="innerHTML"
-            >
-                Add Cargo
-            </button>
-        </div>
+    <?= $this->renderSection('navbar') ?>
+    
+    <div class="main-container">
+        <?= $this->renderSection('sidebar') ?>
+        
+        <main class="content">
+            <div class="page-header">
+                <h1>Cargo</h1>
+                <button 
+                    type="button" 
+                    class="btn btn-primary"
+                    hx-get="/cargo/create"
+                    hx-target="#modal-container"
+                    hx-swap="innerHTML"
+                >
+                    Add Cargo
+                </button>
+            </div>
 
-        <div id="cargo-list" class="cargo-list">
-            <?= view('Cargo::parts/list', ['cargos' => $cargos ?? []]) ?>
-        </div>
+            <div id="cargo-list" class="cargo-list">
+                <?= view('Cargo::parts/list', ['cargos' => $cargos ?? []]) ?>
+            </div>
 
-        <div id="modal-container"></div>
+            <div id="modal-container"></div>
+        </main>
     </div>
-
+    
+    <?= $this->renderSection('footer') ?>
+    
     <script src="<?= base_url('js/app.js') ?>"></script>
 </body>
 </html>

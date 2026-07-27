@@ -1,0 +1,1 @@
+__ci_last_regenerate|i:1785139423;_ci_previous_url|s:28:"http://euroca.dev.test/login";user_id|i:1;user_email|s:21:"admin@eurocargo.local";user_name|s:10:"Admin User";role_id|i:1;permissions|a:5:{i:0;s:10:"cargo.view";i:1;s:10:"cargo.edit";i:2;s:13:"customer.view";i:3;s:15:"accounting.view";i:4;s:13:"settings.view";}logged_in|b:1;

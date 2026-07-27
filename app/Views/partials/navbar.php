@@ -2,11 +2,10 @@
     <div class="navbar-brand">
         <a href="/dashboard">EuroCargo ERP</a>
     </div>
-    <div class="navbar-controls">
-        <button class="navbar-toggle" aria-label="Toggle navigation">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </button>
+    <?php if (session('logged_in')): ?>
+    <div class="navbar-user">
+        <span class="user-name"><?= esc(session('user_name')) ?></span>
+        <a href="/logout" class="logout-btn">Logout</a>
     </div>
+    <?php endif; ?>
 </nav>

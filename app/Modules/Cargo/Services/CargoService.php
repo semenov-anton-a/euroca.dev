@@ -24,6 +24,8 @@ class CargoService
      */
     public function getAll(): array
     {
+        return [];
+
         $cargos = $this->model->findAll();
         
         return array_map(function ($cargo) {

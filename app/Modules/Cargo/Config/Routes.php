@@ -5,7 +5,7 @@ use CodeIgniter\Router\RouteCollection;
 /** @var RouteCollection $routes */
 
 // Cargo module routes - protected by auth filter
-$routes->group('', ['filter' => 'auth'], static function ($routes) {
+$routes->group('', ['namespace' => 'App\Modules\Cargo\Controllers', 'filter' => 'auth'], static function ($routes) {
     $routes->get('cargo', 'Cargo::index');
     $routes->get('cargo/create', 'Cargo::create');
     $routes->post('cargo', 'Cargo::store');
@@ -16,4 +16,4 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
 });
 
 // API routes for HTMX
-$routes->get('api/cargo', 'Cargo::apiIndex');
+$routes->get('api/cargo', 'Cargo::apiIndex', ['namespace' => 'App\Modules\Cargo\Controllers']);

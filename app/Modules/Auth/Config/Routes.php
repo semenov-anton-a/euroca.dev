@@ -11,8 +11,8 @@ $routes->group('', [
     $routes->get('login', 'Auth::login');
     $routes->post('login', 'Auth::authenticate');
 
-    $routes->get('register', 'Auth::register');
-    $routes->post('register', 'Auth::create');
+    // $routes->get('register', 'Auth::register');
+    // $routes->post('register', 'Auth::create');
 
     $routes->get('logout', 'Auth::logout');
 });
