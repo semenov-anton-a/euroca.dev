@@ -1,0 +1,110 @@
+DEBUG - 2026-07-27 08:03:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-27 08:04:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-27 08:04:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-27 08:04:19 --> Error connecting to the database: mysqli_sql_exception: Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение in C:\SERVER\laragon\www\euroca.dev\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\SERVER\laragon\www\euroca.dev\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', '', Object(SensitiveParameterValue), '', 3306, '', 0)
+#1 C:\SERVER\laragon\www\euroca.dev\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\SERVER\laragon\www\euroca.dev\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\SERVER\laragon\www\euroca.dev\system\Database\BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\SERVER\laragon\www\euroca.dev\system\Model.php(255): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\SERVER\laragon\www\euroca.dev\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\SERVER\laragon\www\euroca.dev\app\Modules\Cargo\Services\CargoService.php(27): CodeIgniter\BaseModel->findAll()
+#7 C:\SERVER\laragon\www\euroca.dev\app\Modules\Cargo\Controllers\Cargo.php(29): App\Modules\Cargo\Services\CargoService->getAll()
+#8 C:\SERVER\laragon\www\euroca.dev\system\CodeIgniter.php(974): App\Modules\Cargo\Controllers\Cargo->index()
+#9 C:\SERVER\laragon\www\euroca.dev\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Modules\Cargo\Controllers\Cargo))
+#10 C:\SERVER\laragon\www\euroca.dev\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\SERVER\laragon\www\euroca.dev\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 C:\SERVER\laragon\www\euroca.dev\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\SERVER\laragon\www\euroca.dev\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение in C:\SERVER\laragon\www\euroca.dev\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 C:\SERVER\laragon\www\euroca.dev\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\SERVER\laragon\www\euroca.dev\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\SERVER\laragon\www\euroca.dev\system\Database\BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\SERVER\laragon\www\euroca.dev\system\Model.php(255): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\SERVER\laragon\www\euroca.dev\system\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+#5 C:\SERVER\laragon\www\euroca.dev\app\Modules\Cargo\Services\CargoService.php(27): CodeIgniter\BaseModel->findAll()
+#6 C:\SERVER\laragon\www\euroca.dev\app\Modules\Cargo\Controllers\Cargo.php(29): App\Modules\Cargo\Services\CargoService->getAll()
+#7 C:\SERVER\laragon\www\euroca.dev\system\CodeIgniter.php(974): App\Modules\Cargo\Controllers\Cargo->index()
+#8 C:\SERVER\laragon\www\euroca.dev\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Modules\Cargo\Controllers\Cargo))
+#9 C:\SERVER\laragon\www\euroca.dev\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\SERVER\laragon\www\euroca.dev\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 C:\SERVER\laragon\www\euroca.dev\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\SERVER\laragon\www\euroca.dev\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+CRITICAL - 2026-07-27 08:04:19 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение
+[Method: GET, Route: cargo]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1659): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `cargo`', [], false)
+ 3 SYSTEMPATH\Model.php(255): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(676): CodeIgniter\Model->doFindAll(0, 0)
+ 5 APPPATH\Modules\Cargo\Services\CargoService.php(27): CodeIgniter\BaseModel->findAll()
+ 6 APPPATH\Modules\Cargo\Controllers\Cargo.php(29): App\Modules\Cargo\Services\CargoService->getAll()
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Modules\Cargo\Controllers\Cargo->index()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Modules\Cargo\Controllers\Cargo))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-07-27 08:06:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-07-27 08:06:44 --> ErrorException: Undefined variable $cargos
+[Method: GET, Route: cargo]
+in APPPATH\Modules\Cargo\Services\CargoService.php on line 29.
+ 1 APPPATH\Modules\Cargo\Services\CargoService.php(29): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $cargos', 'C:\\SERVER\\laragon\\www\\euroca.dev\\app\\Modules\\Cargo\\Services\\CargoService.php', 29)
+ 2 APPPATH\Modules\Cargo\Controllers\Cargo.php(29): App\Modules\Cargo\Services\CargoService->getAll()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Modules\Cargo\Controllers\Cargo->index()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Modules\Cargo\Controllers\Cargo))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-07-27 08:07:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-07-27 08:07:18 --> ErrorException: Cannot use [] for reading
+[Method: GET, Route: cargo]
+in APPPATH\Modules\Cargo\Services\CargoService.php on line 27.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+DEBUG - 2026-07-27 08:07:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-07-27 08:07:42 --> ParseError: syntax error, unexpected token "array"
+[Method: GET, Route: cargo]
+in APPPATH\Modules\Cargo\Services\CargoService.php on line 27.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(320): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\SERVER\\laragon\\www\\euroca.dev\\app\\Modules\\Cargo\\Services\\CargoService.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(296): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Modules\\Cargo\\Services\\CargoService')
+ 3 APPPATH\Modules\Cargo\Controllers\Cargo.php(21): CodeIgniter\Autoloader\Autoloader->loadClass('App\\Modules\\Cargo\\Services\\CargoService')
+ 4 SYSTEMPATH\CodeIgniter.php(944): App\Modules\Cargo\Controllers\Cargo->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(511): CodeIgniter\CodeIgniter->createController()
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-07-27 08:07:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-07-27 08:07:58 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "index.php"
+[Method: GET, Route: cargo]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('index.php')
+ 2 SYSTEMPATH\Common.php(1268): CodeIgniter\View\View->render('index', [], true)
+ 3 APPPATH\Modules\Cargo\Controllers\Cargo.php(31): view('index', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Modules\Cargo\Controllers\Cargo->index()
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Modules\Cargo\Controllers\Cargo))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-07-27 08:55:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-07-27 08:55:35 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "index.php"
+[Method: GET, Route: cargo]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('index.php')
+ 2 SYSTEMPATH\Common.php(1268): CodeIgniter\View\View->render('index', [], true)
+ 3 APPPATH\Modules\Cargo\Controllers\Cargo.php(31): view('index', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Modules\Cargo\Controllers\Cargo->index()
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Modules\Cargo\Controllers\Cargo))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

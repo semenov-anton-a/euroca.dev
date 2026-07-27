@@ -6,6 +6,9 @@ use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use App\Services\MenuService;
+use App\Services\ToastService;
+use App\Services\UserService;
 
 /**
  * BaseController provides a convenient place for loading components
@@ -21,11 +24,19 @@ use Psr\Log\LoggerInterface;
 abstract class BaseController extends Controller
 {
     /**
-     * Be sure to declare properties for any property fetch you initialized.
-     * The creation of dynamic property is deprecated in PHP 8.2.
+     * Menu service instance.
      */
+    protected MenuService $menuService;
 
-    // protected $session;
+    /**
+     * Toast service instance.
+     */
+    protected ToastService $toastService;
+
+    /**
+     * User service instance.
+     */
+    protected UserService $userService;
 
     /**
      * @return void
@@ -39,7 +50,42 @@ abstract class BaseController extends Controller
         // Caution: Do not edit this line.
         parent::initController($request, $response, $logger);
 
-        // Preload any models, libraries, etc, here.
-        // $this->session = service('session');
+        // Preload shared services
+        $this->menuService = new MenuService();
+        $this->toastService = new ToastService();
+        $this->userService = new UserService();
+    }
+
+    /**
+     * Build menu based on user permissions.
+     */
+    protected function buildMenu(): array
+    {
+        $permissions = session('permissions', []);
+        return $this->menuService->getMenu($permissions);
+    }
+
+    /**
+     * Check if user has permission.
+     */
+    protected function hasPermission(string $permission): bool
+    {
+        return $this->userService->hasPermission($permission);
+    }
+
+    /**
+     * Check if user is logged in.
+     */
+    protected function isLoggedIn(): bool
+    {
+        return $this->userService->isLoggedIn();
+    }
+
+    /**
+     * Get current user.
+     */
+    protected function currentUser(): ?array
+    {
+        return $this->userService->currentUser();
     }
 }
