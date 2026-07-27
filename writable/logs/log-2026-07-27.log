@@ -108,3 +108,70 @@ in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
  7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
  8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-07-27 10:05:04 --> TypeError: CodeIgniter\Router\RouteCollection::processArrayCallableSyntax(): Return value must be of type string, array returned
+[Method: GET, Route: /]
+in SYSTEMPATH\Router\RouteCollection.php on line 1606.
+ 1 SYSTEMPATH\Router\RouteCollection.php(1457): CodeIgniter\Router\RouteCollection->processArrayCallableSyntax('lte', [...])
+ 2 SYSTEMPATH\Router\RouteCollection.php(1052): CodeIgniter\Router\RouteCollection->create('GET', 'lte', [...], null)
+ 3 APPPATH\Modules\AdminLTE\Config\Routes.php(10): CodeIgniter\Router\RouteCollection->get('/lte', [...])
+ 4 SYSTEMPATH\Router\RouteCollection.php(799): CodeIgniter\Router\RouteCollection::{closure}(Object(CodeIgniter\Router\RouteCollection))
+ 5 APPPATH\Modules\AdminLTE\Config\Routes.php(7): CodeIgniter\Router\RouteCollection->group('', [...], Object(Closure))
+ 6 APPPATH\Config\Routes.php(23): require('C:\\SERVER\\laragon\\www\\euroca.dev\\app\\Modules\\AdminLTE\\Config\\Routes.php')
+ 7 SYSTEMPATH\Router\RouteCollection.php(339): require('C:\\SERVER\\laragon\\www\\euroca.dev\\app\\Config\\Routes.php')
+ 8 SYSTEMPATH\CodeIgniter.php(841): CodeIgniter\Router\RouteCollection->loadRoutes()
+ 9 SYSTEMPATH\CodeIgniter.php(464): CodeIgniter\CodeIgniter->tryToRouteIt(null)
+10 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-07-27 10:05:05 --> TypeError: CodeIgniter\Router\RouteCollection::processArrayCallableSyntax(): Return value must be of type string, array returned
+[Method: GET, Route: /]
+in SYSTEMPATH\Router\RouteCollection.php on line 1606.
+ 1 SYSTEMPATH\Router\RouteCollection.php(1457): CodeIgniter\Router\RouteCollection->processArrayCallableSyntax('lte', [...])
+ 2 SYSTEMPATH\Router\RouteCollection.php(1052): CodeIgniter\Router\RouteCollection->create('GET', 'lte', [...], null)
+ 3 APPPATH\Modules\AdminLTE\Config\Routes.php(10): CodeIgniter\Router\RouteCollection->get('/lte', [...])
+ 4 SYSTEMPATH\Router\RouteCollection.php(799): CodeIgniter\Router\RouteCollection::{closure}(Object(CodeIgniter\Router\RouteCollection))
+ 5 APPPATH\Modules\AdminLTE\Config\Routes.php(7): CodeIgniter\Router\RouteCollection->group('', [...], Object(Closure))
+ 6 APPPATH\Config\Routes.php(23): require('C:\\SERVER\\laragon\\www\\euroca.dev\\app\\Modules\\AdminLTE\\Config\\Routes.php')
+ 7 SYSTEMPATH\Router\RouteCollection.php(339): require('C:\\SERVER\\laragon\\www\\euroca.dev\\app\\Config\\Routes.php')
+ 8 SYSTEMPATH\CodeIgniter.php(841): CodeIgniter\Router\RouteCollection->loadRoutes()
+ 9 SYSTEMPATH\CodeIgniter.php(464): CodeIgniter\CodeIgniter->tryToRouteIt(null)
+10 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-07-27 10:06:19 --> TypeError: CodeIgniter\Router\RouteCollection::processArrayCallableSyntax(): Return value must be of type string, array returned
+[Method: GET, Route: /]
+in SYSTEMPATH\Router\RouteCollection.php on line 1606.
+ 1 SYSTEMPATH\Router\RouteCollection.php(1457): CodeIgniter\Router\RouteCollection->processArrayCallableSyntax('lte', [...])
+ 2 SYSTEMPATH\Router\RouteCollection.php(1052): CodeIgniter\Router\RouteCollection->create('GET', 'lte', [...], null)
+ 3 APPPATH\Modules\AdminLTE\Config\Routes.php(10): CodeIgniter\Router\RouteCollection->get('/lte', [...])
+ 4 SYSTEMPATH\Router\RouteCollection.php(799): CodeIgniter\Router\RouteCollection::{closure}(Object(CodeIgniter\Router\RouteCollection))
+ 5 APPPATH\Modules\AdminLTE\Config\Routes.php(7): CodeIgniter\Router\RouteCollection->group('', [...], Object(Closure))
+ 6 APPPATH\Config\Routes.php(23): require('C:\\SERVER\\laragon\\www\\euroca.dev\\app\\Modules\\AdminLTE\\Config\\Routes.php')
+ 7 SYSTEMPATH\Router\RouteCollection.php(339): require('C:\\SERVER\\laragon\\www\\euroca.dev\\app\\Config\\Routes.php')
+ 8 SYSTEMPATH\CodeIgniter.php(841): CodeIgniter\Router\RouteCollection->loadRoutes()
+ 9 SYSTEMPATH\CodeIgniter.php(464): CodeIgniter\CodeIgniter->tryToRouteIt(null)
+10 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-07-27 10:06:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-07-27 10:07:00 --> TypeError: App\Modules\AdminLTE\Controllers\Index::index(): Return value must be of type string, none returned
+[Method: GET, Route: lte]
+in APPPATH\Modules\AdminLTE\Controllers\Index.php on line 21.
+ 1 SYSTEMPATH\CodeIgniter.php(974): App\Modules\AdminLTE\Controllers\Index->index()
+ 2 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Modules\AdminLTE\Controllers\Index))
+ 3 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-07-27 10:07:49 --> TypeError: App\Modules\AdminLTE\Controllers\Index::index(): Return value must be of type string, none returned
+[Method: GET, Route: lte]
+in APPPATH\Modules\AdminLTE\Controllers\Index.php on line 21.
+ 1 SYSTEMPATH\CodeIgniter.php(974): App\Modules\AdminLTE\Controllers\Index->index()
+ 2 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Modules\AdminLTE\Controllers\Index))
+ 3 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

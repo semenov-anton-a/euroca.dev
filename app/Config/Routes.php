@@ -11,8 +11,8 @@ $routes->get('/dashboard', 'Dashboard::index', ['filter' => 'auth']);
 
 // Module routes
 $moduleRoutes = [
-    'Auth' => APPPATH . 'Modules/Auth/Config/Routes.php',
-    'Cargo' => APPPATH . 'Modules/Cargo/Config/Routes.php',
+    'Auth'      => APPPATH . 'Modules/Auth/Config/Routes.php',
+    'Cargo'     => APPPATH . 'Modules/Cargo/Config/Routes.php',
 ];
 
 foreach ($moduleRoutes as $module => $file)
