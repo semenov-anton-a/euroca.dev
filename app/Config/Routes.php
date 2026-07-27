@@ -6,7 +6,7 @@ use CodeIgniter\Router\RouteCollection;
 
 // Base routes
 $routes->get('/', 'Home::index');
-$routes->get('/dashboard', 'Dashboard::index', ['filter' => 'auth']);
+//$routes->get('/dashboard', 'Dashboard::index', ['filter' => 'auth']);
 
 
 // Module routes
