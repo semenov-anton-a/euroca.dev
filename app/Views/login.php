@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?= session('locale', 'en') ?>">
+<html lang="<?= esc(service('language')->getLocale()) ?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +7,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" 
+        integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
+        crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- TITLE -->
@@ -86,7 +89,12 @@
                     <h4 class="modal-title">EuroCargo Finland</h4>
                 </div>
                 <div class="modal-body">
-                    <form autocomplete="off" action="" method="post" id="adminLogin">
+                    <div id="login-message"></div>
+                    <form 
+                        hx-post="/login"
+                        hx-target="#login-message"
+                        hx-swap="outerHTML"    
+                        autocomplete="off" action="<?= base_url('login') ?>" method="post" id="adminLogin">
 						<input type="hidden" name="token" value=""/>
                         <?= csrf_field("csrf_token") ?>
                         <div class="form-group">
@@ -98,7 +106,9 @@
                                 required="required">
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-lg btn-block login-btn">Login</button>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block login-btn">
+                                <?= lang('Auth.login_title') ?>
+                            </button>
                         </div>
                     </form>
                 </div>

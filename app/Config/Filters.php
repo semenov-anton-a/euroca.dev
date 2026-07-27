@@ -13,7 +13,6 @@ use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 
-use App\Filters\AuthFilter;
 
 class Filters extends BaseFilters
 {
@@ -36,7 +35,10 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
-        'auth'          => AuthFilter::class,
+        
+        // My Filters    
+        'auth'          => \App\Filters\AuthFilter::class,
+        'locale'        => \App\Filters\LocaleFilter::class,
     ];
 
 
@@ -76,6 +78,7 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
+            'locale'
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
