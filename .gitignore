@@ -1,1 +1,2 @@
 app/writable/*
+!app/writable/.gitkeep
