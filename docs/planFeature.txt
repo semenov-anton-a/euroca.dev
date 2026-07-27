@@ -1,0 +1,42 @@
+Привет ChatGPT
+
+Создаю проэкт на CodeIgniter 4 хочу использовать 
+ - CodeIgniter 4 + HMVC
+ - MySQL
+ - AdminLTE
+ - HTMX
+ - VSCode + Kilo Code
+
+ Проэкт логистическая ERP система
+ 
+ Где будет в проекте 
+ 1 - авторизироватся
+    - Доступ будет довать только администратор, т.е создовать клинтов
+    
+ 2 - Грузы
+    - Клиент под своим логином и паролем будет видеть толко свои грузы 
+
+Примерную структуру хочу видет примерно такую
+app/
+├── Config
+├── Controllers
+├── Filters
+├── Helpers
+├── Language
+├── Libraries
+├── Services
+├── Support
+├── Views
+│
+└── Modules
+    ├── Auth
+    ├── Dashboard
+    ├── Cargo
+    ├── Customers
+    ├── Accounting
+    ├── Warehouse
+    ├── Customs
+    ├── Invoices
+    └── Employees
+
+
