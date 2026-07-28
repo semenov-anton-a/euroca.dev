@@ -18,7 +18,7 @@ class Auth extends BaseController
 
     public function __construct()
     {
-        // $this->userProvider = new FakeUserProvider();
+        $this->userProvider = new FakeUserProvider();
     }
 
     /**
@@ -46,7 +46,7 @@ class Auth extends BaseController
 
         if (!$user) {
             return redirect()
-                    ->to('/login')
+                    ->to('/')
                     ->with('error', 'Invalid email or password');
         }
 
