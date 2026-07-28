@@ -4,10 +4,6 @@ use CodeIgniter\Router\RouteCollection;
 
 /** @var RouteCollection $routes */
 
-// Base routes
-$routes->get('/', 'Home::index');
-//$routes->get('/dashboard', 'Dashboard::index', ['filter' => 'auth']);
-
 
 // Module routes
 $moduleRoutes = [
@@ -15,6 +11,8 @@ $moduleRoutes = [
     'Cargo'     => APPPATH . 'Modules/Cargo/Config/Routes.php',
 ];
 
+
+// Load module routes
 foreach ($moduleRoutes as $module => $file)
 {
     if (is_file($file))

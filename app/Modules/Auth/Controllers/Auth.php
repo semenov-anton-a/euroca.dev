@@ -18,7 +18,7 @@ class Auth extends BaseController
 
     public function __construct()
     {
-        $this->userProvider = new FakeUserProvider();
+        // $this->userProvider = new FakeUserProvider();
     }
 
     /**
@@ -26,19 +26,19 @@ class Auth extends BaseController
      * Show login page. 
      */
     public function login(): string
-    {
-        
-        return view('login');
+    {       
+        return view('\Modules\Auth\Views\login');
     }
 
     /**
      * POST Method
      * Handle login form submission.
      */
-    public function authenticate(): ResponseInterface
+    public function authenticate(): string
     {
+        return lang('Auth.login_error');
 
-        $email = $this->request->getPost('email');
+        $email =    $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $remember = (bool) $this->request->getPost('remember');
 
@@ -94,6 +94,6 @@ class Auth extends BaseController
     public function logout(): ResponseInterface
     {
         session()->destroy();
-        return redirect()->to('/login');
+        return redirect()->to('/');
     }
 }

@@ -3,6 +3,7 @@
 return [
     'login_title' => 'Login',
     'login_subtitle' => 'Sign in to your account',
+    'login_error' => 'Invalid email or password',
     'email' => 'Email',
     'email_placeholder' => 'Enter your email',
     'password' => 'Password',
@@ -12,4 +13,5 @@ return [
     'login_button' => 'Login',
     'no_account' => "Don't have an account?",
     'register' => 'Register',
+    
 ];
