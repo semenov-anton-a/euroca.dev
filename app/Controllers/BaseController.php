@@ -6,9 +6,14 @@ use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use App\Services\MenuService;
-use App\Services\ToastService;
-use App\Services\UserService;
+
+// Auth
+use App\Services\Auth\UserService;
+use App\Repositories\UserRepository;
+
+// View 
+use App\Services\View\MenuService;
+use App\Services\View\ToastService;
 
 /**
  * BaseController provides a convenient place for loading components
@@ -53,7 +58,7 @@ abstract class BaseController extends Controller
         // Preload shared services
         $this->menuService = new MenuService();
         $this->toastService = new ToastService();
-        $this->userService = new UserService();
+        $this->userService = new UserService( new UserRepository() );
     }
 
     /**
