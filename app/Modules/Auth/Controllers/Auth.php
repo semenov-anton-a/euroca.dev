@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Modules\Auth\Controllers;
 
+use CodeIgniter\HTTP\ResponseInterface;
 
 
 /**
  * Authentication controller.
  * Handles login, logout, and registration pages.
+ * return lang('Auth.login_error');
  */
 class Auth extends BaseAuthController
 {    
@@ -25,57 +27,44 @@ class Auth extends BaseAuthController
      * POST Method
      * Handle login form submission.
      */
-    public function authenticate(): string
+    public function authenticate(): ResponseInterface | string
     {
-        return lang('Auth.login_error');
-
-
-        return $this->response
-            ->setHeader('HX-Redirect', '/cargo')
-            ->setStatusCode(200);
-
-
-        $email =    $this->request->getPost('email');
+        $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $remember = (bool) $this->request->getPost('remember');
 
-        $user = $this->userProvider->authenticate($email, $password);
+        // Проверяем пользователя в БД
+        $user = $this->userModel->authenticate($email, $password);
 
-        if (!$user) {
-            return redirect()
-                    ->to('/')
-                    ->with('error', 'Invalid email or password');
+        // Пользователь не найден или пароль неверный
+        if ( ! $user ) 
+        {
+            return $this->response
+                ->setStatusCode(401)
+                ->setBody(
+                    '<div class="alert alert-danger">
+                        Неверный email или пароль
+                    </div>'
+                );
         }
 
-       
-
-        // Set session data
+        // Авторизация пользователя
         session()->set([
-            'user_id' => $user['id'],
-            'user_email' => $user['email'],
-            'user_name' => $user['first_name'] . ' ' . $user['last_name'],
-            'role_id' => $user['role_id'],
-            'permissions' => $user['permissions'],
-            'logged_in' => true,
+            'user_id'      => $user['id'],
+            'user_email'   => $user['email'],
+            'user_name'    => $user['first_name'] . ' ' . $user['last_name'],
+            'role_id'      => $user['role_id'],
+            'permissions'  => $user['permissions'],
+            'logged_in'    => true,
         ]);
 
-        if ($remember) {
-            session()->setExpiration(2880); // 48 hours
-        }
-        
-        return redirect()
-            ->to('/cargo')
-            ->with('success', 'Login successful');
-    }
+    // Remember Me
+    // if ($remember) {
+    //     session()->setExpiration(2880); // 48 часов
+    // }
 
-    /**
-     * Show registration page.
-     */
-    public function register(): string
-    {
-        echo 1;
-        die;
-        return view('register');
+        // Перенаправляем HTMX после успешной авторизации
+        return $this->response->setHeader('HX-Redirect', '/cargo')->setStatusCode(200);
     }
 
 

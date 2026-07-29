@@ -77,12 +77,9 @@ class UserModel extends Model
     /**
      * Find user by email.
      */
-    public function findByEmail(
-        string $email
-    ): ?array {
-        return $this
-            ->where('email', $email)
-            ->first();
+    public function findByEmail( string $email): ?array 
+    {
+        return $this->where('email', $email)->first();
     }
 
     /**
@@ -90,10 +87,8 @@ class UserModel extends Model
      *
      * Returns user data if credentials are valid.
      */
-    public function authenticate(
-        string $email,
-        string $password
-    ): ?array {
+    public function authenticate( string $email, string $password ): ?array 
+    {
         $user = $this->findByEmail($email);
 
         if (
