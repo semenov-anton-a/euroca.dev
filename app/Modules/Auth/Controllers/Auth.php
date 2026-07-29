@@ -76,8 +76,11 @@ class Auth extends BaseController
      */
     public function register(): string
     {
+        echo 1;
+        die;
         return view('register');
     }
+
 
     /**
      * Handle registration form submission.
