@@ -100,7 +100,7 @@ class UserModel extends Model
             $user !== null
             && password_verify(
                 $password,
-                $user['password']
+                $user['password_hash']
             )
         ) {
             return $user;

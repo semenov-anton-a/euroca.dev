@@ -4,30 +4,21 @@ declare(strict_types=1);
 
 namespace App\Modules\Auth\Controllers;
 
-use App\Controllers\BaseController;
-use CodeIgniter\HTTP\ResponseInterface;
-use App\Modules\Auth\Services\FakeUserProvider;
+
 
 /**
  * Authentication controller.
  * Handles login, logout, and registration pages.
  */
-class Auth extends BaseController
-{
-    protected FakeUserProvider $userProvider;
-
-    public function __construct()
-    {
-        $this->userProvider = new FakeUserProvider();
-    }
-
+class Auth extends BaseAuthController
+{    
     /**
      * GET Method
      * Show login page. 
      */
     public function login(): string
     {       
-        return view('\Modules\Auth\Views\login');
+        return $this->viewModule('login');
     }
 
     /**
@@ -37,6 +28,12 @@ class Auth extends BaseController
     public function authenticate(): string
     {
         return lang('Auth.login_error');
+
+
+        return $this->response
+            ->setHeader('HX-Redirect', '/cargo')
+            ->setStatusCode(200);
+
 
         $email =    $this->request->getPost('email');
         $password = $this->request->getPost('password');

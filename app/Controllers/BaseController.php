@@ -13,7 +13,12 @@ use App\Repositories\UserRepository;
 
 // View 
 use App\Services\View\MenuService;
-use App\Services\View\ToastService;
+
+// Traits
+use App\Traits\ModuleViewTrait;
+
+// Feature: Toast notifications
+// use App\Services\View\ToastService;
 
 /**
  * BaseController provides a convenient place for loading components
@@ -28,6 +33,8 @@ use App\Services\View\ToastService;
  */
 abstract class BaseController extends Controller
 {
+    use ModuleViewTrait; 
+
     /**
      * Menu service instance.
      */
@@ -36,7 +43,7 @@ abstract class BaseController extends Controller
     /**
      * Toast service instance.
      */
-    protected ToastService $toastService;
+    // protected ToastService $toastService;
 
     /**
      * User service instance.
@@ -56,8 +63,8 @@ abstract class BaseController extends Controller
         parent::initController($request, $response, $logger);
 
         // Preload shared services
-        $this->menuService = new MenuService();
-        $this->toastService = new ToastService();
+        // $this->menuService = new MenuService();
+        // $this->toastService = new ToastService();
         $this->userService = new UserService( new UserRepository() );
     }
 
@@ -66,17 +73,11 @@ abstract class BaseController extends Controller
      */
     protected function buildMenu(): array
     {
-        $permissions = session('permissions', []);
-        return $this->menuService->getMenu($permissions);
-    }
-
-    /**
-     * Check if user has permission.
-     */
-    protected function hasPermission(string $permission): bool
-    {
-        return $this->userService->hasPermission($permission);
-    }
+        return [ 'menu'=>  "Feature not implemented yet." ];
+    
+        // $permissions = session('permissions', []);
+        // return $this->menuService->getMenu($permissions);
+    }  
 
     /**
      * Check if user is logged in.
