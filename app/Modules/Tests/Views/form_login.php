@@ -8,7 +8,7 @@
 
 <h1>Тест POST запроса</h1>
 
-<form action="/test/postreq" method="post">
+<form action="<?= $post_action ?>" method="post">
 
     <div>
         <label for="email">Email:</label>

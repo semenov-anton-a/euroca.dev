@@ -7,6 +7,9 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
+// Only FOR TEST
+use App\Helpers\ClassHelper;
+
 // Auth
 use App\Services\Auth\UserService;
 use App\Repositories\UserRepository;
@@ -16,7 +19,6 @@ use App\Services\View\MenuService;
 
 // Traits
 use App\Traits\ModuleViewTrait;
-
 // Feature: Toast notifications
 // use App\Services\View\ToastService;
 
@@ -94,4 +96,10 @@ abstract class BaseController extends Controller
     {
         return $this->userService->currentUser();
     }
+
+    protected function _getControllerMethods(string $controller): array
+    {
+        return ClassHelper::_getControllerMethods($controller);
+    }
+
 }
