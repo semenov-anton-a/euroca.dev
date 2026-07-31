@@ -7,6 +7,8 @@ use CodeIgniter\Router\RouteCollection;
 
 // Module routes
 $moduleRoutes = [
+    'Tests' => APPPATH . 'Modules/Tests/Config/Routes.php',
+
     'Auth'      => APPPATH . 'Modules/Auth/Config/Routes.php',
     'Cargo'     => APPPATH . 'Modules/Cargo/Config/Routes.php',
 ];

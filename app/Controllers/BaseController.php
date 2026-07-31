@@ -2,21 +2,26 @@
 
 namespace App\Controllers;
 
+use Config\Services;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
-// Auth
+// Only FOR TEST
+use App\Helpers\ClassHelper;
+
+
+
+// User
 use App\Services\Auth\UserService;
-use App\Repositories\UserRepository;
+
 
 // View 
 use App\Services\View\MenuService;
 
 // Traits
 use App\Traits\ModuleViewTrait;
-
 // Feature: Toast notifications
 // use App\Services\View\ToastService;
 
@@ -38,16 +43,14 @@ abstract class BaseController extends Controller
     /**
      * Menu service instance.
      */
-    protected MenuService $menuService;
+    // protected MenuService $menuService;
 
     /**
      * Toast service instance.
      */
     // protected ToastService $toastService;
 
-    /**
-     * User service instance.
-     */
+
     protected UserService $userService;
 
     /**
@@ -65,7 +68,8 @@ abstract class BaseController extends Controller
         // Preload shared services
         // $this->menuService = new MenuService();
         // $this->toastService = new ToastService();
-        $this->userService = new UserService( new UserRepository() );
+        
+        $this->userService = Services::userService();
     }
 
     /**
@@ -94,4 +98,10 @@ abstract class BaseController extends Controller
     {
         return $this->userService->currentUser();
     }
+
+    protected function _getControllerMethods(string $controller): array
+    {
+        return ClassHelper::_getControllerMethods($controller);
+    }
+
 }

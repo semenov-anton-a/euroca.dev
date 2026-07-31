@@ -20,7 +20,8 @@ class AuthFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null): ?ResponseInterface
     {
-        if (!session()->has('user_id')) {
+        if (!session()->has('user_id')) 
+        {
             return redirect()->to('/');
         }
         return null;
