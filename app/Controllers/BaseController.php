@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Config\Services;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -10,9 +11,11 @@ use Psr\Log\LoggerInterface;
 // Only FOR TEST
 use App\Helpers\ClassHelper;
 
-// Auth
+
+
+// User
 use App\Services\Auth\UserService;
-use App\Repositories\UserRepository;
+
 
 // View 
 use App\Services\View\MenuService;
@@ -40,16 +43,14 @@ abstract class BaseController extends Controller
     /**
      * Menu service instance.
      */
-    protected MenuService $menuService;
+    // protected MenuService $menuService;
 
     /**
      * Toast service instance.
      */
     // protected ToastService $toastService;
 
-    /**
-     * User service instance.
-     */
+
     protected UserService $userService;
 
     /**
@@ -67,7 +68,8 @@ abstract class BaseController extends Controller
         // Preload shared services
         // $this->menuService = new MenuService();
         // $this->toastService = new ToastService();
-        $this->userService = new UserService( new UserRepository() );
+        
+        $this->userService = Services::userService();
     }
 
     /**

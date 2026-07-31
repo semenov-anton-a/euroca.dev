@@ -24,8 +24,13 @@
 ?>
 </ul>
 
-
-
+</hr>
+<h1>Data</h1>
+<pre>
+<?php
+    print_r($dataVars);
+?>
+</pre>
 
 
 

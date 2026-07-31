@@ -7,7 +7,9 @@
 <body>
 
 <h1>Тест POST запроса</h1>
-
+<script type="text/javascript">
+    
+</script>
 <form action="<?= $post_action ?>" method="post">
 
     <div>
@@ -18,6 +20,7 @@
             name="email"
             placeholder="Введите email"
             required
+            value="semenov.anton.a@gmail.com"
         >
     </div>
 
@@ -31,6 +34,7 @@
             name="password"
             placeholder="Введите пароль"
             required
+            value="12345678"
         >
     </div>
 
