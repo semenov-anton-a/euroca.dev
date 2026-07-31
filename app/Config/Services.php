@@ -4,6 +4,12 @@ namespace Config;
 
 use CodeIgniter\Config\BaseService;
 
+use App\Services\Auth\UserService;
+use App\Repositories\UserRepository;
+use App\Repositories\PermissionRepository;
+use App\Modules\Auth\Models\UserModel;
+
+
 /**
  * Services Configuration file.
  *
@@ -19,6 +25,18 @@ use CodeIgniter\Config\BaseService;
  */
 class Services extends BaseService
 {
+    public static function userService( bool $getShared = true ): UserService 
+    {
+        if ($getShared) {
+            return static::getSharedInstance('userService');
+        }
+
+        return new UserService( 
+            new UserRepository( new UserModel() ), 
+            new PermissionRepository() 
+        );      
+    }
+
     /*
      * public static function example($getShared = true)
      * {

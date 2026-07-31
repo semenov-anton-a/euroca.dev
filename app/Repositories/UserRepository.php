@@ -1,74 +1,49 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
-use CodeIgniter\Database\BaseConnection;
-use Config\Database;
+use App\Modules\Auth\Models\UserModel;
 
 class UserRepository
 {
-    protected BaseConnection $db;
+    public function __construct( protected UserModel $userModel ) {}
 
-    public function __construct()
-    {
-        $this->db = Database::connect();
-    }
-
-    /**
-     * Найти пользователя по ID
-     */
     public function findById(int $userId): ?array
     {
-        return $this->db
-            ->table('users')
-            ->where('id', $userId)
-            ->get()
-            ->getRowArray() ?: null;
+        return $this->userModel->find($userId);
     }
 
-    /**
-     * Найти пользователя по Email
-     */
     public function findByEmail(string $email): ?array
     {
-        return $this->db
-            ->table('users')
-            ->where('email', $email)
-            ->get()
-            ->getRowArray() ?: null;
+        return $this->userModel->where('email', $email)->first();
     }
 
-    /**
-     * Создать пользователя
-     */
+    public function existsByEmail(string $email): bool
+    {
+        return $this->userModel->where('email', $email)->countAllResults() > 0;
+    }
+
+    public function existsByUsername(string $username): bool
+    {
+        return $this->userModel->where('username', $username)->countAllResults() > 0;
+    }
+
     public function create(array $data): int
     {
-        $this->db
-            ->table('users')
-            ->insert($data);
+        $this->userModel->insert($data);
 
-        return (int) $this->db->insertID();
+        return (int)$this->userModel->getInsertID();
     }
 
-    /**
-     * Обновить пользователя
-     */
-    public function update(int $userId, array $data): bool
+    public function update( int $userId, array $data): bool 
     {
-        return $this->db
-            ->table('users')
-            ->where('id', $userId)
-            ->update($data);
+        return $this->userModel->update($userId, $data);
     }
 
-    /**
-     * Удалить пользователя
-     */
     public function delete(int $userId): bool
     {
-        return $this->db
-            ->table('users')
-            ->where('id', $userId)
-            ->delete();
+        return $this->userModel->delete($userId);
     }
 }

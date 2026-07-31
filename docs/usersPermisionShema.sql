@@ -15,19 +15,28 @@ CREATE TABLE IF NOT EXISTS `users` (
 
     `password_hash` VARCHAR(255) NOT NULL,
 
-    `status` VARCHAR(20) NOT NULL DEFAULT 'active',
+    `status` ENUM(
+        'active',
+        'blocked',
+        'pending'
+    ) NOT NULL DEFAULT 'active',
 
-    `created_at` DATETIME NULL,
-    `updated_at` DATETIME NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME NULL,
 
     PRIMARY KEY (`id`),
 
     UNIQUE KEY `uniq_users_email` (`email`),
-    UNIQUE KEY `uniq_users_username` (`username`)
+    UNIQUE KEY `uniq_users_username` (`username`),
+
+    KEY `idx_users_status` (`status`),
+    KEY `idx_users_deleted_at` (`deleted_at`)
 
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
+
 
 
 -- =========================================================
@@ -49,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   COLLATE=utf8mb4_unicode_ci;
 
 
+
 -- =========================================================
 -- PERMISSIONS
 -- =========================================================
@@ -66,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
+
 
 
 -- =========================================================
@@ -93,6 +104,7 @@ CREATE TABLE IF NOT EXISTS `roles_users` (
   COLLATE=utf8mb4_unicode_ci;
 
 
+
 -- =========================================================
 -- ROLES <-> PERMISSIONS
 -- =========================================================
@@ -118,37 +130,49 @@ CREATE TABLE IF NOT EXISTS `role_permissions` (
   COLLATE=utf8mb4_unicode_ci;
 
 
+
 -- =========================================================
--- CARGO PERMISSIONS
+-- PERMISSIONS DATA
 -- =========================================================
 
-INSERT INTO `permissions`
-    (`name`, `description`)
+INSERT IGNORE INTO `permissions`
+(
+    `name`,
+    `description`
+)
 VALUES
-    ('cargo.view',   'View cargo'),
-    ('cargo.create', 'Create cargo'),
-    ('cargo.edit',   'Edit cargo'),
-    ('cargo.delete', 'Delete cargo');
+('cargo.view',   'View cargo'),
+('cargo.create', 'Create cargo'),
+('cargo.edit',   'Edit cargo'),
+('cargo.delete', 'Delete cargo');
+
 
 
 -- =========================================================
--- ROLES
+-- ROLES DATA
 -- =========================================================
 
-INSERT INTO `roles`
-    (`name`, `description`)
+INSERT IGNORE INTO `roles`
+(
+    `name`,
+    `description`
+)
 VALUES
-    ('admin',    'System administrator'),
-    ('employee', 'Employee'),
-    ('client',   'Client');
+('admin',    'System administrator'),
+('employee', 'Employee'),
+('client',   'Client');
+
 
 
 -- =========================================================
--- ADMIN -> ALL CARGO PERMISSIONS
+-- ADMIN ROLE - ALL CARGO PERMISSIONS
 -- =========================================================
 
-INSERT INTO `role_permissions`
-    (`role_id`, `permission_id`)
+INSERT IGNORE INTO `role_permissions`
+(
+    `role_id`,
+    `permission_id`
+)
 
 SELECT
     r.id,
@@ -158,20 +182,25 @@ FROM `roles` r
 CROSS JOIN `permissions` p
 
 WHERE r.name = 'admin'
-  AND p.name IN (
-      'cargo.view',
-      'cargo.create',
-      'cargo.edit',
-      'cargo.delete'
-  );
+AND p.name IN
+(
+    'cargo.view',
+    'cargo.create',
+    'cargo.edit',
+    'cargo.delete'
+);
+
 
 
 -- =========================================================
--- EMPLOYEE -> VIEW / CREATE / EDIT CARGO
+-- EMPLOYEE ROLE
 -- =========================================================
 
-INSERT INTO `role_permissions`
-    (`role_id`, `permission_id`)
+INSERT IGNORE INTO `role_permissions`
+(
+    `role_id`,
+    `permission_id`
+)
 
 SELECT
     r.id,
@@ -181,19 +210,24 @@ FROM `roles` r
 CROSS JOIN `permissions` p
 
 WHERE r.name = 'employee'
-  AND p.name IN (
-      'cargo.view',
-      'cargo.create',
-      'cargo.edit'
-  );
+AND p.name IN
+(
+    'cargo.view',
+    'cargo.create',
+    'cargo.edit'
+);
+
 
 
 -- =========================================================
--- CLIENT -> ONLY VIEW CARGO
+-- CLIENT ROLE
 -- =========================================================
 
-INSERT INTO `role_permissions`
-    (`role_id`, `permission_id`)
+INSERT IGNORE INTO `role_permissions`
+(
+    `role_id`,
+    `permission_id`
+)
 
 SELECT
     r.id,
@@ -203,4 +237,4 @@ FROM `roles` r
 CROSS JOIN `permissions` p
 
 WHERE r.name = 'client'
-  AND p.name = 'cargo.view';
+AND p.name = 'cargo.view';
