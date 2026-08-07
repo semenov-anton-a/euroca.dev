@@ -3,6 +3,7 @@
 namespace App\Modules\Tests\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\HTTP\ResponseInterface;
 
 class Tests extends BaseController
 {
@@ -25,7 +26,8 @@ class Tests extends BaseController
     }
 
     public function index() 
-    {
+    {        
+        dd( $this->currentUser() );
         return $this->viewModule("index", [ "urls" => $this->_getUrls() ]);
     }
 
@@ -37,8 +39,6 @@ class Tests extends BaseController
 
     public function post_form_login() 
     {
-        $data = $this->request->getPost();
-
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $remember = (bool) $this->request->getPost('remember');
@@ -51,8 +51,78 @@ class Tests extends BaseController
         ]);        
     }
 
+    public function logout() : ResponseInterface
+    {
+        $this->userService->logout();
+        return redirect()->to('/');
+    }
 
     public function feature(){ return $this->viewModule('feature'); }
+
+    public function authServices(): string
+{
+    $userId = 1;
+
+    // $roleService = Services::roleService();
+    // $permissionService = Services::permissionService();
+
+    echo '<pre>';
+
+    echo "=== USER ===\n";
+
+    $user = $this->userService->currentUser();
+
+    print_r($user);
+
+    echo "\n=== ROLE ===\n";
+
+    print_r(
+        $this->roleService->getUserRole($userId)
+    );
+
+    echo "\n=== ROLE NAME ===\n";
+
+    var_dump(
+        $this->roleService->getUserRoleName($userId)
+    );
+
+    echo "\n=== SUPER ADMIN ===\n";
+
+    var_dump(
+        $this->roleService->isSuperAdmin($userId)
+    );
+
+    echo "\n=== CARGO VIEW ===\n";
+
+    var_dump(
+        $this->permissionService->can(
+            $userId,
+            'cargo.view'
+        )
+    );
+
+    echo "\n=== CARGO DELETE ===\n";
+
+    var_dump(
+        $this->permissionService->can(
+            $userId,
+            'cargo.delete'
+        )
+    );
+
+    echo "\n=== UNKNOWN PERMISSION ===\n";
+
+    var_dump(
+        $this->permissionService->can(
+            $userId,
+            'something.unknown'
+        )
+    );
+
+    echo '</pre>';
+
+    return '';
+}
 
 
 }

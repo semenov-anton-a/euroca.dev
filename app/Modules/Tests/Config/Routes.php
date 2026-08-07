@@ -25,7 +25,8 @@ use App\Helpers\ClassHelper;
 
 
 $routes->group('', [
-    'namespace' => 'App\Modules\Tests\Controllers'
+    'namespace' => 'App\Modules\Tests\Controllers',
+    'filter' => 'auth'
 ], static function ($routes) {
     // $methodsArr = $this->_getClassMethods(\App\Modules\Tests\Controllers\Tests::class);
     

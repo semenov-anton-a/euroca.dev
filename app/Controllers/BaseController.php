@@ -15,6 +15,8 @@ use App\Helpers\ClassHelper;
 
 // User
 use App\Services\Auth\UserService;
+use App\Services\Auth\RoleService;
+use App\Services\Auth\PermissionService;
 
 
 // View 
@@ -52,6 +54,8 @@ abstract class BaseController extends Controller
 
 
     protected UserService $userService;
+    protected RoleService $roleService;
+    protected PermissionService $permissionService;
 
     /**
      * @return void
@@ -70,6 +74,8 @@ abstract class BaseController extends Controller
         // $this->toastService = new ToastService();
         
         $this->userService = Services::userService();
+        $this->roleService = Services::roleService();
+        $this->permissionService = Services::permissionService();
     }
 
     /**

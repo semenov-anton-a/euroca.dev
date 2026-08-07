@@ -18,8 +18,13 @@ class Auth extends BaseAuthController
      * GET Method
      * Show login page. 
      */
-    public function login(): string
-    {       
+    public function login(): ResponseInterface|string
+    {   
+        if( $this->userService->isLoggedIn() ) 
+        {
+            return redirect()->to('/test');
+        }
+
         return $this->viewModule('login');
     }
 
@@ -27,44 +32,22 @@ class Auth extends BaseAuthController
      * POST Method
      * Handle login form submission.
      */
-    public function authenticate(): ResponseInterface | string
+    public function authenticate(): ResponseInterface|string
     {
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $remember = (bool) $this->request->getPost('remember');
 
-        // Проверяем пользователя в БД
-        $user = $this->userModel->authenticate($email, $password);
-
-        // Пользователь не найден или пароль неверный
-        if ( ! $user ) 
+        if (! $this->userService->login( $email, $password, $remember )) 
         {
             return $this->response
-                ->setStatusCode(401)
-                ->setBody(
-                    '<div class="alert alert-danger">
-                        Неверный email или пароль
-                    </div>'
-                );
+                ->setStatusCode(200)
+                ->setBody(lang('Auth.error_login'));
         }
 
-        // Авторизация пользователя
-        session()->set([
-            'user_id'      => $user['id'],
-            'user_email'   => $user['email'],
-            'user_name'    => $user['first_name'] . ' ' . $user['last_name'],
-            'role_id'      => $user['role_id'],
-            'permissions'  => $user['permissions'],
-            'logged_in'    => true,
-        ]);
-
-    // Remember Me
-    // if ($remember) {
-    //     session()->setExpiration(2880); // 48 часов
-    // }
-
-        // Перенаправляем HTMX после успешной авторизации
-        return $this->response->setHeader('HX-Redirect', '/cargo')->setStatusCode(200);
+        return $this->response
+            ->setHeader('HX-Redirect', '/test')
+            ->setStatusCode(200);
     }
 
 
