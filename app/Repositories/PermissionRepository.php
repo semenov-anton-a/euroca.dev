@@ -77,10 +77,9 @@ class PermissionRepository
     /**
      * Удалить право у роли
      */
-    public function removeFromRole(
-        int $roleId,
-        int $permissionId
-    ): bool {
+    public function removeFromRole( int $roleId, int $permissionId
+    ): bool 
+    {
         return $this->db
             ->table('role_permissions')
             ->where('role_id', $roleId)
