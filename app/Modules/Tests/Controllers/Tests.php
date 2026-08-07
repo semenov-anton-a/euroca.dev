@@ -130,5 +130,10 @@ class Tests extends BaseController
     return '';
 }
 
+    public function AdminLTE() : ResponseInterface
+    {
+        return redirect()->to('/adminlte');
+    }
+
 
 }
