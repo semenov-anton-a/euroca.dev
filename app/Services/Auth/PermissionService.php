@@ -9,22 +9,22 @@ use App\Repositories\PermissionRepository;
 class PermissionService
 {
     public function __construct(
-        protected PermissionRepository $permissionRepository
+        protected PermissionRepository $permissionRepository,
+        protected RoleService $roleService
     ) {
     }
 
     /**
      * Проверить, есть ли у пользователя указанное разрешение.
      */
-    public function can(
-        int $userId,
-        string $permission
-    ): bool {
-        return $this->permissionRepository
-            ->userHasPermission(
-                $userId,
-                $permission
-            );
+    public function can( int $userId, string $permission ): bool 
+    {
+        if ($this->roleService->isSuperAdmin($userId)) 
+        {
+            return true;
+        }
+
+        return $this->permissionRepository->userHasPermission( $userId,$permission );
     }
 
     /**

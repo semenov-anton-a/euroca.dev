@@ -46,4 +46,26 @@ class UserRepository
     {
         return $this->userModel->delete($userId);
     }
+
+    public function findProfileById(int $userId): ?array
+    {
+        return $this->userModel
+            ->table( $this->userModel->table )
+            ->select([
+                'id',
+                'email',
+                'username',
+                'first_name',
+                'last_name',
+                'phone',
+                'status',
+                'created_at',
+                'updated_at',
+            ])
+            ->where('id', $userId)
+            ->where('deleted_at IS NULL', null, false)
+            ->get()
+            ->getRowArray() ?: null;
+    }
+
 }

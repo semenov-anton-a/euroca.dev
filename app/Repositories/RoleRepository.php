@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use CodeIgniter\Database\BaseConnection;
@@ -15,7 +17,7 @@ class RoleRepository
     }
 
     /**
-     * Найти роль по ID
+     * Найти роль по ID.
      */
     public function findById(int $roleId): ?array
     {
@@ -27,7 +29,7 @@ class RoleRepository
     }
 
     /**
-     * Найти роль по имени
+     * Найти роль по имени.
      */
     public function findByName(string $name): ?array
     {
@@ -39,9 +41,12 @@ class RoleRepository
     }
 
     /**
-     * Получить роли пользователя
+     * Получить роль пользователя.
+     *
+     * В текущей архитектуре предполагается,
+     * что пользователю назначена одна основная роль.
      */
-    public function getUserRoles(int $userId): array
+    public function getUserRole(int $userId): ?array
     {
         return $this->db
             ->table('roles r')
@@ -52,11 +57,71 @@ class RoleRepository
             )
             ->where('ru.user_id', $userId)
             ->get()
+            ->getRowArray() ?: null;
+    }
+
+    /**
+     * Получить ID роли пользователя.
+     */
+    public function getUserRoleId(int $userId): ?int
+    {
+        $role = $this->getUserRole($userId);
+
+        return $role !== null
+            ? (int) $role['id']
+            : null;
+    }
+
+    /**
+     * Получить все роли.
+     */
+    public function findAll(): array
+    {
+        return $this->db
+            ->table('roles')
+            ->orderBy('name', 'ASC')
+            ->get()
             ->getResultArray();
     }
 
     /**
-     * Назначить роль пользователю
+     * Создать роль.
+     */
+    public function create(array $data): int
+    {
+        $this->db
+            ->table('roles')
+            ->insert($data);
+
+        return (int) $this->db->insertID();
+    }
+
+    /**
+     * Обновить роль.
+     */
+    public function update(
+        int $roleId,
+        array $data
+    ): bool {
+        return $this->db
+            ->table('roles')
+            ->where('id', $roleId)
+            ->update($data);
+    }
+
+    /**
+     * Удалить роль.
+     */
+    public function delete(int $roleId): bool
+    {
+        return $this->db
+            ->table('roles')
+            ->where('id', $roleId)
+            ->delete();
+    }
+
+    /**
+     * Назначить роль пользователю.
      */
     public function assignToUser(
         int $userId,
@@ -71,7 +136,7 @@ class RoleRepository
     }
 
     /**
-     * Удалить роль у пользователя
+     * Удалить роль у пользователя.
      */
     public function removeFromUser(
         int $userId,
