@@ -18,8 +18,13 @@ class Auth extends BaseAuthController
      * GET Method
      * Show login page. 
      */
-    public function login(): string
-    {       
+    public function login(): ResponseInterface|string
+    {   
+        if( $this->userService->isLoggedIn() ) 
+        {
+            return redirect()->to('/test');
+        }
+
         return $this->viewModule('login');
     }
 
