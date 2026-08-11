@@ -77,7 +77,7 @@ abstract class BaseController extends Controller
         $this->roleService = Services::roleService();
         $this->permissionService = Services::permissionService();
     }
-
+    
     /**
      * Build menu based on user permissions.
      */

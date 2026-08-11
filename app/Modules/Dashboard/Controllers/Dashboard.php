@@ -9,7 +9,10 @@ class Dashboard extends BaseDashboardController
 {
     public function index()
     {
-        return "Hello from Dashboard module!";
+        return $this->viewModule('index', [ 
+            'contentID' =>'dashboard', 
+            'title' => 'Dashboard',
+        ] );
     }
 
     public function test()

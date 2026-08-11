@@ -22,7 +22,7 @@ class Auth extends BaseAuthController
     {   
         if( $this->userService->isLoggedIn() ) 
         {
-            return redirect()->to('/test');
+            return redirect()->to('/dashboard');
         }
 
         return $this->viewModule('login');
@@ -46,7 +46,7 @@ class Auth extends BaseAuthController
         }
 
         return $this->response
-            ->setHeader('HX-Redirect', '/test')
+            ->setHeader('HX-Redirect', '/dashboard')
             ->setStatusCode(200);
     }
 
