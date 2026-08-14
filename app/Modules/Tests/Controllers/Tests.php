@@ -26,8 +26,7 @@ class Tests extends BaseController
     }
 
     public function index() 
-    {        
-        dd( $this->currentUser() );
+    {      
         return $this->viewModule("index", [ "urls" => $this->_getUrls() ]);
     }
 
@@ -119,10 +118,22 @@ class Tests extends BaseController
         )
     );
 
+    echo "\n=== ALL PERMISSION ===\n";
+
+    var_dump(
+        $this->permissionService->getUserPermissions($userId)
+    );
+
+
     echo '</pre>';
 
     return '';
 }
+
+    public function AdminLTE() : ResponseInterface
+    {
+        return redirect()->to('/adminlte');
+    }
 
 
 }

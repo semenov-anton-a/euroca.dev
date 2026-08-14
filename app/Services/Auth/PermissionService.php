@@ -31,12 +31,12 @@ class PermissionService
      * Проверить несколько разрешений.
      * Пользователь должен иметь ВСЕ разрешения.
      */
-    public function canAll(
-        int $userId,
-        array $permissions
-    ): bool {
-        foreach ($permissions as $permission) {
-            if (!$this->can($userId, $permission)) {
+    public function canAll( int $userId, array $permissions): bool 
+    {
+        foreach ($permissions as $permission) 
+        {
+            if ( ! $this->can($userId, $permission)) 
+            {
                 return false;
             }
         }
@@ -48,10 +48,8 @@ class PermissionService
      * Проверить несколько разрешений.
      * Пользователю достаточно иметь ХОТЯ БЫ ОДНО.
      */
-    public function canAny(
-        int $userId,
-        array $permissions
-    ): bool {
+    public function canAny( int $userId, array $permissions ): bool 
+    {
         foreach ($permissions as $permission) {
             if ($this->can($userId, $permission)) {
                 return true;
@@ -64,9 +62,30 @@ class PermissionService
     /**
      * Получить все разрешения пользователя.
      */
-    public function getUserPermissions(int $userId): array
+    public function getUserPermissions(int $userId): ?array
     {
-        return $this->permissionRepository
-            ->getUserPermissions($userId);
+        $useCache = filter_var(
+            env('AUTH_PERMISSION_CACHE', false), FILTER_VALIDATE_BOOLEAN
+        );
+
+        if ($useCache) 
+        {
+            $cacheKey = "user_permissions_{$userId}";
+            $cacheTtl = (int) env('AUTH_PERMISSION_CACHE_TTL', 3600);
+
+            $cachedPermissions = cache($cacheKey);
+
+            if ($cachedPermissions !== null) {
+                return $cachedPermissions;
+            }
+
+            $permissions = $this->permissionRepository->getUserPermissions($userId);
+            cache()->save($cacheKey, $permissions, $cacheTtl);
+
+            return $permissions;
+        }
+
+        return null;
+        
     }
 }
