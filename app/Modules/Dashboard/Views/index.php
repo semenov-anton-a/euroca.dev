@@ -4,7 +4,7 @@
 <?= $this->section('content') ?>
 
 
-<div class="card">
+<div class="row">
 
     <div class="card-body">
 
