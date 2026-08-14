@@ -45,13 +45,12 @@ abstract class BaseController extends Controller
     /**
      * Menu service instance.
      */
-    // protected MenuService $menuService;
+    protected MenuService $menuService;
 
     /**
      * Toast service instance.
      */
     // protected ToastService $toastService;
-
 
     protected UserService $userService;
     protected RoleService $roleService;
@@ -70,7 +69,7 @@ abstract class BaseController extends Controller
         parent::initController($request, $response, $logger);
 
         // Preload shared services
-        // $this->menuService = new MenuService();
+        $this->menuService = new MenuService();
         // $this->toastService = new ToastService();
         
         $this->userService = Services::userService();

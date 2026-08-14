@@ -106,6 +106,7 @@ class UserService
             'role_id' => $user['role_id'],
             'role' => $user['role'],
             'logged_in' => true,
+            'locale' => 'en' // Use the session locale or set a default
         ]);
 
         $this->currentUser = $user;

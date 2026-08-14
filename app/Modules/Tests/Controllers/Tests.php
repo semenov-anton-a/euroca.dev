@@ -4,9 +4,42 @@ namespace App\Modules\Tests\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
-
+use Config\Services;
 class Tests extends BaseController
 {
+
+    public function getMenu()
+    {
+      $userPermissions = $this->permissionService->getUserPermissions( 1 );
+      
+      for( $i = 0; $i < count( $userPermissions ); $i++ )
+      {
+        
+        $menu[] = $userPermissions[$i]['name'] . "\n";
+      }
+
+        $menu = $this->menuService->getMenu( $menu );      
+      
+    //   $menu = $this->menuService->getMenu( $userPermissions );
+      
+
+    
+      dd($menu);
+
+
+    }
+    
+    public function createRole()
+    {
+        $user = $this->userService->currentUser();
+        $perm = $this->permissionService->getUserPermissions( $user["id"] );
+        $role = $this->roleService->getUserRole( $user["id"] );
+
+        
+
+        dd( $perm , $user, $role );
+
+    }
 
     private function _getUrls()
     {
