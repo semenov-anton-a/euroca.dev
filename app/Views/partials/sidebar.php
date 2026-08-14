@@ -32,7 +32,6 @@
       </div>
 
       <?php
-
       // use Config\Services;
 
       // $menuService = Services::menuService();

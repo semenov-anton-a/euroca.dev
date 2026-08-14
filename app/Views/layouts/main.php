@@ -15,10 +15,6 @@ $die = 0;
 if($die == 1) {die;}
 
 ?>
-
-
-
-
 <!doctype html>
 <html lang="<?= session('locale') ?>">
   <!--begin::Head-->

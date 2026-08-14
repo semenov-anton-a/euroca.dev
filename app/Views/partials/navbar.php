@@ -81,8 +81,7 @@
                   <!--begin::User Image-->
                   <li class="text-bg-primary text-center">
                     <!-- <img src="./assets/img/user2-160x160.jpg" class="rounded-circle shadow" alt="User Image"> -->
-                    <p>
-                      
+                    <p>                      
                       <small>
                         <!-- TEXT exmple role -->
                       </small>

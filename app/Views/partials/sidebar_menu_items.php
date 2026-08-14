@@ -1,5 +1,4 @@
 <?php foreach ($items as $item): ?>
-
     <?php
         $hasChildren = !empty($item['children']);
         $url = $item['url'] ?? '#';
