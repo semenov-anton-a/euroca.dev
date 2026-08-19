@@ -27,7 +27,7 @@ class MenuService
 
         [
             'title'      => 'Dashboard',
-            'icon'       => 'home',
+            'icon'       => 'fa-regular fa-house',
             'url'        => '/dashboard',
             'permission' => 'dashboard.view',
             'order'      => 10,
@@ -35,7 +35,8 @@ class MenuService
 
         [
             'title'      => 'Cargo',
-            'icon'       => 'truck',
+            //'icon'       => 'fa-thin fa-boxes-stacked',
+            'icon'       => 'fa-solid fa-cubes',
             'permission' => 'cargo.view',
             'order'      => 20,
 
@@ -313,7 +314,7 @@ class MenuService
      */
     protected function filterItems( array $items, array $userPermissions ): array 
     {
-        dd($userPermissions,"userPermissions");
+        // dd($userPermissions,"userPermissions");
 
         $filtered = [];
 
@@ -354,7 +355,7 @@ class MenuService
             }
         }
 
-        dd($filtered);
+        // dd($filtered);
 
         return $filtered;
     }

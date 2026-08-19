@@ -15,14 +15,6 @@ class Tests extends BaseController
     }
 
 
-    public function getMenu()
-    {
-        $menuService = new MenuService();
-
-
-        dd($menuService->getAllMenu());
-    }
-
 
     public function form_login()
     {
