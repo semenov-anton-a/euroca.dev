@@ -5,30 +5,15 @@ namespace App\Modules\Tests\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
+use App\Services\View\MenuService;
+
 class Tests extends BaseController
 {
-
-    private function _getUrls()
-    {
-        $methods = $this->_getControllerMethods(__CLASS__);
-
-        $urls = [];
-
-        foreach ($methods as $method) 
-        {
-            if (str_starts_with($method, 'post_')) {
-                $urls['post'][$method] = base_url("tests/$method");
-            } else {
-                $urls['get'][$method] = base_url("tests/$method");
-            }
-        }
-        return $urls;
-    }
-
     public function index() 
     {      
         return $this->viewModule("index", [ "urls" => $this->_getUrls() ]);
     }
+
 
 
     public function form_login()
@@ -55,6 +40,24 @@ class Tests extends BaseController
         $this->userService->logout();
         return redirect()->to('/');
     }
+
+private function _getUrls()
+    {
+        $methods = $this->_getControllerMethods(__CLASS__);
+
+        $urls = [];
+
+        foreach ($methods as $method) 
+        {
+            if (str_starts_with($method, 'post_')) {
+                $urls['post'][$method] = base_url("tests/$method");
+            } else {
+                $urls['get'][$method] = base_url("tests/$method");
+            }
+        }
+        return $urls;
+    }
+
 
     public function feature(){ return $this->viewModule('feature'); }
 

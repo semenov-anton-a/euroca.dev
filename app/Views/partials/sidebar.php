@@ -32,13 +32,28 @@
       </div>
 
       <?php
-      // use Config\Services;
 
-      // $menuService = Services::menuService();
+      use App\Services\View\MenuService;
 
-      // $userPermissions = Services::permissionService()->getCurrentPermissions();
+      $menuService = new MenuService();
 
-      // $menu = $menuService->getMenu($userPermissions);
+      $allMenu = $menuService->getAllMenu();
+
+      $fakePermissions = [];
+        
+        foreach ($allMenu as $menu) 
+        {
+            $fakePermissions[] = $menu['permission'];
+            if( !empty($menu["children"]) )
+            {
+                for( $i = 0; $i < count($menu["children"]); $i++ )
+                {
+                    $fakePermissions[] = $menu["children"][$i]['permission'];
+                }
+            }
+        }
+
+        $items = $menuService->getMenu($fakePermissions);
 
       ?>
 
@@ -50,9 +65,8 @@
         data-accordion="false"
         id="navigation">
 
-        <?php 
-          // $this->include('partials/sidebar_menu_items', ['items' => $menu]) 
-        ?>
+        <?= view('partials/sidebar_menu_items', [ 'items' => $items ] ) ?>
+
 
       </ul>
     </nav>
