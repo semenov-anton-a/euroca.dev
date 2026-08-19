@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Modules\Settings\Controllers;
+namespace App\Modules\AdminSettings\Controllers;
 
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -12,7 +12,7 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 
 use App\Controllers\BaseController;
 
-abstract class BaseSettingsController extends BaseController
+abstract class BaseAdminSettingsController extends BaseController
 {
     public function initController(
         RequestInterface $request,

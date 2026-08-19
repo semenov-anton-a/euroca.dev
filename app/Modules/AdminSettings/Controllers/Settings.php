@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Modules\Settings\Controllers;
+namespace App\Modules\AdminSettings\Controllers;
 
 // use CodeIgniter\HTTP\ResponseInterface;
 
 
-class Settings extends BaseSettingsController
+class Settings extends BaseAdminSettingsController
 {    
     public function index(): string
     {
