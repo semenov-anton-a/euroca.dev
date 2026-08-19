@@ -12,6 +12,7 @@ $moduleRoutes = [
     'Auth'      => APPPATH . 'Modules/Auth/Config/Routes.php',
     'Dashboard' => APPPATH . 'Modules/Dashboard/Config/Routes.php',
     'Cargo'     => APPPATH . 'Modules/Cargo/Config/Routes.php',
+    'Settings'  => APPPATH . 'Modules/Settings/Config/Routes.php'
 
 ];
 

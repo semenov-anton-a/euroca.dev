@@ -9,12 +9,10 @@
     <div class="card-body">
 
         <h1>
-
+            <?= esc("Welcome to Settings") ?>
         </h1>
-
-
         <p>
-            Welcome to Dashboard 2
+            
         </p>
 
 

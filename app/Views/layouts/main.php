@@ -113,7 +113,7 @@ die;
       <main class="app-main">
         <!--begin::App Content Header-->
         <?php 
-          echo $this->include('partials/headerContent') 
+          // echo $this->include('partials/headerContent') 
         ?>
         <!--end::App Content Header-->
         
