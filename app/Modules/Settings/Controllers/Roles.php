@@ -9,6 +9,8 @@ class Roles extends BaseSettingsController
 {    
     public function index(): string
     {
-        return $this->viewModule("Roles/index", );
+        return $this->viewModule("Roles/index", [
+            "title" => "Roles & Permissions",
+        ]);
     }
 }

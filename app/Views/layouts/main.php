@@ -114,6 +114,7 @@ die;
         <!--begin::App Content Header-->
         <?php 
           // echo $this->include('partials/headerContent') 
+          echo $this->renderSection('headerContentModule');
         ?>
         <!--end::App Content Header-->
         
@@ -124,7 +125,7 @@ die;
             
             <!--begin::Row-->
             <?php 
-            //echo $this->include('partials/dashboardComponents/cards') 
+            // echo $this->include('partials/dashboardComponents/cards') 
             ?>
             <!--end::Row-->
             

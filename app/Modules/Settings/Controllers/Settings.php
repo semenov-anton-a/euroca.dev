@@ -11,6 +11,6 @@ class Settings extends BaseSettingsController
 {    
     public function index(): string
     {
-        return $this->viewModule("index");
+        return $this->viewModule("index", [ 'title' => 'Welcome to Settings'] );
     }
 }

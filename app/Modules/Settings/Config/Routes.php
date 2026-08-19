@@ -9,7 +9,7 @@ $routes->group('', [
     'filter' => 'auth'
 ], static function ($routes) {
 
-    $routes->get('/settings', 'Settings::index');
-    $routes->get('/settings/roles', 'Roles::index');
+    $routes->get('/settings', 'Settings::index', ['as'=> 'settings',]);
+    $routes->get('/settings/roles', 'Roles::index', ['as'=> 'settings.roles',]);
     // $routes->get('logout', 'Auth::logout');
 });
