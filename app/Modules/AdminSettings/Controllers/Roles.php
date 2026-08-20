@@ -9,8 +9,15 @@ class Roles extends BaseAdminSettingsController
 {    
     public function index(): string
     {
+        $roles = $this->roleService->getAll();
+
         return $this->viewModule("Roles/index", [
             "title" => "Roles & Permissions",
+            "roles" => $roles
         ]);
     }
+
+
+
+
 }

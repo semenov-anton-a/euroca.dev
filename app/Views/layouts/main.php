@@ -93,6 +93,11 @@ die;
      <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" 
           integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
           crossorigin="anonymous"></script>
+      
+      <link rel="stylesheet" href="<?= \App\Helpers\AssetHelper::asset('css/common.css') ?>" >
+      <script src="<?= \App\Helpers\AssetHelper::asset('js/common.js') ?>"></script>
+      
+
   </head>
   <!--end::Head-->
 
@@ -119,12 +124,12 @@ die;
         <!--end::App Content Header-->
         
         <!--begin::App Content-->
-        <div class="app-content-header">
+        <div class="app-content-header p-1 m-1">
           <!--begin::Container-->
           <div class="container-fluid">
             
             <!--begin::Row-->
-            <?php 
+            <?php             
             // echo $this->include('partials/dashboardComponents/cards') 
             ?>
             <!--end::Row-->

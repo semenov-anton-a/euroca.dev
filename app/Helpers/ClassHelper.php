@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 class ClassHelper
 {
+ 
     public static function _getControllerMethods(string $class): array
     {
         $reflection = new \ReflectionClass($class);
