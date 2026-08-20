@@ -275,6 +275,21 @@ class MenuService
                     'permission' => 'roles.view',
                     'order'      => 30,
                 ],
+                
+                [
+                    'title'      => 'Tests',
+                    'icon'       => 'shield',
+                    'url'        => '/test',
+                    'permission' => 'tests',
+                    'order'      => 40,
+                ],
+                [
+                    'title'      => 'AdminLTE',
+                    'icon'       => 'shield',
+                    'url'        => '/adminlte',
+                    'permission' => 'tests',
+                    'order'      => 50,
+                ],
 
             ],
         ],
