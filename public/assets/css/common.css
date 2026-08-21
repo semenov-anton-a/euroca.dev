@@ -1,0 +1,28 @@
+/* Основная строка */
+.accordion-row { cursor: pointer; }
+/* Стрелка */
+.accordion-row .accordion-icon { display: inline-block; transition: transform 0.35s ease-in-out; }
+/* Поворот стрелки */
+.accordion-row.is-open .accordion-icon { transform: rotate(90deg); }
+/*
+ * Строка с содержимым
+ */
+.accordion-details td {
+    padding: 0 !important;
+    border: 0 !important;
+}
+/*
+ * Контейнер содержимого.
+ *
+ * JS меняет height:
+ *
+ * 0px
+ *   ↓
+ * scrollHeight
+ */
+
+.accordion-content {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.35s ease-in-out;
+}

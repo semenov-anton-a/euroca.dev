@@ -75,13 +75,14 @@ class RoleRepository
     /**
      * Получить все роли.
      */
-    public function findAll(): array
+    public function findAll() : array
     {
         return $this->db
             ->table('roles')
             ->orderBy('name', 'ASC')
             ->get()
-            ->getResultArray();
+            ->getResultObject();
+            // ->getResultArray();
     }
 
     /**
