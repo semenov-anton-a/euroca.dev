@@ -46,9 +46,12 @@
 
 			<!-- Tab content -->
 			<div class="col-md-10 m-0 p-1">
-                <div class="text-center d-flex justify-content-center align-items-center h-100 d-none" id="roleDetalies-preloader">
+                <!-- <div class="text-center d-flex justify-content-center align-items-center h-100 d-none" id="roleDetalies-preloader">
                     <i class="fa fa-spinner fa-spin fa-5" aria-hidden="true"></i>
-                </div>
+                </div> -->
+                <div class="spinner-border text-primary m-3 p-3 d-none" id="roleDetalies-preloader" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
 				<div class="tab-content" id="role-detalies">
 					<!-- Account -->
                     
