@@ -30,9 +30,9 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="list-group list-group-flush nav nav-pills flex-column" id="settings-nav" role="tablist" aria-label="Navigation 18">
-							<?php foreach ($roles as $role): ?> <?php $targetId = 'role-' . $role->id; ?>
-							
-							<a href="#<?= esc($targetId) ?>" class="list-group-item list-group-item-action" data-bs-toggle="pill" role="tab" aria-selected="true">
+							<?php foreach ($roles as $role): ?> <?php $targetId = 'role-' . $role->id; ?>							
+							<a href="#<?= esc($targetId) ?>" data-role-id="<?= esc($role->id) ?>"
+                                 class="list-group-item list-group-item-action" data-bs-toggle="pill" role="tab" aria-selected="true">
 								<i class="bi bi-person me-2" aria-hidden="true"></i><?= esc($role->name) ?>
 							</a>
 							<?php endforeach ?>
@@ -46,9 +46,15 @@
 
 			<!-- Tab content -->
 			<div class="col-md-10 m-0 p-1">
-				<div class="tab-content">
+                <div class="text-center d-flex justify-content-center align-items-center h-100 d-none" id="roleDetalies-preloader">
+                    <i class="fa fa-spinner fa-spin fa-5" aria-hidden="true"></i>
+                </div>
+				<div class="tab-content" id="role-detalies">
 					<!-- Account -->
-					<div class="tab-pane fade" id="<?= esc($targetId) ?>" role="tabpanel">
+                    
+                    
+
+					<!-- <div class="tab-pane fade" id="<?= esc($targetId) ?>" role="tabpanel">
 						<div class="card">
 							<div class="card-header">
 								<h3 class="card-title">Account</h3>
@@ -87,7 +93,7 @@
 								</form>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</div>
@@ -158,7 +164,7 @@ const RoleModal = {
         this.form = document.getElementById('create-role-form');
         this.button = document.getElementById('create-role-button');
         this.newRoleButton = document.getElementById('new-role-button');
-
+        
         this.bindEvents();
     },
     bindEvents: function () {
@@ -222,9 +228,16 @@ const RoleModal = {
 
         const item = document.createElement('a');
 
+        // item.href = '#role-' + role.id;
+        // item.className = 'list-group-item list-group-item-action active';
+        // item.dataset.bsToggle = 'pill';
+        // item.setAttribute('role', 'tab');
+        // item.setAttribute('aria-selected', 'false');
+        
         item.href = '#role-' + role.id;
         item.className = 'list-group-item list-group-item-action';
         item.dataset.bsToggle = 'pill';
+        item.dataset.roleId = role.id;
         item.setAttribute('role', 'tab');
         item.setAttribute('aria-selected', 'false');
 
@@ -232,13 +245,61 @@ const RoleModal = {
             <i class="bi bi-person me-2" aria-hidden="true"></i>
             ${role.name}
         `;
-
+        
         menu.appendChild(item);
+        
+        const tab = new bootstrap.Tab(item);
+        tab.show();
+
+        // RoleDetalies.loading( role.id );
+
+    },
+};
+
+const RoleDetalies = {
+    init : function(){
+        this.tabContent = document.getElementById('role-detalies');
+        this.detalisCardPreloader = document.getElementById('roleDetalies-preloader');
+        return this;
+    },
+    loading : function(id)
+    {
+        this.showPreloader();
+
+        htmx.ajax('GET', `/admin_settings/role/${id}`, {
+                target: '#role-detalies',
+                swap: 'innerHTML'
+        })
+        .then(() => { this.hidePreloader(); })
+        .catch(() => { this.hidePreloader(); });
+
+        return this;
+    },
+    showPreloader : function(){
+          this.detalisCardPreloader.classList.remove('d-none');                              
+    },
+    hidePreloader : function(){
+        this.detalisCardPreloader.classList.add('d-none');
     }
 };
 
+const RoleNavigation = {
+
+    init: function () 
+    {
+        this.menu = document.getElementById('settings-nav');
+
+        this.menu.addEventListener('shown.bs.tab', event => {
+            const id = event.target.dataset.roleId;
+            RoleDetalies.tabContent.querySelector('.tab-pane.active.show')?.classList.remove('active', 'show');
+            RoleDetalies.loading(id);
+        });
+    }
+};
 
 document.addEventListener('DOMContentLoaded', function () { RoleModal.init() });
+RoleDetalies.init();
+RoleNavigation.init();
 
 document.body.addEventListener('toast', function ( data ) {
     console.log( data.detail.msg );
