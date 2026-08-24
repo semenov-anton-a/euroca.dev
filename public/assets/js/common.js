@@ -154,3 +154,134 @@ function closeAccordion(row, content, icon) {
  *  Accardion END
  * 
  ***************************/
+
+
+/** **************************
+ *  
+ *  Toast Message
+ * 
+ ***************************/
+const Toast = {
+
+    container: null,
+
+    config: {
+        alert: {
+            class: 'toast-secondary',
+            icon: 'bi-bell-fill',
+            title: 'Notification'
+        },
+
+        primary: {
+            class: 'toast-primary',
+            icon: 'bi-circle-fill',
+            title: 'Notification'
+        },
+
+        secondary: {
+            class: 'toast-secondary',
+            icon: 'bi-circle-fill',
+            title: 'Notification'
+        },
+
+        success: {
+            class: 'toast-success',
+            icon: 'bi-check-circle-fill',
+            title: 'Success'
+        },
+
+        info: {
+            class: 'toast-info',
+            icon: 'bi-info-circle-fill',
+            title: 'Information'
+        },
+
+        warning: {
+            class: 'toast-warning',
+            icon: 'bi-exclamation-triangle-fill',
+            title: 'Warning'
+        },
+
+        danger: {
+            class: 'toast-danger',
+            icon: 'bi-x-circle-fill',
+            title: 'Error'
+        },
+
+        light: {
+            class: 'toast-light',
+            icon: 'bi-circle-fill',
+            title: 'Notification'
+        },
+
+        dark: {
+            class: 'toast-dark',
+            icon: 'bi-circle-fill',
+            title: 'Notification'
+        }
+    },
+
+    init: function () {
+
+        this.container = document.querySelector('.toast-container');
+
+        return this;
+    },
+
+    show: function (type, message, title) {
+
+        if (!this.container) {
+            console.error('Toast is not initialized');
+            return;
+        }
+
+        const settings = this.config[type] ?? this.config.info;
+              
+        const toast = document.createElement('div');
+
+        toast.className = `toast ${settings.class}`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+
+        toast.innerHTML = `
+            <div class="toast-header">
+
+                <i class="bi ${settings.icon} me-2"></i>
+
+                <strong class="me-auto">
+                    ${ title ?? settings.title }
+                </strong>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="toast"
+                    aria-label="Close">
+                </button>
+
+            </div>
+
+            <div class="toast-body">
+                ${message}
+            </div>
+        `;
+
+        this.container.appendChild(toast);
+
+        const instance = bootstrap.Toast.getOrCreateInstance(toast, {
+            delay: 3000
+        });
+
+        toast.addEventListener('hidden.bs.toast', () => {
+            toast.remove();
+        });
+
+        instance.show();
+    }
+};
+/** **************************
+ *  
+ *  Toast Message  END
+ *  
+ ***************************/

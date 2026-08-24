@@ -4,49 +4,45 @@ declare(strict_types=1);
 
 namespace App\Services\View;
 
-use CodeIgniter\HTTP\UserAgent;
-
-/**
- * Toast service for displaying notifications.
- * Returns HX-Trigger headers for HTMX toast notifications.
- */
 class ToastService
 {
-    /**
-     * Send success toast message.
-     */
-    public function success(string $message, string $title = 'Success'): void
-    {
-        $this->triggerToaster('success', $title, $message);
+    public function success(
+        string $message,
+        string $title = 'Success'
+    ): array {
+        return $this->trigger('alert', $title, $message);
     }
 
-    /**
-     * Send error toast message.
-     */
-    public function error(string $message, string $title = 'Error'): void
-    {
-        $this->triggerToaster('error', $title, $message);
+    public function danger(
+        string $message,
+        string $title = 'Error'
+    ): array {
+        return $this->trigger('alert', $title, $message);
     }
 
-    /**
-     * Send info toast message.
-     */
-    public function info(string $message, string $title = 'Info'): void
-    {
-        $this->triggerToaster('info', $title, $message);
+    public function warning(
+        string $message,
+        string $title = 'Warning'
+    ): array {
+        return $this->trigger('alert', $title, $message);
     }
 
-    /**
-     * Trigger HX-Trigger header for toast.
-     */
-    protected function triggerToaster(string $type, string $title, string $message): void
-    {
-        $toastData = [
-            'type' => $type,
-            'title' => $title,
-            'message' => $message,
-        ];
+    public function info(
+        string $message,
+        string $title = 'Information'
+    ): array {
+        return $this->trigger('alert', $title, $message);
+    }
 
-        header("HX-Trigger: showToast=" . json_encode($toastData));
+    public function alert(
+        string $message,
+        string $title = 'Notification'
+    ): array {
+        return $this->trigger('alert', $title, $message);
+    }
+
+    protected function trigger( string $type, string $title, string $message ): array 
+    {
+        return [ 'type' => $type, 'title' => $title, 'message' => $message, ];
     }
 }

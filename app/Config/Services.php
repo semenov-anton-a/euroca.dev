@@ -16,6 +16,9 @@ use App\Repositories\PermissionRepository;
 
 use App\Modules\Auth\Models\UserModel;
 
+use App\Services\View\ToastService;
+
+
 class Services extends BaseService
 {
     /**
@@ -59,5 +62,14 @@ class Services extends BaseService
         }
 
         return new PermissionService( new PermissionRepository(), static::roleService() );
+    }
+
+    public static function toastService(bool $getShared = true): ToastService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('toastService');
+        }
+
+        return new ToastService();
     }
 }

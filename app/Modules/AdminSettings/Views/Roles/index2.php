@@ -228,14 +228,7 @@ const RoleModal = {
     appendToMenu: function (role) {
 
         const menu = document.getElementById('settings-nav');
-
         const item = document.createElement('a');
-
-        // item.href = '#role-' + role.id;
-        // item.className = 'list-group-item list-group-item-action active';
-        // item.dataset.bsToggle = 'pill';
-        // item.setAttribute('role', 'tab');
-        // item.setAttribute('aria-selected', 'false');
         
         item.href = '#role-' + role.id;
         item.className = 'list-group-item list-group-item-action';
@@ -254,7 +247,7 @@ const RoleModal = {
         const tab = new bootstrap.Tab(item);
         tab.show();
 
-        // RoleDetalies.loading( role.id );
+        // Toast.show( 'info' ,"Role creaded" );       
 
     },
 };
@@ -304,9 +297,6 @@ document.addEventListener('DOMContentLoaded', function () { RoleModal.init() });
 RoleDetalies.init();
 RoleNavigation.init();
 
-document.body.addEventListener('toast', function ( data ) {
-    console.log( data.detail.msg );
-});
 
 
 

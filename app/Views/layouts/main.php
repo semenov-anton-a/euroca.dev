@@ -295,6 +295,17 @@ die;
       //   cardHeader.style.cursor = 'move';
       // });
     </script>    
+
+    <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+    <script type="text/javascript">
+      Toast.init();
+      document.body.addEventListener('toast', event => {
+        Toast.show( event.detail.type, event.detail.message, event.detail.title );
+      });
+      
+    </script>
+</div>
   
   </body>
   <!--end::Body-->
