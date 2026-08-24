@@ -24,7 +24,7 @@ class Roles extends BaseAdminSettingsController
 
     public function getRoleDetalies( int $id ): ResponseInterface | string
     {
-        return $this->viewModule("Roles/roledetalies"); 
+        return $this->response->setBody( $this->viewModule('Roles/roledetalies') );
     }
 
     public function createRole(): ResponseInterface | string 
@@ -39,10 +39,7 @@ class Roles extends BaseAdminSettingsController
                 'roleCreated' => [
                     'id' => 654,
                     'name' => "ServerGET_THIS",
-                ],
-                'toast' => [
-                    'msg'=>'Toast Server say HELLO'
-                ]
+                ],                
             ]));
     }
 

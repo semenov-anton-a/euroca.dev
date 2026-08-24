@@ -46,9 +46,12 @@
 
 			<!-- Tab content -->
 			<div class="col-md-10 m-0 p-1">
-                <div class="text-center d-flex justify-content-center align-items-center h-100 d-none" id="roleDetalies-preloader">
+                <!-- <div class="text-center d-flex justify-content-center align-items-center h-100 d-none" id="roleDetalies-preloader">
                     <i class="fa fa-spinner fa-spin fa-5" aria-hidden="true"></i>
-                </div>
+                </div> -->
+                <div class="spinner-border text-primary m-3 p-3 d-none" id="roleDetalies-preloader" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
 				<div class="tab-content" id="role-detalies">
 					<!-- Account -->
                     
@@ -225,14 +228,7 @@ const RoleModal = {
     appendToMenu: function (role) {
 
         const menu = document.getElementById('settings-nav');
-
         const item = document.createElement('a');
-
-        // item.href = '#role-' + role.id;
-        // item.className = 'list-group-item list-group-item-action active';
-        // item.dataset.bsToggle = 'pill';
-        // item.setAttribute('role', 'tab');
-        // item.setAttribute('aria-selected', 'false');
         
         item.href = '#role-' + role.id;
         item.className = 'list-group-item list-group-item-action';
@@ -251,7 +247,7 @@ const RoleModal = {
         const tab = new bootstrap.Tab(item);
         tab.show();
 
-        // RoleDetalies.loading( role.id );
+        // Toast.show( 'info' ,"Role creaded" );       
 
     },
 };
@@ -301,9 +297,6 @@ document.addEventListener('DOMContentLoaded', function () { RoleModal.init() });
 RoleDetalies.init();
 RoleNavigation.init();
 
-document.body.addEventListener('toast', function ( data ) {
-    console.log( data.detail.msg );
-});
 
 
 
