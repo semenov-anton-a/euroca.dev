@@ -245,7 +245,7 @@ class MenuService
         ],
 
         [
-            'title'      => 'Settings',
+            'title'      => 'Admin Settings',
             'icon'       => 'gear',
             'permission' => 'settings.view',
             'order'      => 80,
@@ -255,7 +255,7 @@ class MenuService
                 [
                     'title'      => 'General',
                     'icon'       => 'settings',
-                    'url'        => '/settings',
+                    'url'        => '/admin_settings',
                     'permission' => 'settings.view',
                     'order'      => 10,
                 ],
@@ -263,7 +263,7 @@ class MenuService
                 [
                     'title'      => 'Users',
                     'icon'       => 'users',
-                    'url'        => '/settings/users',
+                    'url'        => '/admin_settings/users',
                     'permission' => 'users.view',
                     'order'      => 20,
                 ],
@@ -271,9 +271,24 @@ class MenuService
                 [
                     'title'      => 'Roles & Permissions',
                     'icon'       => 'shield',
-                    'url'        => '/settings/roles',
+                    'url'        => '/admin_settings/roles',
                     'permission' => 'roles.view',
                     'order'      => 30,
+                ],
+                
+                [
+                    'title'      => 'Tests',
+                    'icon'       => 'shield',
+                    'url'        => '/test',
+                    'permission' => 'tests',
+                    'order'      => 40,
+                ],
+                [
+                    'title'      => 'AdminLTE',
+                    'icon'       => 'shield',
+                    'url'        => '/adminlte',
+                    'permission' => 'tests',
+                    'order'      => 50,
                 ],
 
             ],
