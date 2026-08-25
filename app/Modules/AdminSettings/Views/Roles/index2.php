@@ -72,7 +72,7 @@
                 hx-post="<?= route_to('admin_settings.create_role') ?>"
                 hx-swap="none"
                 id="create-role-form">
-                <?= csrf_field() ?>
+                <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" data-csrf-token >
                 <div class="modal-body">
                     <div id="error-message"></div>
                     <div class="mb-3">

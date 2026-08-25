@@ -306,7 +306,17 @@ die;
       
     </script>
 </div>
-  
+   <script type="text/javascript">
+        document.body.addEventListener('htmx:afterRequest', function (event) {
+
+          const xhr = event.detail.xhr;
+          const token = xhr.getResponseHeader('X-CSRF-TOKEN');
+          
+          if (!token) { return; }
+
+          document.querySelectorAll('[data-csrf-token]').forEach(input => { input.value = token; });
+        });
+   </script>
   </body>
   <!--end::Body-->
 </html>

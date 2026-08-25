@@ -5,6 +5,7 @@
         </div>
         <div class="card-body">
             <form class="row g-3">
+                <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" data-csrf-token >
                 <div class="col-md-6">
                     <label class="form-label" for="settings-name"> Full name </label>
                     <input type="text" class="form-control" id="settings-name" value="Jane Doe">
