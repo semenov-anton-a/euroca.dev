@@ -39,6 +39,7 @@ class Filters extends BaseFilters
         // My Filters    
         'auth'          => \App\Filters\AuthFilter::class,
         'locale'        => \App\Filters\LocaleFilter::class,
+        'htmx'          => \App\Filters\HtmxFilter::class,
     ];
 
 
@@ -78,12 +79,13 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            'locale'
+            'locale',
             // 'honeypot',
-            // 'csrf',
+            'csrf',
             // 'invalidchars',
         ],
         'after' => [
+            'htmx'
             // 'honeypot',
             // 'secureheaders',
         ],

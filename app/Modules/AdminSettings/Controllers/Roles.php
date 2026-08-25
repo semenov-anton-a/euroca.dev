@@ -23,6 +23,7 @@ class Roles extends BaseAdminSettingsController
 
     public function getRoleDetalies( int $id ): ResponseInterface | string
     {
+        $this->htmxToastMessage( 'alert' , 'Привет' );
         return $this->response->setBody( $this->viewModule('Roles/roledetalies') );
     }
 
@@ -50,7 +51,11 @@ class Roles extends BaseAdminSettingsController
             ],
         ]; 
         
-        if (! $this->validateData(['name' => $name, 'description' => $description ], $rules) ) 
+        $validData = [
+            'name' => $name, 
+            'description' => $description ];
+
+        if (! $this->validateData($validData, $rules) ) 
         {
             return $this->response->setHeader( 'HX-Trigger', 
                 json_encode([
