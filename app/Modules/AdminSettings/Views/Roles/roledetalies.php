@@ -1,7 +1,7 @@
 <div class="tab-pane fade active show" id="role-654" role="tabpanel">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><?= rand(1,1000)?></h3>
+            <h3 class="card-title">Permissions & Detalies</h3>
         </div>
         <div class="card-body">
             <form class="row g-3">

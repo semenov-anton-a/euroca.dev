@@ -9,9 +9,10 @@ use App\Modules\Auth\Enums\UserRole;
 
 class RoleService
 {
+    
     public function __construct(
         protected RoleRepository $roleRepository
-    ) {
+    ) {        
     }
 
     /**
@@ -148,6 +149,11 @@ class RoleService
             $roleId,
             $data
         );
+    }
+
+    public function getManageableRoles(): array
+    {
+        return $this->roleRepository->getManageableRoles( UserRole::SuperAdmin->value, UserRole::Admin->value  );
     }
 
     /**

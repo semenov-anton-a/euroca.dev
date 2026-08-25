@@ -7,8 +7,8 @@ namespace App\Modules\AdminSettings\Enums;
 
 enum RulesRegex: string
 {
-    case RoleName = '/^[a-z][a-z0-9_]{2,14}$/';
-    case DescriptionName = '/^[a-z][a-z0-9_]{9,49}$/';
+    case RoleName = '/^[a-z][a-z0-9_]{2,49}$/';
+    case DescriptionName = '/^.{10,255}$/';
     case PermissionName = '/^[a-z][a-z0-9_.]*$/';
 
     public static function values(): array
