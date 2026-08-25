@@ -80,19 +80,18 @@
                             Role name:
                         </label>
                         <input type="text" name="name" id="name" class="form-control" 
-
+                            minlength="3" maxlength="50" required pattern="<?= esc($formRules['roleName']) ?>"
                         />
                     </div>
-                            <!-- minlength="3" maxlength="50" required pattern="<?= esc($formRules['roleName']) ?>"                     -->
+                            
                     <div class="mb-3">
                         <label for="role-description" class="col-form-label">
                             Description:
                         </label>
                         <input name="description" id="description" class="form-control" required 
-                            
+                                minlength="10" maxlength="255" pattern="<?= esc($formRules['description']) ?>"
                         />
-                    </div>
-                    <!-- minlength="10" maxlength="255" pattern="<?= esc($formRules['description']) ?>" -->
+                    </div>                    
                 </div>
 
                 <div class="modal-footer">

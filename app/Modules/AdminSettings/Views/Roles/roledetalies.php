@@ -1,41 +1,90 @@
-<div class="tab-pane fade active show" id="role-654" role="tabpanel">
+<?php
+$permissions = [
+    'cargo' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+    'customers' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+    'warehouse' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+    'warehouse1' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+    'warehouse2' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+    'warehouse3' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+];
+
+$rolePermissions = ['cargo.view', 'cargo.create', 'customers.view'];
+?>
+
+<div class="tab-pane fade active show" id="role-<?= esc($role['id']) ?>" role="tabpanel">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Permissions & Detalies</h3>
+            <h3 class="card-title">Permissions & Details</h3>
         </div>
         <div class="card-body">
-            <form class="row g-3">
-                <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" data-csrf-token >
+            <form class="row g-3" method="post" hx-post="<?= route_to('admin_settings.update_role', $role['id']) ?>" hx-target="#role-message" hx-swap="innerHTML">
+                <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" data-csrf-token>
+
                 <div class="col-md-6">
-                    <label class="form-label" for="settings-name"> Full name </label>
-                    <input type="text" class="form-control" id="settings-name" value="Jane Doe">
+                    <label class="form-label">Role name</label>
+                    <input type="text" name="name" class="form-control" value="<?= esc($role['name']) ?>" minlength="3" maxlength="50" required pattern="<?= esc($formRules['roleName']) ?>">
                 </div>
+
                 <div class="col-md-6">
-                    <label class="form-label" for="settings-email"> Email </label>
-                    <input type="email" class="form-control" id="settings-email" value="jane@example.com">
+                    <label class="form-label">Description</label>
+                    <input type="text" name="description" class="form-control" value="<?= esc($role['description']) ?>" minlength="10" maxlength="255" required pattern="<?= esc($formRules['description']) ?>">
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="settings-tz"> Time zone </label>
-                    <select class="form-select" id="settings-tz">
-                        <option>UTC</option>
-                        <option selected="">America/Los_Angeles</option>
-                        <option>Europe/London</option>
-                        <option>Asia/Tokyo</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="settings-lang"> Language </label>
-                    <select class="form-select" id="settings-lang">
-                        <option selected="">English</option>
-                        <option>Español</option>
-                        <option>Français</option>
-                        <option>Deutsch</option>
-                    </select>
-                </div>
+
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <label class="form-label">Permissions</label>
+                    <div class="row g-3">
+                        <?php foreach ($permissions as $module => $items): ?>
+                            <div class="col-md-2 col-xl-3">
+                                <div class="card card-outline card-primary mb-0">
+                                    <div class="card-header py-2">
+                                        <h3 class="card-title text-capitalize"><?= esc($module) ?></h3>
+                                        <div class="card-tools">
+                                            <div class="form-check">
+                                                <input class="form-check-input permission-select-all" type="checkbox" id="all-<?= esc($module) ?>" data-module="<?= esc($module) ?>">
+                                                <label class="form-check-label small" for="all-<?= esc($module) ?>">All</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <?php foreach ($items as $action => $label): ?>
+                                            <?php $permission = "{$module}.{$action}"; ?>
+                                            <div class="form-check">
+                                                <input class="form-check-input permission-checkbox" type="checkbox" name="permissions[]" value="<?= esc($permission) ?>" id="permission-<?= esc($permission) ?>" data-module="<?= esc($module) ?>" <?= in_array($permission, $rolePermissions, true) ? 'checked' : '' ?>>
+                                                <label class="form-check-label" for="permission-<?= esc($permission) ?>"><?= esc($label) ?></label>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <div id="role-message" class="col-12"></div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+document.addEventListener('change', function (event) {
+    if (event.target.classList.contains('permission-select-all')) {
+        const module = event.target.dataset.module;
+        const permissionCheckboxes = document.querySelectorAll(`.permission-checkbox[data-module="${module}"]`);
+
+        permissionCheckboxes.forEach(checkbox => checkbox.checked = event.target.checked);
+        return;
+    }
+
+    if (event.target.classList.contains('permission-checkbox')) {
+        const module = event.target.dataset.module;
+        const permissionCheckboxes = document.querySelectorAll(`.permission-checkbox[data-module="${module}"]`);
+        const selectAll = document.querySelector(`.permission-select-all[data-module="${module}"]`);
+
+        selectAll.checked = [...permissionCheckboxes].every(checkbox => checkbox.checked);
+    }
+});
+</script>
