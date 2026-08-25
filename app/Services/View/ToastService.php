@@ -1,5 +1,16 @@
 <?php
 
+// return $this->response
+//     ->setHeader(
+//         'HX-Trigger',
+//         service('toastService')->trigger('alert', 'Привет')
+//     )
+//     ->setBody(
+//         $this->viewModule('Roles/roledetalies')
+//     );
+
+
+
 declare(strict_types=1);
 
 namespace App\Services\View;
