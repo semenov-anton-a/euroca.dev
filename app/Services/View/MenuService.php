@@ -27,11 +27,7 @@ class MenuService
 
         [
             'title'      => 'Dashboard',
-<<<<<<< HEAD
-            'icon'       => 'home',
-=======
             'icon'       => 'fa-regular fa-house',
->>>>>>> Module/Admin_Settings
             'url'        => '/dashboard',
             'permission' => 'dashboard.view',
             'order'      => 10,
@@ -39,12 +35,8 @@ class MenuService
 
         [
             'title'      => 'Cargo',
-<<<<<<< HEAD
-            'icon'       => 'truck',
-=======
             //'icon'       => 'fa-thin fa-boxes-stacked',
             'icon'       => 'fa-solid fa-cubes',
->>>>>>> Module/Admin_Settings
             'permission' => 'cargo.view',
             'order'      => 20,
 
@@ -253,11 +245,7 @@ class MenuService
         ],
 
         [
-<<<<<<< HEAD
-            'title'      => 'Settings',
-=======
             'title'      => 'Admin Settings',
->>>>>>> Module/Admin_Settings
             'icon'       => 'gear',
             'permission' => 'settings.view',
             'order'      => 80,
@@ -267,11 +255,7 @@ class MenuService
                 [
                     'title'      => 'General',
                     'icon'       => 'settings',
-<<<<<<< HEAD
-                    'url'        => '/settings',
-=======
                     'url'        => '/admin_settings',
->>>>>>> Module/Admin_Settings
                     'permission' => 'settings.view',
                     'order'      => 10,
                 ],
@@ -279,11 +263,7 @@ class MenuService
                 [
                     'title'      => 'Users',
                     'icon'       => 'users',
-<<<<<<< HEAD
-                    'url'        => '/settings/users',
-=======
                     'url'        => '/admin_settings/users',
->>>>>>> Module/Admin_Settings
                     'permission' => 'users.view',
                     'order'      => 20,
                 ],
@@ -291,12 +271,6 @@ class MenuService
                 [
                     'title'      => 'Roles & Permissions',
                     'icon'       => 'shield',
-<<<<<<< HEAD
-                    'url'        => '/settings/roles',
-                    'permission' => 'roles.view',
-                    'order'      => 30,
-                ],
-=======
                     'url'        => '/admin_settings/roles',
                     'permission' => 'roles.view',
                     'order'      => 30,
@@ -316,7 +290,6 @@ class MenuService
                     'permission' => 'tests',
                     'order'      => 50,
                 ],
->>>>>>> Module/Admin_Settings
 
             ],
         ],
@@ -356,11 +329,7 @@ class MenuService
      */
     protected function filterItems( array $items, array $userPermissions ): array 
     {
-<<<<<<< HEAD
-        dd($userPermissions,"userPermissions");
-=======
         // dd($userPermissions,"userPermissions");
->>>>>>> Module/Admin_Settings
 
         $filtered = [];
 
@@ -401,11 +370,7 @@ class MenuService
             }
         }
 
-<<<<<<< HEAD
-        dd($filtered);
-=======
         // dd($filtered);
->>>>>>> Module/Admin_Settings
 
         return $filtered;
     }

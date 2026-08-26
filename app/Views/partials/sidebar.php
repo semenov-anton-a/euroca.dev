@@ -33,15 +33,6 @@
 
       <?php
 
-<<<<<<< HEAD
-      // use Config\Services;
-
-      // $menuService = Services::menuService();
-
-      // $userPermissions = Services::permissionService()->getCurrentPermissions();
-
-      // $menu = $menuService->getMenu($userPermissions);
-=======
       use App\Services\View\MenuService;
 
       $menuService = new MenuService();
@@ -63,7 +54,6 @@
         }
 
         $items = $menuService->getMenu($fakePermissions);
->>>>>>> Module/Admin_Settings
 
       ?>
 
@@ -75,14 +65,8 @@
         data-accordion="false"
         id="navigation">
 
-<<<<<<< HEAD
-        <?php 
-          // $this->include('partials/sidebar_menu_items', ['items' => $menu]) 
-        ?>
-=======
         <?= view('partials/sidebar_menu_items', [ 'items' => $items ] ) ?>
 
->>>>>>> Module/Admin_Settings
 
       </ul>
     </nav>

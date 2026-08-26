@@ -4,68 +4,11 @@ namespace App\Modules\Tests\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
-<<<<<<< HEAD
-use Config\Services;
-class Tests extends BaseController
-{
-
-    public function getMenu()
-    {
-      $userPermissions = $this->permissionService->getUserPermissions( 1 );
-      
-      for( $i = 0; $i < count( $userPermissions ); $i++ )
-      {
-        
-        $menu[] = $userPermissions[$i]['name'] . "\n";
-      }
-
-        $menu = $this->menuService->getMenu( $menu );      
-      
-    //   $menu = $this->menuService->getMenu( $userPermissions );
-      
-
-    
-      dd($menu);
-
-
-    }
-    
-    public function createRole()
-    {
-        $user = $this->userService->currentUser();
-        $perm = $this->permissionService->getUserPermissions( $user["id"] );
-        $role = $this->roleService->getUserRole( $user["id"] );
-
-        
-
-        dd( $perm , $user, $role );
-
-    }
-
-    private function _getUrls()
-    {
-        $methods = $this->_getControllerMethods(__CLASS__);
-
-        $urls = [];
-
-        foreach ($methods as $method) 
-        {
-            if (str_starts_with($method, 'post_')) {
-                $urls['post'][$method] = base_url("tests/$method");
-            } else {
-                $urls['get'][$method] = base_url("tests/$method");
-            }
-        }
-        return $urls;
-    }
-
-=======
 
 use App\Services\View\MenuService;
 
 class Tests extends BaseController
 {
->>>>>>> Module/Admin_Settings
     public function index() 
     {      
         return $this->viewModule("index", [ "urls" => $this->_getUrls() ]);

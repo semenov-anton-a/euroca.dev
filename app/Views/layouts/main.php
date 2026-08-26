@@ -88,24 +88,18 @@ die;
       integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
       crossorigin="anonymous"
     />
-<<<<<<< HEAD
-=======
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/js/all.min.js" integrity="sha512-2+f4MxT8KwN4tUzw6/hv9kxKiix603S9kmBcix+0y0dBhd6zdaPOV1Thf1DM886pFZG+cAtmshBi8UBpo6m3JA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
->>>>>>> Module/Admin_Settings
     <!-- HTMX -->
      <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" 
           integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
           crossorigin="anonymous"></script>
-<<<<<<< HEAD
-=======
       
       <link rel="stylesheet" href="<?= \App\Helpers\AssetHelper::asset('css/common.css') ?>" >
       <script src="<?= \App\Helpers\AssetHelper::asset('js/common.js') ?>"></script>
       
 
->>>>>>> Module/Admin_Settings
   </head>
   <!--end::Head-->
 
@@ -126,32 +120,19 @@ die;
       <main class="app-main">
         <!--begin::App Content Header-->
         <?php 
-<<<<<<< HEAD
-          echo $this->include('partials/headerContent') 
-=======
           // echo $this->include('partials/headerContent') 
           echo $this->renderSection('headerContentModule');
->>>>>>> Module/Admin_Settings
         ?>
         <!--end::App Content Header-->
         
         <!--begin::App Content-->
-<<<<<<< HEAD
-        <div class="app-content-header">
-=======
         <div class="app-content-header p-1 m-1">
->>>>>>> Module/Admin_Settings
           <!--begin::Container-->
           <div class="container-fluid">
             
             <!--begin::Row-->
-<<<<<<< HEAD
-            <?php 
-            //echo $this->include('partials/dashboardComponents/cards') 
-=======
             <?php             
             // echo $this->include('partials/dashboardComponents/cards') 
->>>>>>> Module/Admin_Settings
             ?>
             <!--end::Row-->
             
@@ -306,19 +287,6 @@ die;
 
     <!-- sortablejs -->
     <script>
-<<<<<<< HEAD
-      new Sortable(document.querySelector('.connectedSortable'), {
-        group: 'shared',
-        handle: '.card-header',
-      });
-
-      const cardHeaders = document.querySelectorAll('.connectedSortable .card-header');
-      cardHeaders.forEach((cardHeader) => {
-        cardHeader.style.cursor = 'move';
-      });
-    </script>    
-  
-=======
       // new Sortable(document.querySelector('.connectedSortable'), {
       //   group: 'shared',
       //   handle: '.card-header',
@@ -358,7 +326,6 @@ die;
 
       HtmxCsrf.init();
    </script>
->>>>>>> Module/Admin_Settings
   </body>
   <!--end::Body-->
 </html>

@@ -32,9 +32,9 @@ class RolesPermissions extends BaseAdminSettingsController
     public function getRoleDetalies(int $id): ResponseInterface|string
     {
 
-        try{
-            $this->roleService->create( $id );
-        }
+        // try{
+        //     $this->roleService->create( $id );
+        // }
 
 
         return $this->response->setBody(

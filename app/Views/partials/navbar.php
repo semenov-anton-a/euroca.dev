@@ -11,18 +11,9 @@
               </a>
             </li>
 
-<<<<<<< HEAD
-            <li class="nav-item d-none d-md-block">
-              <a href="./test" class="nav-link">
-                <i class="bi bi-grid-1x2 me-1" aria-hidden="true"></i>
-                Tests
-              </a>
-            </li>
-=======
             <!-- <li class="nav-item d-none d-md-block">
              
             </li> -->
->>>>>>> Module/Admin_Settings
             <!-- <li class="nav-item d-none d-md-block">
               <a href="./docs/introduction.html" class="nav-link">
                 <i class="bi bi-book me-1" aria-hidden="true"></i>
@@ -87,12 +78,7 @@
                   <!--begin::User Image-->
                   <li class="text-bg-primary text-center">
                     <!-- <img src="./assets/img/user2-160x160.jpg" class="rounded-circle shadow" alt="User Image"> -->
-<<<<<<< HEAD
-                    <p>
-                      
-=======
                     <p>                      
->>>>>>> Module/Admin_Settings
                       <small>
                         <!-- TEXT exmple role -->
                       </small>
