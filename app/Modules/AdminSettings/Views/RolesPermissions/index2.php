@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/main') ?>
 
 
-<?= $this->section('headerContentModule') ?>
+<?php $this->section('headerContentModule') ?>
 
 <?= view('partials/headerContent', [
 	'title' => $title,
@@ -17,32 +17,41 @@
 		],
 	],
 ]) ?>
-<?= $this->endSection() ?>
+<?php $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <div class=row>
-
 	<div class="container-fluid m-0 p-0">
 		<div class="row g-3">
 
 			<!-- Left rail -->
-			<div class="col-md-2 m-0 p-1">
-				<div class="card">
-					<div class="card-body">
-						<div class="list-group list-group-flush nav nav-pills flex-column" id="settings-nav" role="tablist" aria-label="Navigation 18">
-							<?php foreach ($roles as $role): ?> <?php $targetId = 'role-' . $role->id; ?>							
-							<a href="#<?= esc($targetId) ?>" data-role-id="<?= esc($role->id) ?>"
-                                 class="list-group-item list-group-item-action" data-bs-toggle="pill" role="tab" aria-selected="true">
-								<i class="bi bi-person me-2" aria-hidden="true"></i><?= esc($role->name) ?>
-							</a>
-							<?php endforeach ?>
-						</div>
-					</div>
-					 <div class="card-footer text-center">
-      			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roleModal">New Role</button>
-    			 </div>
-				</div>
-			</div>
+            <div class="col-md-2 m-0 p-1">
+                <div class="card">
+                    <div class="card-header">
+                        Roles
+                    </div>
+
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush nav nav-pills flex-column" id="settings-nav" role="tablist" aria-label="Roles">
+                            <?php foreach ($roles as $role): ?>
+                                <?php $targetId = 'role-' . $role->id; ?>
+                                <a href="#<?= esc($targetId) ?>" data-role-id="<?= esc($role->id) ?>" class="list-group-item list-group-item-action" data-bs-toggle="pill" role="tab" aria-selected="false">
+                                    <i class="bi bi-person me-2" aria-hidden="true"></i><?= esc($role->name) ?>
+                                </a>
+                            <?php endforeach ?>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-danger m-1 btn-sm" data-url="<?= route_to('admin_settings.permissions_update') ?>"
+                                onclick="PermissionsUpdate.update(this)">Update Permissions
+                            </button>
+                            <button type="button" class="btn btn-primary m-1 btn-sm" data-bs-toggle="modal" data-bs-target="#roleModal">New Role</button>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 			<!-- Tab content -->
 			<div class="col-md-10 m-0 p-1">
@@ -50,58 +59,12 @@
                     <i class="fa fa-spinner fa-spin fa-5" aria-hidden="true"></i>
                 </div> -->
                 <div class="spinner-border text-primary m-3 p-3 d-none" id="roleDetalies-preloader" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-				<div class="tab-content" id="role-detalies">
-					<!-- Account -->
-                    
-                    
-
-					<!-- <div class="tab-pane fade" id="<?= esc($targetId) ?>" role="tabpanel">
-						<div class="card">
-							<div class="card-header">
-								<h3 class="card-title">Account</h3>
-							</div>
-							<div class="card-body">
-								<form class="row g-3">
-									<div class="col-md-6">
-										<label class="form-label" for="settings-name"> Full name </label>
-										<input type="text" class="form-control" id="settings-name" value="Jane Doe">
-									</div>
-									<div class="col-md-6">
-										<label class="form-label" for="settings-email"> Email </label>
-										<input type="email" class="form-control" id="settings-email" value="jane@example.com">
-									</div>
-									<div class="col-md-6">
-										<label class="form-label" for="settings-tz"> Time zone </label>
-										<select class="form-select" id="settings-tz">
-											<option>UTC</option>
-											<option selected="">America/Los_Angeles</option>
-											<option>Europe/London</option>
-											<option>Asia/Tokyo</option>
-										</select>
-									</div>
-									<div class="col-md-6">
-										<label class="form-label" for="settings-lang"> Language </label>
-										<select class="form-select" id="settings-lang">
-											<option selected="">English</option>
-											<option>Español</option>
-											<option>Français</option>
-											<option>Deutsch</option>
-										</select>
-									</div>
-									<div class="col-12">
-										<button type="submit" class="btn btn-primary">Save changes</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div> -->
-				</div>
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+				<div class="tab-content" id="role-detalies"><!-- Account Detalies--></div>
 			</div>
 		</div>
 	</div>
-
 </div>
 
 <div class="modal fade" id="roleModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="roleModalLabel" aria-hidden="true">
@@ -116,29 +79,27 @@
 
             <form
                 hx-post="<?= route_to('admin_settings.create_role') ?>"
-                hx-target="#role-message"
-                hx-swap="innerHTML"
-                id="create-role-form"
-            >
+                hx-swap="none"
+                id="create-role-form">                
                 <div class="modal-body">
-                    <div id="role-message"></div>
+                    <div id="error-message"></div>
                     <div class="mb-3">
                         <label for="role-name" class="col-form-label">
                             Role name:
                         </label>
-                        <input type="text" name="name" id="name" class="form-control" required 
-													pattern="<?= esc($formRules['roleName']) ?>"
-												>
+                        <input type="text" name="name" id="name" class="form-control" 
+                            minlength="3" maxlength="50" required pattern="<?= esc($formRules['roleName']) ?>"
+                        />
                     </div>
-
+                            
                     <div class="mb-3">
                         <label for="role-description" class="col-form-label">
                             Description:
                         </label>
-
-                        <textarea name="description" id="description" class="form-control"
-													required minlength="10" maxlength="50"></textarea>
-                    </div>
+                        <input name="description" id="description" class="form-control" required 
+                                minlength="10" maxlength="255" pattern="<?= esc($formRules['description']) ?>"
+                        />
+                    </div>                    
                 </div>
 
                 <div class="modal-footer">
@@ -179,13 +140,17 @@ const RoleModal = {
             this.roleCreated(event);
         });
 
+        document.body.addEventListener('errorMessage', (event) => {
+            this.errorMessage(event);
+        });
+
         this.modal.addEventListener('hidden.bs.modal', () => {
             this.newRoleButton?.focus();
         });
     },
 
     loading: function (state) {
-
+        
         const text = this.button.querySelector('.button-text');
         const spinner = this.button.querySelector('.button-spinner');
         const closeButton = this.modal.querySelector('.btn-close');
@@ -206,10 +171,31 @@ const RoleModal = {
     },
 
     roleCreated: function (event) {
-
+        
+        this.loading(false);
         this.clearForm();
         this.closeModal();
         this.appendToMenu(event.detail);
+    },
+
+    errorMessage: function(event)
+    {
+        this.loading(false);
+
+        const container = this.form.querySelector('#error-message');
+        const errors = event.detail.message;
+        console.log(event)
+        container.innerHTML = `
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    ${Object.values(errors)
+                        .map(error => `<li>${error}</li>`)
+                        .join('')}
+                </ul>
+            </div>
+        `;
+
+        this.form.reset();
     },
 
     clearForm: function () {
@@ -289,6 +275,24 @@ const RoleNavigation = {
             const id = event.target.dataset.roleId;
             RoleDetalies.tabContent.querySelector('.tab-pane.active.show')?.classList.remove('active', 'show');
             RoleDetalies.loading(id);
+        });
+    }
+};
+
+const PermissionsUpdate = {
+    update: function (button) {
+        if (button.disabled) return;
+
+        const text = button.innerHTML;
+
+        button.disabled = true;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span> Updating...';
+
+        htmx.ajax('POST', button.dataset.url, {
+            swap: 'none'
+        }).finally(() => {
+            button.disabled = false;
+            button.innerHTML = text;
         });
     }
 };

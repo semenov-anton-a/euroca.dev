@@ -11,16 +11,11 @@ use Psr\Log\LoggerInterface;
 // Only FOR TEST
 use App\Helpers\ClassHelper;
 
-
-
 // User
 use App\Services\Auth\UserService;
 use App\Services\Auth\RoleService;
 use App\Services\Auth\PermissionService;
 
-
-// View 
-use App\Services\View\MenuService;
 
 // Traits
 use App\Traits\ModuleViewTrait;
@@ -42,17 +37,6 @@ abstract class BaseController extends Controller
 {
     use ModuleViewTrait; 
 
-    /**
-     * Menu service instance.
-     */
-    // protected MenuService $menuService;
-
-    /**
-     * Toast service instance.
-     */
-    // protected ToastService $toastService;
-
-
     protected UserService $userService;
     protected RoleService $roleService;
     protected PermissionService $permissionService;
@@ -68,11 +52,9 @@ abstract class BaseController extends Controller
 
         // Caution: Do not edit this line.
         parent::initController($request, $response, $logger);
+        //////////////////////////////////////////////////////
 
-        // Preload shared services
-        // $this->menuService = new MenuService();
-        // $this->toastService = new ToastService();
-        
+
         $this->userService = Services::userService();
         $this->roleService = Services::roleService();
         $this->permissionService = Services::permissionService();
@@ -108,6 +90,72 @@ abstract class BaseController extends Controller
     protected function _getControllerMethods(string $controller): array
     {
         return ClassHelper::_getControllerMethods($controller);
+    }
+
+    /**
+     * Add an HTMX trigger to the response.
+     *
+     * @param string $name Trigger name.
+     * @param mixed  $data Trigger data.
+     *
+     * @return static
+     */
+    protected function addHtmxTrigger( string $name, mixed $data = null ): static 
+    {
+        $triggers = [];
+
+        $existing = $this->response->getHeaderLine('HX-Trigger');
+
+        if ($existing !== '') {
+            $decoded = json_decode($existing, true);
+
+            if (is_array($decoded)) 
+            {
+                $triggers = $decoded;
+            }
+        }
+
+        $triggers[$name] = $data;
+
+        $this->response->setHeader(
+            'HX-Trigger',
+            json_encode(
+                $triggers
+                // JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            )
+        );
+
+        return $this;
+    }
+
+    /**
+     * Set HTMX redirect.
+     *
+     * @param string $url Redirect URL.
+     *
+     * @return static
+     */
+    protected function setHtmxRedirect(string $url): static
+    {
+        $this->response->setHeader('HX-Redirect', $url);
+
+        return $this;
+    }
+
+
+    protected function htmxToastMessage( string $type, string $message, string $title = ''  ): static
+    {
+        if ($title === '') { $title = $type; }
+
+        $title = (string) "Toast." . $title;
+
+        $data = [
+            'type' => $type,
+            'title'   => lang( $title ),
+            'message' => $message
+        ];
+
+        return $this->addHtmxTrigger('toast', $data );        
     }
 
 }

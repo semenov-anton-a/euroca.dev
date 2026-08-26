@@ -30,6 +30,8 @@ die;
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+    
+    <meta name="csrf-token" content="<?= csrf_hash() ?>">
     <!--end::Accessibility Meta Tags-->
 
     <!--begin::Accessibility Features-->
@@ -306,7 +308,24 @@ die;
       
     </script>
 </div>
-  
+   <script type="text/javascript">
+      const HtmxCsrf = {
+          init: function () {
+              document.body.addEventListener('htmx:configRequest', this.send);
+              document.body.addEventListener('htmx:afterRequest', this.update);
+          },
+          send: function (event) {
+              const meta = document.querySelector('meta[name="csrf-token"]');
+              if (meta) { event.detail.headers['X-CSRF-TOKEN'] = meta.content; }
+          },
+          update: function (event) {
+              const token = event.detail.xhr.getResponseHeader('X-CSRF-TOKEN');
+              if (token) { document.querySelector('meta[name="csrf-token"]').content = token; }
+          }
+      };
+
+      HtmxCsrf.init();
+   </script>
   </body>
   <!--end::Body-->
 </html>

@@ -6,11 +6,13 @@ namespace App\Traits;
 
 trait ModuleViewTrait
 {
+
     protected function viewModule(string $viewFileName, array $data = []): string
     {
         $moduleName = $this->moduleName();
         $path = "\\Modules\\{$moduleName}\\Views\\{$viewFileName}";       
-        return view($path, $data);
+        
+        return view( $path, $data );
     }
 
     protected function moduleName(): string

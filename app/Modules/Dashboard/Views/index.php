@@ -1,6 +1,4 @@
 <?= $this->extend('layouts/main') ?>
-
-
 <?= $this->section('content') ?>
 
 
@@ -21,6 +19,4 @@
     </div>
 
 </div>
-
-
 <?= $this->endSection() ?>

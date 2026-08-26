@@ -11,6 +11,8 @@ class RoleRepository
 {
     protected BaseConnection $db;
 
+    private $_tableName = 'roles';
+
     public function __construct()
     {
         $this->db = Database::connect();
@@ -22,7 +24,7 @@ class RoleRepository
     public function findById(int $roleId): ?array
     {
         return $this->db
-            ->table('roles')
+            ->table($this->_tableName)
             ->where('id', $roleId)
             ->get()
             ->getRowArray() ?: null;
@@ -34,7 +36,7 @@ class RoleRepository
     public function findByName(string $name): ?array
     {
         return $this->db
-            ->table('roles')
+            ->table($this->_tableName)
             ->where('name', $name)
             ->get()
             ->getRowArray() ?: null;
@@ -49,7 +51,7 @@ class RoleRepository
     public function getUserRole(int $userId): ?array
     {
         return $this->db
-            ->table('roles r')
+            ->table($this->_tableName . ' r')
             ->select('r.*')
             ->join(
                 'roles_users ru',
@@ -72,13 +74,23 @@ class RoleRepository
             : null;
     }
 
+    public function getManageableRoles(string ...$excludedRoles): array
+    {
+        return $this->db
+            ->table($this->_tableName)
+            ->whereNotIn('name', $excludedRoles)
+            ->orderBy('name', 'ASC')
+            ->get()
+            ->getResultObject();
+    }
+
     /**
      * Получить все роли.
      */
     public function findAll() : array
     {
         return $this->db
-            ->table('roles')
+            ->table($this->_tableName)
             ->orderBy('name', 'ASC')
             ->get()
             ->getResultObject();
@@ -91,7 +103,7 @@ class RoleRepository
     public function create(array $data): int
     {
         $this->db
-            ->table('roles')
+            ->table($this->_tableName)
             ->insert($data);
 
         return (int) $this->db->insertID();
@@ -105,7 +117,7 @@ class RoleRepository
         array $data
     ): bool {
         return $this->db
-            ->table('roles')
+            ->table($this->_tableName)
             ->where('id', $roleId)
             ->update($data);
     }
@@ -116,7 +128,7 @@ class RoleRepository
     public function delete(int $roleId): bool
     {
         return $this->db
-            ->table('roles')
+            ->table($this->_tableName)
             ->where('id', $roleId)
             ->delete();
     }
