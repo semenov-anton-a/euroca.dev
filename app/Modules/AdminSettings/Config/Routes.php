@@ -15,11 +15,13 @@ $routes->group('admin_settings', [
      *  Roles & Permissions
      */
     $routes->get('roles', 'Roles::index', [ 'as' => 'admin_settings.roles',]);
-
     $routes->get('role/(:num)', 'Roles::getRoleDetalies/$1', [ 'as' => 'admin_settings.role_detalies',]);
-
-
     $routes->post('createRole', 'Roles::createRole', [ 'as' => 'admin_settings.create_role',]);
+    
+    /**
+     * Permissions
+     */
+    $routes->post('permissions/update', 'Permissions::update', [ 'as' => 'admin_settings.permissions_update',]);
 
 });
 

@@ -18,44 +18,43 @@ $rolePermissions = ['cargo.view', 'cargo.create', 'customers.view'];
         </div>
         <div class="card-body">
             <form class="row g-3" method="post" hx-post="<?= route_to('admin_settings.update_role', $role['id']) ?>" hx-target="#role-message" hx-swap="innerHTML">
-                <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" data-csrf-token>
-
                 <div class="col-md-6">
                     <label class="form-label">Role name</label>
-                    <input type="text" name="name" class="form-control" value="<?= esc($role['name']) ?>" minlength="3" maxlength="50" required pattern="<?= esc($formRules['roleName']) ?>">
+                    <input type="text" name="name" class="form-control" 
+                            value="<?= esc($role['name']) ?>" minlength="3" maxlength="50" required pattern="<?= esc($formRules['roleName']) ?>">
                 </div>
-
                 <div class="col-md-6">
                     <label class="form-label">Description</label>
-                    <input type="text" name="description" class="form-control" value="<?= esc($role['description']) ?>" minlength="10" maxlength="255" required pattern="<?= esc($formRules['description']) ?>">
+                    <input type="text" name="description" class="form-control" 
+                            value="<?= esc($role['description']) ?>" minlength="10" maxlength="255" required pattern="<?= esc($formRules['description']) ?>">
                 </div>
-
+                
                 <div class="col-12">
                     <label class="form-label">Permissions</label>
                     <div class="row g-3">
                         <?php foreach ($permissions as $module => $items): ?>
-                            <div class="col-md-2 col-xl-3">
-                                <div class="card card-outline card-primary mb-0">
-                                    <div class="card-header py-2">
-                                        <h3 class="card-title text-capitalize"><?= esc($module) ?></h3>
-                                        <div class="card-tools">
-                                            <div class="form-check">
-                                                <input class="form-check-input permission-select-all" type="checkbox" id="all-<?= esc($module) ?>" data-module="<?= esc($module) ?>">
-                                                <label class="form-check-label small" for="all-<?= esc($module) ?>">All</label>
-                                            </div>
+                        <div class="col-md-2 col-xl-3">
+                            <div class="card card-outline card-primary mb-0">
+                                <div class="card-header py-2">
+                                    <h3 class="card-title text-capitalize"><?= esc($module) ?></h3>
+                                    <div class="card-tools">
+                                        <div class="form-check">
+                                            <input class="form-check-input permission-select-all" type="checkbox" id="all-<?= esc($module) ?>" data-module="<?= esc($module) ?>">
+                                            <label class="form-check-label small" for="all-<?= esc($module) ?>">All</label>
                                         </div>
                                     </div>
-                                    <div class="card-body py-2">
-                                        <?php foreach ($items as $action => $label): ?>
-                                            <?php $permission = "{$module}.{$action}"; ?>
-                                            <div class="form-check">
-                                                <input class="form-check-input permission-checkbox" type="checkbox" name="permissions[]" value="<?= esc($permission) ?>" id="permission-<?= esc($permission) ?>" data-module="<?= esc($module) ?>" <?= in_array($permission, $rolePermissions, true) ? 'checked' : '' ?>>
-                                                <label class="form-check-label" for="permission-<?= esc($permission) ?>"><?= esc($label) ?></label>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    </div>
+                                </div>
+                                <div class="card-body py-2">
+                                    <?php foreach ($items as $action => $label): ?>
+                                        <?php $permission = "{$module}.{$action}"; ?>
+                                        <div class="form-check">
+                                            <input class="form-check-input permission-checkbox" type="checkbox" name="permissions[]" value="<?= esc($permission) ?>" id="permission-<?= esc($permission) ?>" data-module="<?= esc($module) ?>" <?= in_array($permission, $rolePermissions, true) ? 'checked' : '' ?>>
+                                            <label class="form-check-label" for="permission-<?= esc($permission) ?>"><?= esc($label) ?></label>
+                                        </div>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
+                        </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
