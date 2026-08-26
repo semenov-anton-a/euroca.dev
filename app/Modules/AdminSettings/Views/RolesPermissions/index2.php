@@ -44,10 +44,10 @@
 
                     <div class="card-footer">
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-primary m-1 btn-sm" data-bs-toggle="modal" data-bs-target="#roleModal">New Role</button>
                             <button type="button" class="btn btn-primary m-1 btn-sm" data-url="<?= route_to('admin_settings.permissions_update') ?>"
                                 onclick="PermissionsUpdate.update(this)">Update Permissions
                             </button>
+                            <button type="button" class="btn btn-primary m-1 btn-sm" data-bs-toggle="modal" data-bs-target="#roleModal">New Role</button>                            
                         </div>
                     </div>
                 </div>

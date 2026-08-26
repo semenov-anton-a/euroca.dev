@@ -10,16 +10,51 @@ $permissions = [
 
 $rolePermissions = ['cargo.view', 'cargo.create', 'customers.view'];
 ?>
+<style>
+    .card.htmx-loading {
+    position: relative;
+}
 
+.card.htmx-loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 10;
+}
+
+.card.htmx-loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2rem;
+    height: 2rem;
+    margin: -1rem 0 0 -1rem;
+    border: 0.25rem solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: card-loading-spin 0.7s linear infinite;
+    z-index: 11;
+}
+
+@keyframes card-loading-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+</style>
 <div class="tab-pane fade active show" id="role-<?= esc($role['id']) ?>" role="tabpanel">
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Permissions & Details</h3>
         </div>
         <div class="card-body">
-            <form class="row g-3" method="post" hx-post="<?= route_to('admin_settings.update_role', $role['id']) ?>" hx-target="#role-message" hx-swap="innerHTML">
+            <form class="row g-3" method="post" 
+                hx-post="<?= route_to('admin_settings.update_role', esc($role['id']) ) ?>" hx-target="#role-message" hx-swap="innerHTML">
+                
                 <div class="col-md-6">
-                    <label class="form-label">Role name</label>
+                    <label class="form-label">Role name for ID: <?= $role['id'] ?></label>
                     <input type="text" name="name" class="form-control" 
                             value="<?= esc($role['name']) ?>" minlength="3" maxlength="50" required pattern="<?= esc($formRules['roleName']) ?>">
                 </div>
@@ -86,4 +121,43 @@ document.addEventListener('change', function (event) {
         selectAll.checked = [...permissionCheckboxes].every(checkbox => checkbox.checked);
     }
 });
+const RolePermissionUpdate = {
+    init: function () {
+        document.body.addEventListener('htmx:beforeRequest', function (event) {
+            const form = event.detail.elt;
+
+            if (!form.matches('form[hx-post]')) return;
+
+            const card = form.closest('.card');
+            const button = form.querySelector('button[type="submit"]');
+
+            if (card) card.classList.add('htmx-loading');
+
+            if (button) {
+                button.disabled = true;
+                button.dataset.originalHtml = button.innerHTML;
+                button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Saving...';
+            }
+        });
+
+        document.body.addEventListener('htmx:afterRequest', function (event) {
+            const form = event.detail.elt;
+
+            if (!form.matches('form[hx-post]')) return;
+
+            const card = form.closest('.card');
+            const button = form.querySelector('button[type="submit"]');
+
+            if (card) card.classList.remove('htmx-loading');
+
+            if (button) {
+                button.disabled = false;
+                button.innerHTML = button.dataset.originalHtml ?? button.innerHTML;
+                delete button.dataset.originalHtml;
+            }
+        });
+    }
+};
+
+RolePermissionUpdate.init();
 </script>

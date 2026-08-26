@@ -7,7 +7,7 @@ namespace App\Modules\AdminSettings\Controllers;
 // use CodeIgniter\HTTP\ResponseInterface;
 
 
-class Settings extends BaseAdminSettingsController
+class General extends BaseAdminSettingsController
 {    
     public function index(): string
     {
