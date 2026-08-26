@@ -1,9 +1,10 @@
 <?php
 
 return [
-    'alert'   => 'Notification',
-    'success' => 'Success',
-    'warning' => 'Warning',
-    'danger'  => 'Error',
-    'info'    => 'Information',
+    'alert'     => 'Notification',
+    'primary'   => 'Notification',
+    'success'   => 'Success',
+    'warning'   => 'Warning',
+    'danger'    => 'Error',
+    'info'      => 'Information',
 ];

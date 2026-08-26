@@ -30,6 +30,8 @@ die;
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+    
+    <meta name="csrf-token" content="<?= csrf_hash() ?>">
     <!--end::Accessibility Meta Tags-->
 
     <!--begin::Accessibility Features-->
@@ -307,15 +309,22 @@ die;
     </script>
 </div>
    <script type="text/javascript">
-        document.body.addEventListener('htmx:afterRequest', function (event) {
+      const HtmxCsrf = {
+          init: function () {
+              document.body.addEventListener('htmx:configRequest', this.send);
+              document.body.addEventListener('htmx:afterRequest', this.update);
+          },
+          send: function (event) {
+              const meta = document.querySelector('meta[name="csrf-token"]');
+              if (meta) { event.detail.headers['X-CSRF-TOKEN'] = meta.content; }
+          },
+          update: function (event) {
+              const token = event.detail.xhr.getResponseHeader('X-CSRF-TOKEN');
+              if (token) { document.querySelector('meta[name="csrf-token"]').content = token; }
+          }
+      };
 
-          const xhr = event.detail.xhr;
-          const token = xhr.getResponseHeader('X-CSRF-TOKEN');
-          
-          if (!token) { return; }
-
-          document.querySelectorAll('[data-csrf-token]').forEach(input => { input.value = token; });
-        });
+      HtmxCsrf.init();
    </script>
   </body>
   <!--end::Body-->

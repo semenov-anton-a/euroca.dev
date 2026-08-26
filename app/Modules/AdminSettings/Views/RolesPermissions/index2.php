@@ -25,24 +25,33 @@
 		<div class="row g-3">
 
 			<!-- Left rail -->
-			<div class="col-md-2 m-0 p-1">
-				<div class="card">
-                    <div class="card-header">Roles</div>
-					<div class="card-body">
-						<div class="list-group list-group-flush nav nav-pills flex-column" id="settings-nav" role="tablist" aria-label="Navigation 18">
-                            <?php foreach ($roles as $role): ?> <?php $targetId = 'role-' . $role->id; ?>
-                            <a href="#<?= esc($targetId) ?>" data-role-id="<?= esc($role->id) ?>"
-                                 class="list-group-item list-group-item-action" data-bs-toggle="pill" role="tab" aria-selected="true">
-								<i class="bi bi-person me-2" aria-hidden="true"></i><?= esc($role->name) ?>
-							</a>
-							<?php endforeach ?>
-						</div>
-					</div>
-					 <div class="card-footer text-center">
-      			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roleModal">New Role</button>
-    			 </div>
-				</div>
-			</div>
+            <div class="col-md-2 m-0 p-1">
+                <div class="card">
+                    <div class="card-header">
+                        Roles
+                    </div>
+
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush nav nav-pills flex-column" id="settings-nav" role="tablist" aria-label="Roles">
+                            <?php foreach ($roles as $role): ?>
+                                <?php $targetId = 'role-' . $role->id; ?>
+                                <a href="#<?= esc($targetId) ?>" data-role-id="<?= esc($role->id) ?>" class="list-group-item list-group-item-action" data-bs-toggle="pill" role="tab" aria-selected="false">
+                                    <i class="bi bi-person me-2" aria-hidden="true"></i><?= esc($role->name) ?>
+                                </a>
+                            <?php endforeach ?>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-primary m-1 btn-sm" data-bs-toggle="modal" data-bs-target="#roleModal">New Role</button>
+                            <button type="button" class="btn btn-primary m-1 btn-sm" data-url="<?= route_to('admin_settings.permissions_update') ?>"
+                                onclick="PermissionsUpdate.update(this)">Update Permissions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 			<!-- Tab content -->
 			<div class="col-md-10 m-0 p-1">
@@ -71,8 +80,7 @@
             <form
                 hx-post="<?= route_to('admin_settings.create_role') ?>"
                 hx-swap="none"
-                id="create-role-form">
-                <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" data-csrf-token >
+                id="create-role-form">                
                 <div class="modal-body">
                     <div id="error-message"></div>
                     <div class="mb-3">
@@ -80,19 +88,18 @@
                             Role name:
                         </label>
                         <input type="text" name="name" id="name" class="form-control" 
-
+                            minlength="3" maxlength="50" required pattern="<?= esc($formRules['roleName']) ?>"
                         />
                     </div>
-                            <!-- minlength="3" maxlength="50" required pattern="<?= esc($formRules['roleName']) ?>"                     -->
+                            
                     <div class="mb-3">
                         <label for="role-description" class="col-form-label">
                             Description:
                         </label>
                         <input name="description" id="description" class="form-control" required 
-                            
+                                minlength="10" maxlength="255" pattern="<?= esc($formRules['description']) ?>"
                         />
-                    </div>
-                    <!-- minlength="10" maxlength="255" pattern="<?= esc($formRules['description']) ?>" -->
+                    </div>                    
                 </div>
 
                 <div class="modal-footer">
@@ -268,6 +275,24 @@ const RoleNavigation = {
             const id = event.target.dataset.roleId;
             RoleDetalies.tabContent.querySelector('.tab-pane.active.show')?.classList.remove('active', 'show');
             RoleDetalies.loading(id);
+        });
+    }
+};
+
+const PermissionsUpdate = {
+    update: function (button) {
+        if (button.disabled) return;
+
+        const text = button.innerHTML;
+
+        button.disabled = true;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span> Updating...';
+
+        htmx.ajax('POST', button.dataset.url, {
+            swap: 'none'
+        }).finally(() => {
+            button.disabled = false;
+            button.innerHTML = text;
         });
     }
 };

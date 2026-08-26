@@ -11,7 +11,7 @@ class Roles extends BaseAdminSettingsController
 {      
     public function index(): string
     {
-        return $this->viewModule("Roles/index2", [
+        return $this->viewModule("RolesPermissions/index2", [
             "title" => "Roles & Permissions",
             "roles" => $this->roleService->getManageableRoles(),
             "formRules" => [
@@ -22,9 +22,19 @@ class Roles extends BaseAdminSettingsController
     }
 
     public function getRoleDetalies( int $id ): ResponseInterface | string
-    {
-        $this->htmxToastMessage( 'alert' , 'Привет' );
-        return $this->response->setBody( $this->viewModule('Roles/roledetalies') );
+    {        
+        return $this->response->setBody( $this->viewModule('RolesPermissions/roledetalies', 
+            [   
+                "role" => [
+                    'id' => 1,
+                    'name' => "Test",
+                    'description' => 'description description description description'
+                ],
+                "formRules" => [
+                    "roleName" => trim(RulesRegex::RoleName->value, "/$^"),
+                    "description" => trim(RulesRegex::DescriptionName->value, "/$^"),
+                ]
+            ]));
     }
 
 
