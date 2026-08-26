@@ -1,57 +1,69 @@
 <?php foreach ($items as $item): ?>
+<?php
+    $hasChildren = !empty($item['children']);
 
-    <?php
-        $hasChildren = !empty($item['children']);
-        $url = $item['url'] ?? '#';
+    $currentPath = trim((string) parse_url(current_url(), PHP_URL_PATH), '/' );
 
-        $isActive = $url !== '#'
-            && trim(parse_url(current_url(), PHP_URL_PATH), '/')
-                === trim($url, '/');
+    $url = $item['url'] ?? '#';
+
+    $itemPath = trim((string) parse_url($url, PHP_URL_PATH), '/' );
+
+    // Текущий пункт
+    $isActive = $url !== '#' && $currentPath === $itemPath;
+
+    // Проверяем дочерние пункты
+    $hasActiveChild = false;
+
+    if ($hasChildren) 
+    {
+        foreach ($item['children'] as $child) {
+
+            $childUrl = $child['url'] ?? '#';
+
+            if ($childUrl !== '#') 
+            {
+                $childPath = trim( (string) parse_url($childUrl, PHP_URL_PATH), '/' );
+
+                if ($currentPath === $childPath) { $hasActiveChild = true; break; }
+            }
+        }
+    }
+
+    // Родитель открыт, если активен он сам
+    // или один из его children
+    $isOpen = $isActive || $hasActiveChild;
     ?>
 
-
-    <li class="nav-item <?= $isActive ? 'menu-open' : '' ?>">
-
+    <li class="nav-item <?= $isOpen ? 'menu-open' : '' ?>">
 
         <a
             href="<?= esc($url) ?>"
             class="nav-link <?= $isActive ? 'active' : '' ?>"
         >
 
-            <i class="nav-icon bi bi-<?= esc($item['icon']) ?>"></i>
-
+            <i class="nav-icon <?= esc($item['icon'] ?? '') ?>"></i>
 
             <p>
-
                 <?= esc($item['title']) ?>
 
-
                 <?php if ($hasChildren): ?>
-
                     <i class="nav-arrow bi bi-chevron-right"></i>
-
                 <?php endif; ?>
-
             </p>
 
         </a>
-
 
         <?php if ($hasChildren): ?>
 
             <ul class="nav nav-treeview">
 
-                <?= $this->include(
-                    'partials/sidebar_menu_items',
-                    [
-                        'items' => $item['children'],
-                    ]
-                ) ?>
+                <?= view('partials/sidebar_menu_items', [
+                    'items' => $item['children'],
+                ]) ?>
 
             </ul>
 
         <?php endif; ?>
-
 
     </li>
 

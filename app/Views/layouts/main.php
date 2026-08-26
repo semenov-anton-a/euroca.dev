@@ -12,13 +12,12 @@
 $die = 0;
 
 
-if($die == 1) {die;}
+if($die == 1) {
+echo __FILE__ ;
+die;
+}
 
 ?>
-
-
-
-
 <!doctype html>
 <html lang="<?= session('locale') ?>">
   <!--begin::Head-->
@@ -31,6 +30,8 @@ if($die == 1) {die;}
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+    
+    <meta name="csrf-token" content="<?= csrf_hash() ?>">
     <!--end::Accessibility Meta Tags-->
 
     <!--begin::Accessibility Features-->
@@ -39,6 +40,8 @@ if($die == 1) {die;}
     <link rel="preload" href="<?= $htmlLinks['css'][0] ?>" as="style" />
     <!--end::Accessibility Features-->
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      
     <!--begin::Fonts-->
     <link
       rel="stylesheet"
@@ -85,10 +88,24 @@ if($die == 1) {die;}
       integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
       crossorigin="anonymous"
     />
+<<<<<<< HEAD
+=======
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/js/all.min.js" integrity="sha512-2+f4MxT8KwN4tUzw6/hv9kxKiix603S9kmBcix+0y0dBhd6zdaPOV1Thf1DM886pFZG+cAtmshBi8UBpo6m3JA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+>>>>>>> Module/Admin_Settings
     <!-- HTMX -->
      <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" 
           integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
           crossorigin="anonymous"></script>
+<<<<<<< HEAD
+=======
+      
+      <link rel="stylesheet" href="<?= \App\Helpers\AssetHelper::asset('css/common.css') ?>" >
+      <script src="<?= \App\Helpers\AssetHelper::asset('js/common.js') ?>"></script>
+      
+
+>>>>>>> Module/Admin_Settings
   </head>
   <!--end::Head-->
 
@@ -109,18 +126,32 @@ if($die == 1) {die;}
       <main class="app-main">
         <!--begin::App Content Header-->
         <?php 
+<<<<<<< HEAD
           echo $this->include('partials/headerContent') 
+=======
+          // echo $this->include('partials/headerContent') 
+          echo $this->renderSection('headerContentModule');
+>>>>>>> Module/Admin_Settings
         ?>
         <!--end::App Content Header-->
         
         <!--begin::App Content-->
+<<<<<<< HEAD
         <div class="app-content-header">
+=======
+        <div class="app-content-header p-1 m-1">
+>>>>>>> Module/Admin_Settings
           <!--begin::Container-->
           <div class="container-fluid">
             
             <!--begin::Row-->
+<<<<<<< HEAD
             <?php 
             //echo $this->include('partials/dashboardComponents/cards') 
+=======
+            <?php             
+            // echo $this->include('partials/dashboardComponents/cards') 
+>>>>>>> Module/Admin_Settings
             ?>
             <!--end::Row-->
             
@@ -275,6 +306,7 @@ if($die == 1) {die;}
 
     <!-- sortablejs -->
     <script>
+<<<<<<< HEAD
       new Sortable(document.querySelector('.connectedSortable'), {
         group: 'shared',
         handle: '.card-header',
@@ -286,6 +318,47 @@ if($die == 1) {die;}
       });
     </script>    
   
+=======
+      // new Sortable(document.querySelector('.connectedSortable'), {
+      //   group: 'shared',
+      //   handle: '.card-header',
+      // });
+
+      // const cardHeaders = document.querySelectorAll('.connectedSortable .card-header');
+      // cardHeaders.forEach((cardHeader) => {
+      //   cardHeader.style.cursor = 'move';
+      // });
+    </script>    
+
+    <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+    <script type="text/javascript">
+      Toast.init();
+      document.body.addEventListener('toast', event => {
+        Toast.show( event.detail.type, event.detail.message, event.detail.title );
+      });
+      
+    </script>
+</div>
+   <script type="text/javascript">
+      const HtmxCsrf = {
+          init: function () {
+              document.body.addEventListener('htmx:configRequest', this.send);
+              document.body.addEventListener('htmx:afterRequest', this.update);
+          },
+          send: function (event) {
+              const meta = document.querySelector('meta[name="csrf-token"]');
+              if (meta) { event.detail.headers['X-CSRF-TOKEN'] = meta.content; }
+          },
+          update: function (event) {
+              const token = event.detail.xhr.getResponseHeader('X-CSRF-TOKEN');
+              if (token) { document.querySelector('meta[name="csrf-token"]').content = token; }
+          }
+      };
+
+      HtmxCsrf.init();
+   </script>
+>>>>>>> Module/Admin_Settings
   </body>
   <!--end::Body-->
 </html>
