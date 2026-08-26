@@ -41,7 +41,7 @@ $routes->group('admin_settings', [
     /**
      * Role details
      */
-    $routes->get('role/(:num)', 'RolesPermissions::getRoleDetalies/$1', [ 'as' => 'admin_settings.role_detalies' ]);
+    $routes->get('role/(:num)', 'RolesPermissions::getRoleDetails/$1', [ 'as' => 'admin_settings.role_detalies' ]);
 
     /**
      * Role management

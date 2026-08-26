@@ -14,7 +14,20 @@ class PermissionService
     ) {
     }
 
+    /**
+     * Получить все permissions роли.
+     */
+    public function getRolePermissions(int $roleId): array
+    {
+        return $this->permissionRepository->getRolePermissions($roleId);
+    }
 
+    public function getAll(): array
+    {
+        // TODO: get from cache
+        return $this->permissionRepository->getAll() ?? [];
+    }
+    
     /**
      * Проверяет наличие одного разрешения.
      */

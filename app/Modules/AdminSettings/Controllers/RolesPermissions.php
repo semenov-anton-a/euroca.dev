@@ -29,9 +29,11 @@ class RolesPermissions extends BaseAdminSettingsController
      *
      * @param int $id Role ID.
      */
-    public function getRoleDetalies(int $id): ResponseInterface|string
+    public function getRoleDetails(int $id): ResponseInterface|string
     {
 
+        // $rolePermissions = $this->permissionService->getRolePermissions($id);
+       
         // try{
         //     $this->roleService->create( $id );
         // }
@@ -39,11 +41,9 @@ class RolesPermissions extends BaseAdminSettingsController
 
         return $this->response->setBody(
             $this->viewModule('RolesPermissions/roledetalies', [
-                'role' => [
-                    'id' => $id,
-                    'name' => 'accounterbes',
-                    'description' => 'description description description description',
-                ],
+                'rolePermissions' => $this->permissionService->getRolePermissions($id),
+                'permissions' => $this->permissionService->getAll(),
+                'role' => $this->roleService->getRoleById( $id ),
                 'formRules' => [
                     'roleName' => trim( (string) RulesRegex::RoleName->value, '/$^'),
                     'description' => trim( (string) RulesRegex::DescriptionName->value, '/$^'),

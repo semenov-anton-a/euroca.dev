@@ -123,6 +123,16 @@ class RoleService
     }
 
     /**
+     * Получить данные роли
+     * @param int $id
+     * @return array|null
+     */
+    public function getRoleById( int $id ) :? array
+    {
+        return $this->roleRepository->findById( $id );
+    }
+
+    /**
      * Получить все роли.
      */
     public function getAll(): array
