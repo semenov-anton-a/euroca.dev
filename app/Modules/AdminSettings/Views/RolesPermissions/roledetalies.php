@@ -54,7 +54,7 @@ $rolePermissions = ['cargo.view', 'cargo.create', 'customers.view'];
                 hx-post="<?= route_to('admin_settings.update_role', esc($role['id']) ) ?>" hx-target="#role-message" hx-swap="innerHTML">
                 
                 <div class="col-md-6">
-                    <label class="form-label">Role name for ID: <?= $role['id'] ?></label>
+                    <label class="form-label">Role name</label>
                     <input type="text" name="name" class="form-control" 
                             value="<?= esc($role['name']) ?>" minlength="3" maxlength="50" required pattern="<?= esc($formRules['roleName']) ?>">
                 </div>

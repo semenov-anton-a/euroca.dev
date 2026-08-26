@@ -2,11 +2,11 @@
 <?php
     $hasChildren = !empty($item['children']);
 
-    $currentPath = trim( parse_url(current_url(), PHP_URL_PATH), '/' );
+    $currentPath = trim((string) parse_url(current_url(), PHP_URL_PATH), '/' );
 
     $url = $item['url'] ?? '#';
 
-    $itemPath = trim( parse_url($url, PHP_URL_PATH), '/' );
+    $itemPath = trim((string) parse_url($url, PHP_URL_PATH), '/' );
 
     // Текущий пункт
     $isActive = $url !== '#' && $currentPath === $itemPath;
@@ -22,7 +22,7 @@
 
             if ($childUrl !== '#') 
             {
-                $childPath = trim( parse_url($childUrl, PHP_URL_PATH), '/' );
+                $childPath = trim( (string) parse_url($childUrl, PHP_URL_PATH), '/' );
 
                 if ($currentPath === $childPath) { $hasActiveChild = true; break; }
             }
