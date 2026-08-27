@@ -34,7 +34,7 @@ class MenuService
         ],   
         
         [
-            'title'      => 'Accounting',
+            'title'      => 'Accounting V1',
             'icon'       => 'calculator',
             'permission' => 'accounting.view',
             'order'      => 60,
@@ -44,53 +44,31 @@ class MenuService
                 [
                     'title'      => 'Overview',
                     'icon'       => 'dashboard',
-                    'url'        => '/accounting',
+                    'url'        => '/accounting/v1',
                     'permission' => 'accounting.view',
                     'order'      => 10,
                 ],
-
-                [
-                    'title'      => 'Transactions',
-                    'icon'       => 'transactions',
-                    'url'        => '/accounting/transactions',
-                    'permission' => 'accounting.transactions.view',
-                    'order'      => 20,
-                ],
-
-                [
-                    'title'      => 'Invoices',
-                    'icon'       => 'invoice',
-                    'url'        => '/accounting/invoices',
-                    'permission' => 'accounting.invoice.view',
-                    'order'      => 30,
-                ],
-
-                [
-                    'title'      => 'Expenses',
-                    'icon'       => 'expense',
-                    'url'        => '/accounting/expenses',
-                    'permission' => 'accounting.expense.view',
-                    'order'      => 40,
-                ],
-
-                [
-                    'title'      => 'VAT',
-                    'icon'       => 'calculator',
-                    'url'        => '/accounting/vat',
-                    'permission' => 'accounting.vat.view',
-                    'order'      => 50,
-                ],
-
-                [
-                    'title'      => 'Reports',
-                    'icon'       => 'report',
-                    'url'        => '/accounting/reports',
-                    'permission' => 'accounting.report.view',
-                    'order'      => 60,
-                ],
-
             ],
         ],
+
+        // [
+        //     'title'      => 'Accounting V2',
+        //     'icon'       => 'calculator',
+        //     'permission' => 'accounting.view',
+        //     'order'      => 60,
+
+        //     'children' => [
+
+        //         [
+        //             'title'      => 'Overview',
+        //             'icon'       => 'dashboard',
+        //             'url'        => '/accounting/v2',
+        //             'permission' => 'accounting.view',
+        //             'order'      => 10,
+        //         ],
+        //     ],
+        // ],
+
 
         [
             'title'      => 'Employees',

@@ -35,11 +35,9 @@
     ?>
 
     <li class="nav-item <?= $isOpen ? 'menu-open' : '' ?>">
-
-        <a
-            href="<?= esc($url) ?>"
-            class="nav-link <?= $isActive ? 'active' : '' ?>"
-        >
+        
+        <a  href="<?= esc($url) ?>"
+            class="nav-link <?= $isActive ? 'active' : '' ?>" style="padding-left: 3px">
 
             <i class="nav-icon <?= esc($item['icon'] ?? '') ?>"></i>
 
@@ -55,7 +53,7 @@
 
         <?php if ($hasChildren): ?>
 
-            <ul class="nav nav-treeview">
+            <ul class="nav nav-treeview" style="margin-left:5px;">
 
                 <?= view('partials/sidebar_menu_items', [
                     'items' => $item['children'],
