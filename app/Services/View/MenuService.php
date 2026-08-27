@@ -98,34 +98,43 @@ class MenuService
         ],
 
         [
-            'title'      => 'Admin Settings',
+            'title'      => 'Danger Zone',
             'icon'       => 'gear',
             'permission' => 'settings.view',
             'order'      => 80,
+            'css'        => "text-bg-danger",
 
             'children' => [
 
-                [
-                    'title'      => 'General',
-                    'icon'       => 'settings',
-                    'url'        => '/admin_settings',
-                    'permission' => 'settings.view',
-                    'order'      => 10,
-                ],
+                // [
+                //     'title'      => 'General',
+                //     'icon'       => 'settings',
+                //     'url'        => '/admin_settings',
+                //     'permission' => 'settings.view',
+                //     'order'      => 10,
+                // ],
 
-                [
-                    'title'      => 'Users',
-                    'icon'       => 'users',
-                    'url'        => '/admin_settings/users',
-                    'permission' => 'users.view',
-                    'order'      => 20,
-                ],
+                // [
+                //     'title'      => 'Users',
+                //     'icon'       => 'users',
+                //     'url'        => '/admin_settings/users',
+                //     'permission' => 'users.view',
+                //     'order'      => 20,
+                // ],
 
                 [
                     'title'      => 'Roles & Permissions',
                     'icon'       => 'shield',
                     'url'        => '/admin_settings/roles',
                     'permission' => 'roles.view',
+                    'order'      => 30,
+                ],
+                
+                [
+                    'title'      => 'Logs',
+                    'icon'       => 'shield',
+                    'url'        => '/admin_settings/logs',
+                    'permission' => 'logs.view',
                     'order'      => 30,
                 ],
                 

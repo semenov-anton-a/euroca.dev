@@ -88,8 +88,14 @@ class RolesPermissions extends BaseAdminSettingsController
         try{
             $this->roleService->create( $roleData );
         }catch( \Throwable $err ){
-            log_message( 'error', 'Failed to create role: ' . $e->getMessage() );
-            return $this->addHtmxTrigger( "errorMessage", [ 'message' => "Failed to create role." ])->response;
+            log_message( 'error', 'Failed to create role: ' . $err->getMessage() );
+            return $this->addHtmxTrigger( "errorMessage", [
+                "errors" => [ 
+                    "Failed to create role.",
+                    // $err->getMessage() 
+                ]
+            ] 
+            )->response;
         }
         
 

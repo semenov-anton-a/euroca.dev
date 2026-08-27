@@ -182,18 +182,18 @@ const RoleModal = {
     {
         this.loading(false);
 
-        const container = this.form.querySelector('#error-message');
-        const errors = event.detail.message;
-        console.log(event)
-        container.innerHTML = `
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    ${Object.values(errors)
-                        .map(error => `<li>${error}</li>`)
-                        .join('')}
-                </ul>
-            </div>
-        `;
+            const container = this.form.querySelector('#error-message');
+            const data = event.detail;
+
+            const errors = data.errors ? Object.values(data.errors) : [ data.message ];
+
+            container.innerHTML = `
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        ${errors.map(error => `<li>${error}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
 
         this.form.reset();
     },
