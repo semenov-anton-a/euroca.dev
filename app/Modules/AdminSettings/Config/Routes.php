@@ -54,4 +54,14 @@ $routes->group('admin_settings', [
      */
     $routes->post('permissions/update', 'RolesPermissions::updatePermissions', [ 'as' => 'admin_settings.permissions_update' ]);
     
+
+    /**
+     * Logs
+     */
+    $routes->get('logs', 'Logs::index', ['as' => 'admin_settings.logs']);
+    $routes->get('logs/read/(:any)', 'Logs::read/$1', ['as' => 'admin_settings.logs.read']);
+
+
+    // $routes->get('logs/list', 'Logs::list', [ 'as' => 'admin_settings.logs.list', ]);
+
 });
