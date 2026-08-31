@@ -29,14 +29,19 @@
                         disabled
                         hx-post="<?= route_to('admin_settings.logs.remove_all') ?>"
                         hx-swap="none"
+                        hx-on::before-request="
+                            this.disabled = true;
+                            this.querySelector('.remove-text').textContent = 'Removing...';
+                        "
                         hx-on::after-request="
                             if (event.detail.successful) {
-                                this.disabled = true;
+                                this.querySelector('.remove-text').textContent = 'Remove all Logs files';
                                 document.getElementById('unlockLogs').setAttribute('aria-expanded', 'false');
                                 document.querySelector('#unlockLogs i').className = 'bi bi-lock-fill';
-                            }
-                        ">
-                        Remove all Logs files
+                            } ">
+                        <span class="spinner-border spinner-border-sm htmx-indicator me-1 d-none" role="status"></span>
+                        <i class="bi bi-trash me-1"></i>
+                        <span class="remove-text">Remove all Logs files</span>
                     </button>
 
                     <button
