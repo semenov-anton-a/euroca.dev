@@ -2,11 +2,11 @@
 <?php
     $hasChildren = !empty($item['children']);
 
-    $currentPath = trim( parse_url(current_url(), PHP_URL_PATH), '/' );
+    $currentPath = trim((string) parse_url(current_url(), PHP_URL_PATH), '/' );
 
     $url = $item['url'] ?? '#';
 
-    $itemPath = trim( parse_url($url, PHP_URL_PATH), '/' );
+    $itemPath = trim((string) parse_url($url, PHP_URL_PATH), '/' );
 
     // Текущий пункт
     $isActive = $url !== '#' && $currentPath === $itemPath;
@@ -16,13 +16,13 @@
 
     if ($hasChildren) 
     {
-        foreach ($item['children'] as $child) {
-
+        foreach ($item['children'] as $child) 
+        {
             $childUrl = $child['url'] ?? '#';
 
             if ($childUrl !== '#') 
             {
-                $childPath = trim( parse_url($childUrl, PHP_URL_PATH), '/' );
+                $childPath = trim( (string) parse_url($childUrl, PHP_URL_PATH), '/' );
 
                 if ($currentPath === $childPath) { $hasActiveChild = true; break; }
             }
@@ -32,14 +32,13 @@
     // Родитель открыт, если активен он сам
     // или один из его children
     $isOpen = $isActive || $hasActiveChild;
+    
     ?>
 
     <li class="nav-item <?= $isOpen ? 'menu-open' : '' ?>">
-
-        <a
-            href="<?= esc($url) ?>"
-            class="nav-link <?= $isActive ? 'active' : '' ?>"
-        >
+        
+        <a  href="<?= esc($url) ?>"
+            class="nav-link <?= $isActive ? 'active' : '' ?>  <?= esc( $item['css'] ?? ' ' ) ?>" style="padding-left: 3px">
 
             <i class="nav-icon <?= esc($item['icon'] ?? '') ?>"></i>
 
@@ -55,7 +54,7 @@
 
         <?php if ($hasChildren): ?>
 
-            <ul class="nav nav-treeview">
+            <ul class="nav nav-treeview" style="margin-left:5px;">
 
                 <?= view('partials/sidebar_menu_items', [
                     'items' => $item['children'],

@@ -31,135 +31,10 @@ class MenuService
             'url'        => '/dashboard',
             'permission' => 'dashboard.view',
             'order'      => 10,
-        ],
-
+        ],   
+        
         [
-            'title'      => 'Cargo',
-            //'icon'       => 'fa-thin fa-boxes-stacked',
-            'icon'       => 'fa-solid fa-cubes',
-            'permission' => 'cargo.view',
-            'order'      => 20,
-
-            'children' => [
-
-                [
-                    'title'      => 'All Cargo',
-                    'icon'       => 'list',
-                    'url'        => '/cargo',
-                    'permission' => 'cargo.view',
-                    'order'      => 10,
-                ],
-
-                [
-                    'title'      => 'Create Cargo',
-                    'icon'       => 'plus',
-                    'url'        => '/cargo/create',
-                    'permission' => 'cargo.create',
-                    'order'      => 20,
-                ],
-
-                [
-                    'title'      => 'In Transit',
-                    'icon'       => 'truck',
-                    'url'        => '/cargo/in-transit',
-                    'permission' => 'cargo.view',
-                    'order'      => 30,
-                ],
-
-                [
-                    'title'      => 'Archive',
-                    'icon'       => 'archive',
-                    'url'        => '/cargo/archive',
-                    'permission' => 'cargo.view',
-                    'order'      => 40,
-                ],
-
-            ],
-        ],
-
-        [
-            'title'      => 'Customers',
-            'icon'       => 'users',
-            'permission' => 'customer.view',
-            'order'      => 30,
-
-            'children' => [
-
-                [
-                    'title'      => 'All Customers',
-                    'icon'       => 'list',
-                    'url'        => '/customers',
-                    'permission' => 'customer.view',
-                    'order'      => 10,
-                ],
-
-                [
-                    'title'      => 'Create Customer',
-                    'icon'       => 'plus',
-                    'url'        => '/customers/create',
-                    'permission' => 'customer.create',
-                    'order'      => 20,
-                ],
-
-            ],
-        ],
-
-        [
-            'title'      => 'Warehouse',
-            'icon'       => 'warehouse',
-            'permission' => 'warehouse.view',
-            'order'      => 40,
-
-            'children' => [
-
-                [
-                    'title'      => 'Warehouses',
-                    'icon'       => 'building',
-                    'url'        => '/warehouse',
-                    'permission' => 'warehouse.view',
-                    'order'      => 10,
-                ],
-
-                [
-                    'title'      => 'Cargo Storage',
-                    'icon'       => 'box',
-                    'url'        => '/warehouse/cargo',
-                    'permission' => 'warehouse.view',
-                    'order'      => 20,
-                ],
-
-            ],
-        ],
-
-        [
-            'title'      => 'Documents',
-            'icon'       => 'file-document',
-            'permission' => 'documents.view',
-            'order'      => 50,
-
-            'children' => [
-
-                [
-                    'title'      => 'All Documents',
-                    'icon'       => 'files',
-                    'url'        => '/documents',
-                    'permission' => 'documents.view',
-                    'order'      => 10,
-                ],
-
-                [
-                    'title'      => 'Create Document',
-                    'icon'       => 'plus',
-                    'url'        => '/documents/create',
-                    'permission' => 'documents.create',
-                    'order'      => 20,
-                ],
-
-            ],
-        ],
-
-        [
-            'title'      => 'Accounting',
+            'title'      => 'Accounting V1',
             'icon'       => 'calculator',
             'permission' => 'accounting.view',
             'order'      => 60,
@@ -169,53 +44,31 @@ class MenuService
                 [
                     'title'      => 'Overview',
                     'icon'       => 'dashboard',
-                    'url'        => '/accounting',
+                    'url'        => '/accounting/v1',
                     'permission' => 'accounting.view',
                     'order'      => 10,
                 ],
-
-                [
-                    'title'      => 'Transactions',
-                    'icon'       => 'transactions',
-                    'url'        => '/accounting/transactions',
-                    'permission' => 'accounting.transactions.view',
-                    'order'      => 20,
-                ],
-
-                [
-                    'title'      => 'Invoices',
-                    'icon'       => 'invoice',
-                    'url'        => '/accounting/invoices',
-                    'permission' => 'accounting.invoice.view',
-                    'order'      => 30,
-                ],
-
-                [
-                    'title'      => 'Expenses',
-                    'icon'       => 'expense',
-                    'url'        => '/accounting/expenses',
-                    'permission' => 'accounting.expense.view',
-                    'order'      => 40,
-                ],
-
-                [
-                    'title'      => 'VAT',
-                    'icon'       => 'calculator',
-                    'url'        => '/accounting/vat',
-                    'permission' => 'accounting.vat.view',
-                    'order'      => 50,
-                ],
-
-                [
-                    'title'      => 'Reports',
-                    'icon'       => 'report',
-                    'url'        => '/accounting/reports',
-                    'permission' => 'accounting.report.view',
-                    'order'      => 60,
-                ],
-
             ],
         ],
+
+        // [
+        //     'title'      => 'Accounting V2',
+        //     'icon'       => 'calculator',
+        //     'permission' => 'accounting.view',
+        //     'order'      => 60,
+
+        //     'children' => [
+
+        //         [
+        //             'title'      => 'Overview',
+        //             'icon'       => 'dashboard',
+        //             'url'        => '/accounting/v2',
+        //             'permission' => 'accounting.view',
+        //             'order'      => 10,
+        //         ],
+        //     ],
+        // ],
+
 
         [
             'title'      => 'Employees',
@@ -245,34 +98,43 @@ class MenuService
         ],
 
         [
-            'title'      => 'Admin Settings',
+            'title'      => 'Danger Zone',
             'icon'       => 'gear',
             'permission' => 'settings.view',
             'order'      => 80,
+            'css'        => "text-bg-danger",
 
             'children' => [
 
-                [
-                    'title'      => 'General',
-                    'icon'       => 'settings',
-                    'url'        => '/admin_settings',
-                    'permission' => 'settings.view',
-                    'order'      => 10,
-                ],
+                // [
+                //     'title'      => 'General',
+                //     'icon'       => 'settings',
+                //     'url'        => '/admin_settings',
+                //     'permission' => 'settings.view',
+                //     'order'      => 10,
+                // ],
 
-                [
-                    'title'      => 'Users',
-                    'icon'       => 'users',
-                    'url'        => '/admin_settings/users',
-                    'permission' => 'users.view',
-                    'order'      => 20,
-                ],
+                // [
+                //     'title'      => 'Users',
+                //     'icon'       => 'users',
+                //     'url'        => '/admin_settings/users',
+                //     'permission' => 'users.view',
+                //     'order'      => 20,
+                // ],
 
                 [
                     'title'      => 'Roles & Permissions',
                     'icon'       => 'shield',
                     'url'        => '/admin_settings/roles',
                     'permission' => 'roles.view',
+                    'order'      => 30,
+                ],
+                
+                [
+                    'title'      => 'Logs',
+                    'icon'       => 'shield',
+                    'url'        => '/admin_settings/logs',
+                    'permission' => 'logs.view',
                     'order'      => 30,
                 ],
                 

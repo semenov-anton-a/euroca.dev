@@ -14,6 +14,48 @@ class PermissionRepository
         $this->db = Database::connect();
     }
 
+    public function getAll() : array
+    {
+        return [
+            // 'cargo' => [
+            //     'view' => ['id' => 1, 'label' => 'View'],
+            //     'create' => ['id' => 2, 'label' => 'Create'],
+            //     'edit' => ['id' => 3, 'label' => 'Edit'],
+            //     'delete' => ['id' => 4, 'label' => 'Delete'],
+            // ],
+            'customers' => [
+                'view' => ['id' => 5, 'label' => 'View'],
+                'create' => ['id' => 6, 'label' => 'Create'],
+                'edit' => ['id' => 7, 'label' => 'Edit'],
+                'delete' => ['id' => 8, 'label' => 'Delete'],
+            ],
+            // 'warehouse' => [
+            //     'view' => ['id' => 9, 'label' => 'View'],
+            //     'create' => ['id' => 10, 'label' => 'Create'],
+            //     'edit' => ['id' => 11, 'label' => 'Edit'],
+            //     'delete' => ['id' => 12, 'label' => 'Delete'],
+            // ],
+            'invoices' => [
+                'view' => ['id' => 13, 'label' => 'View'],
+                'create' => ['id' => 14, 'label' => 'Create'],
+                'edit' => ['id' => 15, 'label' => 'Edit'],
+                'delete' => ['id' => 16, 'label' => 'Delete'],
+            ],
+            'accounting' => [
+                'view' => ['id' => 17, 'label' => 'View'],
+                'create' => ['id' => 18, 'label' => 'Create'],
+                'edit' => ['id' => 19, 'label' => 'Edit'],
+                'delete' => ['id' => 20, 'label' => 'Delete'],
+            ],
+        ];
+
+        return $this->db
+            ->table('permissions p')
+            ->select('p.*')
+            ->get()
+            ->getResultArray();      
+    }
+
     /**
      * Получить все права пользователя
      * через его роли
@@ -88,5 +130,22 @@ class PermissionRepository
     }
 
 
+    /**
+     * Получить все разрешения для РОЛИ
+     * @param int $roleId
+     * @return array
+     */
+    public function getRolePermissions(int $roleId): array
+    {
+        $result = $this->db->table('permissions p')
+            ->select('p.name')
+            ->join('role_permissions rp', 'rp.permission_id = p.id')
+            ->where('rp.role_id', $roleId)
+            ->orderBy('p.name', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        return array_column($result, 'name');
+    }
     
 }

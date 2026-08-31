@@ -1,14 +1,14 @@
 <?php
-$permissions = [
-    'cargo' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
-    'customers' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
-    'warehouse' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
-    'warehouse1' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
-    'warehouse2' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
-    'warehouse3' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
-];
+// $permissions = [
+//     'cargo' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+//     'customers' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+//     'warehouse' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+//     'warehouse1' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+//     'warehouse2' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+//     'warehouse3' => ['view' => 'View', 'create' => 'Create', 'edit' => 'Edit', 'delete' => 'Delete'],
+// ];
 
-$rolePermissions = ['cargo.view', 'cargo.create', 'customers.view'];
+// $rolePermissions = ['cargo.view', 'cargo.create', 'customers.view'];
 ?>
 <style>
     .card.htmx-loading {
@@ -50,11 +50,12 @@ $rolePermissions = ['cargo.view', 'cargo.create', 'customers.view'];
             <h3 class="card-title">Permissions & Details</h3>
         </div>
         <div class="card-body">
+            
             <form class="row g-3" method="post" 
                 hx-post="<?= route_to('admin_settings.update_role', esc($role['id']) ) ?>" hx-target="#role-message" hx-swap="innerHTML">
                 
                 <div class="col-md-6">
-                    <label class="form-label">Role name for ID: <?= $role['id'] ?></label>
+                    <label class="form-label">Role name</label>
                     <input type="text" name="name" class="form-control" 
                             value="<?= esc($role['name']) ?>" minlength="3" maxlength="50" required pattern="<?= esc($formRules['roleName']) ?>">
                 </div>
@@ -80,13 +81,25 @@ $rolePermissions = ['cargo.view', 'cargo.create', 'customers.view'];
                                     </div>
                                 </div>
                                 <div class="card-body py-2">
-                                    <?php foreach ($items as $action => $label): ?>
-                                        <?php $permission = "{$module}.{$action}"; ?>
-                                        <div class="form-check">
-                                            <input class="form-check-input permission-checkbox" type="checkbox" name="permissions[]" value="<?= esc($permission) ?>" id="permission-<?= esc($permission) ?>" data-module="<?= esc($module) ?>" <?= in_array($permission, $rolePermissions, true) ? 'checked' : '' ?>>
-                                            <label class="form-check-label" for="permission-<?= esc($permission) ?>"><?= esc($label) ?></label>
-                                        </div>
-                                    <?php endforeach; ?>
+                                   <?php foreach ($items as $action => $item): ?>
+                                    <?php
+                                        $permission = "{$module}.{$action}";
+                                        $permissionId = $item['id'];
+                                    ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input permission-checkbox"
+                                            type="checkbox"
+                                            name="permissions[]"
+                                            value="<?= $permissionId ?>"
+                                            id="permission-<?= esc($permission) ?>"
+                                            data-module="<?= esc($module) ?>"
+                                            <?= in_array($permissionId, $rolePermissions, true) ? 'checked' : '' ?>>
+
+                                        <label class="form-check-label" for="permission-<?= esc($permission) ?>">
+                                            <?= esc($item['label']) ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
                                 </div>
                             </div>
                         </div>

@@ -18,8 +18,8 @@ class RolesPermissions extends BaseAdminSettingsController
             'title' => 'Roles & Permissions',
             'roles' => $this->roleService->getManageableRoles(),
             'formRules' => [
-                'roleName' => trim(RulesRegex::RoleName->value, '/$^'),
-                'description' => trim(RulesRegex::DescriptionName->value, '/$^'),
+                'roleName' => trim((string) RulesRegex::RoleName->value, '/$^'),
+                'description' => trim((string) RulesRegex::DescriptionName->value, '/$^'),
             ],
         ]);
     }
@@ -29,18 +29,24 @@ class RolesPermissions extends BaseAdminSettingsController
      *
      * @param int $id Role ID.
      */
-    public function getRoleDetalies(int $id): ResponseInterface|string
+    public function getRoleDetails(int $id): ResponseInterface|string
     {
+
+        // $rolePermissions = $this->permissionService->getRolePermissions($id);
+       
+        // try{
+        //     $this->roleService->create( $id );
+        // }
+
+
         return $this->response->setBody(
             $this->viewModule('RolesPermissions/roledetalies', [
-                'role' => [
-                    'id' => $id,
-                    'name' => 'accounterbes',
-                    'description' => 'description description description description',
-                ],
+                'rolePermissions' => $this->permissionService->getRolePermissions($id),
+                'permissions' => $this->permissionService->getAll(),
+                'role' => $this->roleService->getRoleById( $id ),
                 'formRules' => [
-                    'roleName' => trim(RulesRegex::RoleName->value, '/$^'),
-                    'description' => trim(RulesRegex::DescriptionName->value, '/$^'),
+                    'roleName' => trim( (string) RulesRegex::RoleName->value, '/$^'),
+                    'description' => trim( (string) RulesRegex::DescriptionName->value, '/$^'),
                 ],
             ])
         );
@@ -71,29 +77,30 @@ class RolesPermissions extends BaseAdminSettingsController
             ],
         ];
 
-        if (! $this->validateData([
-            'name' => $name,
-            'description' => $description,
-        ], $rules)) {
-            return $this->response->setHeader(
-                'HX-Trigger',
-                json_encode([
-                    'errorMessage' => [
-                        'message' => $this->validator->getErrors(),
-                    ],
-                ])
-            );
+
+        $roleData = [ 'name' => $name, 'description' => $description, ];
+
+        if (! $this->validateData($roleData, $rules)) 
+        {   
+            return $this->addHtmxTrigger( "errorMessage", [ 'message' => $this->validator->getErrors() ])->response;
         }
 
-        return $this->response->setHeader(
-            'HX-Trigger',
-            json_encode([
-                'roleCreated' => [
-                    'id' => 654,
-                    'name' => $name,
-                ],
-            ])
-        );
+        try{
+            $this->roleService->create( $roleData );
+        }catch( \Throwable $err ){
+            log_message( 'error', 'Failed to create role: ' . $err->getMessage() );
+            return $this->addHtmxTrigger( "errorMessage", [
+                "errors" => [ 
+                    "Failed to create role.",
+                    // $err->getMessage() 
+                ]
+            ] 
+            )->response;
+        }
+        
+
+        return $this->addHtmxTrigger( "roleCreated", [ 'id' => 654, 'name' => $name ]  )->response;
+        
     }
 
     /**
@@ -103,8 +110,7 @@ class RolesPermissions extends BaseAdminSettingsController
      */
     public function updateRole(int $id): ResponseInterface|string
     {
-        $this->htmxToastMessage('success', "FAKE - role {$id} updated");
-        return $this->response;
+        return $this->htmxToastMessage('success', "FAKE - role {$id} updated")->response;
     }
 
     /**
@@ -117,7 +123,6 @@ class RolesPermissions extends BaseAdminSettingsController
      */
     public function updatePermissions(?int $id = null): ResponseInterface|string
     {
-        $this->htmxToastMessage('success', 'FAKE - Permissions updated');
-        return $this->response;
+        return $this->htmxToastMessage('success', 'FAKE - Permissions updated')->response;
     }
 }
