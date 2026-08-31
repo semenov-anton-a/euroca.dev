@@ -12,7 +12,7 @@
 
         <!-- LOG FILES -->
 
-        <div class="col-md-3 border-end">
+        <div class="col-md-2 border-end">
 
             <div class="card-header">
                 <h3 class="card-title mb-0">
@@ -34,8 +34,7 @@
                             class="list-group-item list-group-item-action"
                             hx-get="<?= route_to('admin_settings.logs.read', $fileName) ?>"
                             hx-target="#log-content"
-                            hx-swap="innerHTML"
-                        >
+                            hx-swap="innerHTML">
                             <i class="bi bi-file-text me-2"></i>
                             <?= esc($fileName) ?>
                         </button>
@@ -59,7 +58,7 @@
 
         <!-- LOG CONTENT -->
 
-        <div class="col-md-9">
+        <div class="col-md-10">
 
             <div class="card-header d-flex align-items-center">
 
@@ -68,55 +67,52 @@
                     Log
                 </h3>
 
-<div class="ms-auto d-flex gap-1">
+                <div class="ms-auto d-flex gap-1">
 
-    <button
-        type="button"
-        class="btn btn-sm btn-outline-secondary"
-        hx-get="<?= $file ? route_to('admin_settings.logs.read', basename($file)) : '#' ?>"
-        hx-target="#log-content"
-        hx-swap="innerHTML"
-    >
-        <i class="bi bi-list me-1"></i>
-        All
-    </button>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-secondary"
+                        hx-get="<?= $file ? route_to('admin_settings.logs.read', basename($file)) : '#' ?>"
+                        hx-target="#log-content"
+                        hx-swap="innerHTML">
+                        <i class="bi bi-list me-1"></i>
+                        All
+                    </button>
 
-    <?php
-    $levelClasses = [
-        'DEBUG'     => 'btn-outline-secondary',
-        'INFO'      => 'btn-outline-info',
-        'NOTICE'    => 'btn-outline-primary',
-        'WARNING'   => 'btn-outline-warning',
-        'ERROR'     => 'btn-outline-danger',
-        'CRITICAL'  => 'btn-danger',
-        'ALERT'     => 'btn-danger',
-        'EMERGENCY' => 'btn-dark',
-    ];
-    ?>
+                    <?php
+                    $levelClasses = [
+                        'DEBUG'     => 'btn-outline-secondary',
+                        'INFO'      => 'btn-outline-info',
+                        'NOTICE'    => 'btn-outline-primary',
+                        'WARNING'   => 'btn-outline-warning',
+                        'ERROR'     => 'btn-outline-danger',
+                        'CRITICAL'  => 'btn-danger',
+                        'ALERT'     => 'btn-danger',
+                        'EMERGENCY' => 'btn-dark',
+                    ];
+                    ?>
 
-    <?php foreach ($levels as $level): ?>
+                    <?php foreach ($levels as $level): ?>
 
-        <button
-            type="button"
-            class="btn btn-sm <?= $levelClasses[$level] ?? 'btn-outline-secondary' ?>"
-            hx-get="<?= $file ? route_to('admin_settings.logs.read', basename($file)) . '?level=' . urlencode($level) : '#' ?>"
-            hx-target="#log-content"
-            hx-swap="innerHTML"
-        >
-            <?= esc(ucfirst(strtolower($level))) ?>
-        </button>
+                        <button
+                            type="button"
+                            class="btn btn-sm <?= $levelClasses[$level] ?? 'btn-outline-secondary' ?>"
+                            hx-get="<?= $file ? route_to('admin_settings.logs.read', basename($file)) . '?level=' . urlencode($level) : '#' ?>"
+                            hx-target="#log-content"
+                            hx-swap="innerHTML">
+                            <?= esc(ucfirst(strtolower($level))) ?>
+                        </button>
 
-    <?php endforeach; ?>
+                    <?php endforeach; ?>
 
-</div>
+                </div>
 
             </div>
 
             <div
                 id="log-content"
                 class="card-body p-0"
-                style="max-height: 700px; overflow-y: auto;"
-            >
+                style="max-height: 700px; overflow-y: auto;">
 
                 <?= view('Modules\AdminSettings\Views\Logs\_list', [
                     'entries' => $entries,

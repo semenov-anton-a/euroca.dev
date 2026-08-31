@@ -9,24 +9,54 @@
 
     <div class="list-group list-group-flush">
 
-        <?php foreach ($entries as $entry): ?>
+        <?php foreach ($entries as $index => $entry): ?>
 
-            <div class="list-group-item">
+            <?php $collapseId = 'log-entry-' . $index; ?>
 
-                <div class="d-flex align-items-center mb-1">
+            <div class="list-group-item p-0">
 
-                    <span class="badge text-bg-secondary me-2">
-                        <?= esc($entry['level']) ?>
-                    </span>
+                <button
+                    type="button"
+                    class="btn w-100 text-start p-3 border-0"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#<?= esc($collapseId) ?>"
+                    aria-expanded="false"
+                    aria-controls="<?= esc($collapseId) ?>"
+                >
+                    <div class="d-flex align-items-center mb-1">
+                        <span class="badge text-bg-secondary me-2">
+                            <?= esc($entry['level']) ?>                            
+                        </span>
+                        <small class="text-muted">
+                            <?= esc($entry['date']) ?>
+                        </small>
+                        <i class="bi bi-chevron-down ms-auto text-muted"></i>
+                    </div>
 
-                    <small class="text-muted">
-                        <?= esc($entry['date']) ?>
-                    </small>
+                    <div class="text-break">
+                        <?= esc(mb_substr($entry['message'], 0, 100)) ?><?= mb_strlen($entry['message']) > 100 ? '...' : '' ?>
+                    </div>
+                </button>
 
-                </div>
+                <div id="<?= esc($collapseId) ?>" class="collapse">
 
-                <div class="text-break">
-                    <?= esc($entry['message']) ?>
+                    <div class="px-3 pb-3">
+
+                        <div class="bg-dark text-light rounded p-3">
+
+                            <div class="small text-muted mb-2">
+                                <?= esc($entry['level']) ?>
+                                ·
+                                <?= esc($entry['date']) ?>
+                            </div>
+
+                            <pre class="mb-0 text-light"
+                                 style="white-space: pre-wrap;"><?= esc($entry['message']) ?></pre>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
