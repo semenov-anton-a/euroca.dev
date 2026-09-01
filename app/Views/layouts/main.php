@@ -307,29 +307,35 @@ die;
       
     </script>
 </div>
-   <script type="text/javascript">
-      const HtmxCsrf = {
-          init: function () {
-              document.body.addEventListener('htmx:configRequest', this.send);
-              document.body.addEventListener('htmx:afterRequest', this.update);
-          },
-          send: function (event) {
-              const meta = document.querySelector('meta[name="csrf-token"]');
-              if (meta) { event.detail.headers['X-CSRF-TOKEN'] = meta.content; }
-          },
-          update: function (event) {
-              const token = event.detail.xhr.getResponseHeader('X-CSRF-TOKEN');
-              const meta = document.querySelector('meta[name="csrf-token"]')
+<script>
+const HtmxCsrf = {
 
-              if (token && meta) 
-              {
-                meta.content = token;
-              }
-          }
-      };
+    init: function () {
+        document.body.addEventListener('htmx:configRequest', this.send);
+        document.body.addEventListener('htmx:afterRequest', this.update);
+    },
 
-      HtmxCsrf.init();
-   </script>
+    send: function (event) {
+        const meta = document.querySelector('meta[name="csrf-token"]');
+        if (meta) {
+            event.detail.headers['X-CSRF-TOKEN'] = meta.content;
+        }
+    },
+
+    update: function (event) {
+        const token = event.detail.xhr.getResponseHeader('X-CSRF-TOKEN');
+        const meta = document.querySelector('meta[name="csrf-token"]');
+
+        if (token && meta) {
+            meta.setAttribute('content', token);
+        }
+
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => { HtmxCsrf.init(); });
+</script>
+   
   </body>
   <!--end::Body-->
 </html>

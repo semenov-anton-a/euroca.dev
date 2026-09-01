@@ -24,7 +24,10 @@ class HtmxFilter implements FilterInterface
         {
             return;
         }
+        $token = csrf_hash();
+        
+        // log_message('debug', 'CSRF RESPONSE TOKEN: ' . $token);
 
-        $response->setHeader( 'X-CSRF-TOKEN', csrf_hash() );
+        $response->setHeader('X-CSRF-TOKEN', $token);
     }
 }
