@@ -22,6 +22,7 @@ die;
 <html lang="<?= session('locale') ?>">
   <!--begin::Head-->
   <head>
+    <meta name="csrf-token" content="<?= csrf_hash() ?>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>AdminLTE v4 | Dashboard</title>
 
@@ -31,7 +32,7 @@ die;
     <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
     
-    <meta name="csrf-token" content="<?= csrf_hash() ?>">
+    
     <!--end::Accessibility Meta Tags-->
 
     <!--begin::Accessibility Features-->
@@ -318,7 +319,12 @@ die;
           },
           update: function (event) {
               const token = event.detail.xhr.getResponseHeader('X-CSRF-TOKEN');
-              if (token) { document.querySelector('meta[name="csrf-token"]').content = token; }
+              const meta = document.querySelector('meta[name="csrf-token"]')
+
+              if (token && meta) 
+              {
+                meta.content = token;
+              }
           }
       };
 

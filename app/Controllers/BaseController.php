@@ -12,11 +12,13 @@ use Psr\Log\LoggerInterface;
 use App\Helpers\ClassHelper;
 
 // User
-use App\Services\Auth\UserService;
-use App\Services\Auth\RoleService;
-use App\Services\Auth\PermissionService;
+use App\Modules\Users\Services\UserService;
+use App\Modules\Auth\Services\RoleService;
+use App\Modules\Auth\Services\PermissionService;
 
 
+use App\Modules\Auth\Services\AuthService;
+use App\Modules\Users\Entities\User;
 // Traits
 use App\Traits\ModuleViewTrait;
 // Feature: Toast notifications
@@ -37,6 +39,7 @@ abstract class BaseController extends Controller
 {
     use ModuleViewTrait; 
 
+    protected AuthService $authService;
     protected UserService $userService;
     protected RoleService $roleService;
     protected PermissionService $permissionService;
@@ -54,7 +57,7 @@ abstract class BaseController extends Controller
         parent::initController($request, $response, $logger);
         //////////////////////////////////////////////////////
 
-
+        $this->authService = Services::authService();
         $this->userService = Services::userService();
         $this->roleService = Services::roleService();
         $this->permissionService = Services::permissionService();
@@ -76,15 +79,16 @@ abstract class BaseController extends Controller
      */
     protected function isLoggedIn(): bool
     {
-        return $this->userService->isLoggedIn();
+        return $this->authService->isLoggedIn();
     }
+
 
     /**
      * Get current user.
      */
-    protected function currentUser(): ?array
+    protected function currentUser(): ?User
     {
-        return $this->userService->currentUser();
+        return $this->authService->currentUser();
     }
 
     protected function _getControllerMethods(string $controller): array

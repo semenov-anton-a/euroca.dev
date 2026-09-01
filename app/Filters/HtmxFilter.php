@@ -12,6 +12,9 @@ class HtmxFilter implements FilterInterface
 {
     public function before( RequestInterface $request, $arguments = null )
     {
+        log_message('debug', 'CSRF HEADER: ' . $request->getHeaderLine('X-CSRF-TOKEN'));
+        // log_message('debug', 'CSRF COOKIE: ' . ($request->getCookie(config('Security')->cookieName) ?? 'NONE'));
+
         return null;
     }
 

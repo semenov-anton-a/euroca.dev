@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App\Modules\Auth\Repositories;
 
 use CodeIgniter\Database\BaseConnection;
 use Config\Database;
@@ -11,7 +11,7 @@ class RoleRepository
 {
     protected BaseConnection $db;
 
-    private $_tableName = 'roles';
+    private string $_tableName = 'roles';
 
     public function __construct()
     {
@@ -44,20 +44,14 @@ class RoleRepository
 
     /**
      * Получить роль пользователя.
-     *
-     * В текущей архитектуре предполагается,
-     * что пользователю назначена одна основная роль.
      */
     public function getUserRole(int $userId): ?array
     {
         return $this->db
-            ->table($this->_tableName . ' r')
+            ->table('roles r')
             ->select('r.*')
-            ->join(
-                'roles_users ru',
-                'ru.role_id = r.id'
-            )
-            ->where('ru.user_id', $userId)
+            ->join('users u', 'u.role_id = r.id')
+            ->where('u.id', $userId)
             ->get()
             ->getRowArray() ?: null;
     }
@@ -67,13 +61,21 @@ class RoleRepository
      */
     public function getUserRoleId(int $userId): ?int
     {
-        $role = $this->getUserRole($userId);
+        $result = $this->db
+            ->table('users')
+            ->select('role_id')
+            ->where('id', $userId)
+            ->get()
+            ->getRowArray();
 
-        return $role !== null
-            ? (int) $role['id']
+        return $result !== null
+            ? (int) $result['role_id']
             : null;
     }
 
+    /**
+     * Получить роли, доступные для управления.
+     */
     public function getManageableRoles(string ...$excludedRoles): array
     {
         return $this->db
@@ -87,14 +89,13 @@ class RoleRepository
     /**
      * Получить все роли.
      */
-    public function findAll() : array
+    public function findAll(): array
     {
         return $this->db
             ->table($this->_tableName)
             ->orderBy('name', 'ASC')
             ->get()
             ->getResultObject();
-            // ->getResultArray();
     }
 
     /**
@@ -112,10 +113,8 @@ class RoleRepository
     /**
      * Обновить роль.
      */
-    public function update(
-        int $roleId,
-        array $data
-    ): bool {
+    public function update(int $roleId, array $data): bool
+    {
         return $this->db
             ->table($this->_tableName)
             ->where('id', $roleId)
@@ -130,35 +129,6 @@ class RoleRepository
         return $this->db
             ->table($this->_tableName)
             ->where('id', $roleId)
-            ->delete();
-    }
-
-    /**
-     * Назначить роль пользователю.
-     */
-    public function assignToUser(
-        int $userId,
-        int $roleId
-    ): bool {
-        return $this->db
-            ->table('roles_users')
-            ->insert([
-                'user_id' => $userId,
-                'role_id' => $roleId,
-            ]);
-    }
-
-    /**
-     * Удалить роль у пользователя.
-     */
-    public function removeFromUser(
-        int $userId,
-        int $roleId
-    ): bool {
-        return $this->db
-            ->table('roles_users')
-            ->where('user_id', $userId)
-            ->where('role_id', $roleId)
             ->delete();
     }
 }
