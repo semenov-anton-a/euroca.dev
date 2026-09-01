@@ -31,14 +31,6 @@ class RolesPermissions extends BaseAdminSettingsController
      */
     public function getRoleDetails(int $id): ResponseInterface|string
     {
-
-        // $rolePermissions = $this->permissionService->getRolePermissions($id);
-       
-        // try{
-        //     $this->roleService->create( $id );
-        // }
-
-
         return $this->response->setBody(
             $this->viewModule('RolesPermissions/roledetalies', [
                 'rolePermissions' => $this->permissionService->getRolePermissions($id),
@@ -110,19 +102,61 @@ class RolesPermissions extends BaseAdminSettingsController
      */
     public function updateRole(int $id): ResponseInterface|string
     {
-        return $this->htmxToastMessage('success', "FAKE - role {$id} updated")->response;
+        try{
+            $name = trim((string) $this->request->getPost('name'));
+            $description = trim((string) $this->request->getPost('description'));
+
+            $rules = [
+                'name' => [
+                    'rules' => 'required|regex_match[' . RulesRegex::RoleName->value . ']',
+                    'errors' => [
+                        'required' => 'Role name is required.',
+                        'regex_match' => 'Role name must contain only lowercase letters, numbers and underscores.',
+                    ],
+                ],
+                'description' => [
+                    'rules' => 'required|regex_match[' . RulesRegex::DescriptionName->value . ']',
+                    'errors' => [
+                        'required' => 'Description is required.',
+                        'regex_match' => 'Description must be between 10 and 255 characters.',
+                    ],
+                ],
+            ];
+
+            $roleData = [ 'name' => $name, 'description' => $description, ];
+
+            if (! $this->validateData($roleData, $rules)) 
+            {   
+                log_message( 'error', 'Validation failed for role update: ' . json_encode($this->validator->getErrors()) );
+                return $this->addHtmxTrigger( "danger", [ 'errorMessage' => $this->validator->getErrors() ] )->response;
+            }
+
+            $this->roleService->update( $id, $roleData );
+
+        }catch( \Throwable $err ){
+            
+            log_message( 'error', 'Failed to update role: ' . $err->getMessage() );
+            
+            return $this->addHtmxTrigger( "danger", [
+                    "errors" => [ 
+                        "Failed to update role.",
+                        // $err->getMessage() 
+                    ]
+                ] 
+            )->response;
+        }
+
+        return $this->htmxToastMessage('success', "Role {$name} updated")->response;
     }
 
     /**
-     * Update permissions.
+     * Scan permissions.
      *
-     * If no ID is provided, updates the global permissions data.
-     * If an ID is provided, updates permissions for the specified role.
-     *
-     * @param int|null $id Role ID.
+     * @return ResponseInterface|string
      */
-    public function updatePermissions(?int $id = null): ResponseInterface|string
+    public function scanPermissions(): ResponseInterface|string
     {
-        return $this->htmxToastMessage('success', 'FAKE - Permissions updated')->response;
+        return $this->htmxToastMessage('success', 'FAKE - Scan Permissions')->response;
     }
+    
 }
