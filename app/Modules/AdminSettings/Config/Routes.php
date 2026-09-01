@@ -60,7 +60,7 @@ $routes->group('admin_settings', [
      */
     $routes->get('logs', 'Logs::index', ['as' => 'admin_settings.logs']);
     $routes->get('logs/read/(:any)', 'Logs::read/$1', ['as' => 'admin_settings.logs.read']);
-
+    $routes->post('logs/remove-all', 'Logs::removeAll', [ 'as' => 'admin_settings.logs.remove_all' ]);
 
     // $routes->get('logs/list', 'Logs::list', [ 'as' => 'admin_settings.logs.list', ]);
 

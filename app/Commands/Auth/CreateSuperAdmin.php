@@ -25,7 +25,7 @@ class CreateSuperAdmin extends BaseCommand
 
         /*
         |--------------------------------------------------------------------------
-        | Check if Super Admin role already exists
+        | Check Super Admin role
         |--------------------------------------------------------------------------
         */
 
@@ -35,36 +35,24 @@ class CreateSuperAdmin extends BaseCommand
             ->get()
             ->getRowArray();
 
-        if ($superAdminRole !== null) 
-        {
+        if ($superAdminRole !== null) {
             CLI::error('Super Admin role already exists.');
             return;
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Input user data
+        | User data
         |--------------------------------------------------------------------------
         */
 
-        $email      = trim( CLI::prompt('Email') );
-        $username   = trim( CLI::prompt('Username'));
-        $firstName  = trim( CLI::prompt('First name'));
-        $lastName   = trim( CLI::prompt('Last name') );
+        $email = trim(CLI::prompt('Email'));
+        $username = trim(CLI::prompt('Username'));
+        $firstName = trim(CLI::prompt('First name'));
+        $lastName = trim(CLI::prompt('Last name'));
 
-        /*
-        |--------------------------------------------------------------------------
-        | Validate required fields
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-            $email === ''
-            || $username === ''
-            || $firstName === ''
-            || $lastName === ''
-        ) {
-            CLI::error( 'All user fields are required.');
+        if ($email === '' || $username === '' || $firstName === '' || $lastName === '') {
+            CLI::error('All user fields are required.');
             return;
         }
 
@@ -75,18 +63,15 @@ class CreateSuperAdmin extends BaseCommand
         */
 
         $password = CLI::prompt('Password');
-
         $passwordConfirm = CLI::prompt('Confirm password');
 
-        if ($password !== $passwordConfirm) 
-        {
-            CLI::error( 'Passwords do not match.');
+        if ($password !== $passwordConfirm) {
+            CLI::error('Passwords do not match.');
             return;
         }
 
-        if (strlen($password) < 8) 
-        {
-            CLI::error( 'Password must be at least 8 characters.' );
+        if (strlen($password) < 8) {
+            CLI::error('Password must be at least 8 characters.');
             return;
         }
 
@@ -96,14 +81,12 @@ class CreateSuperAdmin extends BaseCommand
         |--------------------------------------------------------------------------
         */
 
-        $emailExists = $db
-            ->table('users')
-            ->where('email', $email)
-            ->countAllResults();
-
-        if ($emailExists > 0) 
-        {
-            CLI::error( 'User with this email already exists.');
+        if (
+            $db->table('users')
+                ->where('email', $email)
+                ->countAllResults() > 0
+        ) {
+            CLI::error('User with this email already exists.');
             return;
         }
 
@@ -113,52 +96,32 @@ class CreateSuperAdmin extends BaseCommand
         |--------------------------------------------------------------------------
         */
 
-        $usernameExists = $db
-            ->table('users')
-            ->where('username', $username)
-            ->countAllResults();
-
-        if ($usernameExists > 0) 
-        {
-            CLI::error( 'User with this username already exists.');
+        if (
+            $db->table('users')
+                ->where('username', $username)
+                ->countAllResults() > 0
+        ) {
+            CLI::error('User with this username already exists.');
             return;
         }
 
+
         /*
         |--------------------------------------------------------------------------
-        | Get all permissions
+        | Password hash
         |--------------------------------------------------------------------------
         */
 
-        $permissions = $db
-            ->table('permissions')
-            ->select('id')
-            ->get()
-            ->getResultArray();
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-        if (empty($permissions)) 
-        {
-            CLI::error( 'No permissions found in database.');
+        if ($passwordHash === false) {
+            CLI::error('Unable to hash password.');
             return;
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Hash password
-        |--------------------------------------------------------------------------
-        */
-
-        $passwordHash = password_hash( $password, PASSWORD_DEFAULT );
-
-        if ($passwordHash === false) 
-        {
-            CLI::error( 'Unable to hash password.' );
-            return;
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Start transaction
+        | Transaction
         |--------------------------------------------------------------------------
         */
 
@@ -176,8 +139,7 @@ class CreateSuperAdmin extends BaseCommand
                 ->table('roles')
                 ->insert([
                     'name' => 'super_admin',
-                    'description' =>
-                    'Full access to the entire system.',
+                    'description' => 'Full access to the entire system.',
                 ]);
 
             if (!$roleInserted) {
@@ -187,32 +149,7 @@ class CreateSuperAdmin extends BaseCommand
             }
 
             $roleId = (int) $db->insertID();
-
-            /*
-            |--------------------------------------------------------------------------
-            | 2. Assign all permissions
-            |--------------------------------------------------------------------------
-            */
-
-            foreach ($permissions as $permission) {
-
-                $permissionInserted = $db
-                    ->table('role_permissions')
-                    ->insert([
-                        'role_id' =>
-                        $roleId,
-
-                        'permission_id' =>
-                        $permission['id'],
-                    ]);
-
-                if (!$permissionInserted) {
-                    throw new \RuntimeException(
-                        'Failed to assign permission ID: '
-                            . $permission['id']
-                    );
-                }
-            }
+            
 
             /*
             |--------------------------------------------------------------------------
@@ -223,23 +160,13 @@ class CreateSuperAdmin extends BaseCommand
             $userInserted = $db
                 ->table('users')
                 ->insert([
-                    'email' =>
-                    $email,
-
-                    'username' =>
-                    $username,
-
-                    'first_name' =>
-                    $firstName,
-
-                    'last_name' =>
-                    $lastName,
-
-                    'password_hash' =>
-                    $passwordHash,
-
-                    'status' =>
-                    'active',
+                    'email' => $email,
+                    'username' => $username,
+                    'first_name' => $firstName,
+                    'last_name' => $lastName,
+                    'password_hash' => $passwordHash,
+                    'status' => 'active',
+                    'role_id' => $roleId,
                 ]);
 
             if (!$userInserted) {
@@ -252,26 +179,7 @@ class CreateSuperAdmin extends BaseCommand
 
             /*
             |--------------------------------------------------------------------------
-            | 4. Assign Super Admin role to user
-            |--------------------------------------------------------------------------
-            */
-
-            $userRoleInserted = $db
-                ->table('roles_users')
-                ->insert([
-                    'user_id' => $userId,
-                    'role_id' => $roleId,
-                ]);
-
-            if (!$userRoleInserted) {
-                throw new \RuntimeException(
-                    'Failed to assign Super Admin role to user.'
-                );
-            }
-
-            /*
-            |--------------------------------------------------------------------------
-            | Commit transaction
+            | Commit
             |--------------------------------------------------------------------------
             */
 
@@ -282,13 +190,8 @@ class CreateSuperAdmin extends BaseCommand
             }
 
             $db->transCommit();
-        } catch (\Throwable $e) {
 
-            /*
-            |--------------------------------------------------------------------------
-            | Rollback transaction
-            |--------------------------------------------------------------------------
-            */
+        } catch (\Throwable $e) {
 
             $db->transRollback();
 
@@ -305,16 +208,25 @@ class CreateSuperAdmin extends BaseCommand
         */
 
         CLI::newLine();
-        CLI::write( 'Super Admin created successfully!', 'green' );
+
+        CLI::write(
+            'Super Admin created successfully!',
+            'green'
+        );
 
         CLI::newLine();
+
         CLI::write('User ID: ' . $userId, 'green');
-        CLI::write( 'Username: ' . $username, 'green');
-        CLI::write('Email: ' . $email );
+        CLI::write('Username: ' . $username, 'green');
+        CLI::write('Email: ' . $email);
         CLI::write('Role: super_admin');
-        CLI::write('Permissions: ' . count($permissions));
+        CLI::write('Permissions: assigned later by scanner');
 
         CLI::newLine();
-        CLI::write( 'You can now login to the application.','green');
+
+        CLI::write(
+            'You can now login to the application.',
+            'green'
+        );
     }
 }

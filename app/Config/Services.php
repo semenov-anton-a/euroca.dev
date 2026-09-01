@@ -6,70 +6,120 @@ namespace Config;
 
 use CodeIgniter\Config\BaseService;
 
-use App\Services\Auth\UserService;
-use App\Services\Auth\RoleService;
-use App\Services\Auth\PermissionService;
+/** Users Module */
+use App\Modules\Users\Models\UserModel;
+use App\Modules\Users\Repositories\UserRepository;
+use App\Modules\Users\Services\UserService;
 
-use App\Repositories\UserRepository;
-use App\Repositories\RoleRepository;
-use App\Repositories\PermissionRepository;
-
-use App\Modules\Auth\Models\UserModel;
-
-use App\Services\View\ToastService;
-
+/** Auth Module */
+use App\Modules\Auth\Services\AuthService;
+use App\Modules\Auth\Repositories\PermissionRepository;
+use App\Modules\Auth\Repositories\RoleRepository;
+use App\Modules\Auth\Services\PermissionService;
+use App\Modules\Auth\Services\RoleService;
 
 class Services extends BaseService
 {
-    /**
-     * User Service.
-     */
-    public static function userService( bool $getShared = true ): UserService 
+
+    // =====================================================
+    // Auth
+    // =====================================================
+
+    public static function authService(bool $getShared = true): AuthService
     {
-        if ($getShared) 
-        {
+        if ($getShared) {
+            return static::getSharedInstance('authService');
+        }
+
+        return new AuthService(
+            static::userService(),
+            static::roleService(),
+            static::permissionService()
+        );
+    }
+
+    // =====================================================
+    // Users
+    // =====================================================
+
+    public static function userRepository(bool $getShared = true): UserRepository
+    {
+        if ($getShared) {
+            return static::getSharedInstance('userRepository');
+        }
+
+        return new UserRepository(
+            new UserModel()
+        );
+    }
+
+    public static function userService(bool $getShared = true): UserService
+    {
+        if ($getShared) {
             return static::getSharedInstance('userService');
         }
 
-        return new UserService( 
-                    new UserRepository( new UserModel() ), 
-                    new PermissionRepository(), 
-                    new RoleRepository()
-                );
+        return new UserService( static::userRepository() );
     }
 
 
-    /**
-     * Role Service.
-     */
-    public static function roleService( bool $getShared = true ): RoleService 
+    // =====================================================
+    // Auth
+    // =====================================================
+
+    public static function roleRepository(bool $getShared = true): RoleRepository
+    {
+        if ($getShared) {
+            return static::getSharedInstance('roleRepository');
+        }
+
+        return new RoleRepository();
+    }
+
+    public static function roleService(bool $getShared = true): RoleService
     {
         if ($getShared) {
             return static::getSharedInstance('roleService');
         }
 
-        return new RoleService( new RoleRepository() );
+        return new RoleService(
+            static::roleRepository()
+        );
     }
 
+    public static function permissionRepository(bool $getShared = true): PermissionRepository
+    {
+        if ($getShared) {
+            return static::getSharedInstance('permissionRepository');
+        }
 
-    /**
-     * Permission Service.
-     */
-    public static function permissionService( bool $getShared = true ): PermissionService 
+        return new PermissionRepository();
+    }
+
+    public static function permissionService(bool $getShared = true): PermissionService
     {
         if ($getShared) {
             return static::getSharedInstance('permissionService');
         }
 
-        return new PermissionService( new PermissionRepository(), static::roleService() );
+        return new PermissionService(
+            static::permissionRepository(),
+            static::roleService()
+        );
     }
 
-    public static function toastService(bool $getShared = true): ToastService
+    // =====================================================
+    // Clients
+    // =====================================================
+
+    public static function clientRepository()
     {
-        if ($getShared) {
-            return static::getSharedInstance('toastService');
-        }
-
-        return new ToastService();
+        // FEATURE
     }
+
+    public static function clientService()
+    {
+        // FEATURE
+    }
+
 }
