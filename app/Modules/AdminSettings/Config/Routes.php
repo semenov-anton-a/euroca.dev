@@ -52,7 +52,7 @@ $routes->group('admin_settings', [
     /**
      * Permissions management
      */
-    $routes->post('permissions/update', 'RolesPermissions::updatePermissions', [ 'as' => 'admin_settings.permissions_update' ]);
+    $routes->post('permissions/scan', 'RolesPermissions::scanPermissions', [ 'as' => 'admin_settings.permissions_scan' ]);
     
 
     /**

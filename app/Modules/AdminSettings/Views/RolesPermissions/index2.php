@@ -44,8 +44,8 @@
 
                     <div class="card-footer">
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-danger m-1 btn-sm" data-url="<?= route_to('admin_settings.permissions_update') ?>"
-                                onclick="PermissionsUpdate.update(this)">Update Permissions
+                            <button type="button" class="btn btn-danger m-1 btn-sm" data-url="<?= route_to('admin_settings.permissions_scan') ?>"
+                                onclick="PermissionsScan.scan(this)">Scan Permissions
                             </button>
                             <button type="button" class="btn btn-primary m-1 btn-sm" data-bs-toggle="modal" data-bs-target="#roleModal">New Role</button>                            
                         </div>
@@ -279,8 +279,8 @@ const RoleNavigation = {
     }
 };
 
-const PermissionsUpdate = {
-    update: function (button) {
+const PermissionsScan = {
+    scan: function (button) {
         if (button.disabled) return;
 
         const text = button.innerHTML;
