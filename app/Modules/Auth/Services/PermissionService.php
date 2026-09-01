@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Auth;
+namespace App\Modules\Auth\Services;
 
-use App\Repositories\PermissionRepository;
+use App\Modules\Auth\Repositories\PermissionRepository;
 
 class PermissionService
 {

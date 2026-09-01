@@ -22,7 +22,7 @@ abstract class BaseAdminSettingsController extends BaseController
     {
         parent::initController($request, $response, $logger);
 
-        $userId = $this->userService->currentUserId();
+        $userId = $this->authService->currentUserId();
 
         if (!$this->roleService->isSuperAdmin($userId)) 
         {
