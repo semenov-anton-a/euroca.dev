@@ -196,8 +196,7 @@
                         hx-disabled-elt="button"
                         autocomplete="off"
                         id="adminLogin">
-                        <?= csrf_field('csrf_token') ?>
-
+                        <?= csrf_field() ?>
                         <div class="form-group">
                             <input
                                 type="email"

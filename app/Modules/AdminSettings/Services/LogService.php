@@ -129,4 +129,19 @@ class LogService
 
         return $content;
     }
+
+    public function removeAll(): int
+    {
+        $deleted = 0;
+
+        foreach ($this->getFiles() as $file) 
+        {
+            if ( unlink($file) ) 
+            {
+                $deleted++;
+            }
+        }
+
+        return $deleted;
+    }
 }

@@ -20,7 +20,7 @@ class Auth extends BaseAuthController
      */
     public function login(): ResponseInterface|string
     {   
-        if( $this->userService->isLoggedIn() ) 
+        if( $this->authService->isLoggedIn() ) 
         {
             return redirect()->to('/dashboard');
         }
@@ -38,7 +38,7 @@ class Auth extends BaseAuthController
         $password = $this->request->getPost('password');
         $remember = (bool) $this->request->getPost('remember');
 
-        if (! $this->userService->login( $email, $password, $remember )) 
+        if (! $this->authService->login( $email, $password, $remember )) 
         {
             return $this->response
                 ->setStatusCode(200)
