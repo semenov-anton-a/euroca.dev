@@ -17,5 +17,13 @@ class Employees extends BaseEmployeesController
     {
         return $this->viewModule('index');        
     }
+
+
+
+    public function create(): ResponseInterface | string
+    {
+        return $this->viewModule('create');        
+    }
     
+
 }
