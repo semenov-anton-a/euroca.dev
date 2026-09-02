@@ -472,7 +472,7 @@
 
                     <div class="row g-3">
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="first_name" class="form-label">
                                 First Name
                             </label>
@@ -484,7 +484,7 @@
                                 required>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="last_name" class="form-label">
                                 Last Name
                             </label>
@@ -495,18 +495,7 @@
                                 name="last_name"
                                 required>
                         </div>
-
-                        <div class="col-md-4">
-                            <label for="middle_name" class="form-label">
-                                Middle Name
-                            </label>
-
-                            <input type="text"
-                                class="form-control"
-                                id="middle_name"
-                                name="middle_name">
-                        </div>
-
+                        
                         <div class="col-md-6">
                             <label for="email" class="form-label">
                                 Email
@@ -552,18 +541,6 @@
                                 id="position"
                                 name="position"
                                 placeholder="e.g. Accountant">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label for="department" class="form-label">
-                                Department
-                            </label>
-
-                            <input type="text"
-                                class="form-control"
-                                id="department"
-                                name="department"
-                                placeholder="e.g. Accounting">
                         </div>
 
                         <div class="col-md-6">
@@ -632,8 +609,7 @@
                                     type="checkbox"
                                     role="switch"
                                     id="enable_access"
-                                    name="enable_access"
-                                    checked>
+                                    name="enable_access">
 
                                 <label class="form-check-label"
                                     for="enable_access">
@@ -651,7 +627,6 @@
                             </label>
 
                             <div class="input-group">
-
                                 <input type="password"
                                     class="form-control"
                                     id="password"
@@ -665,26 +640,19 @@
 
                                     <i class="bi bi-shuffle me-1"></i>
                                     Generate
-
                                 </button>
-
                             </div>
-
                         </div>
 
                         <div class="col-md-4 d-flex align-items-end">
-
                             <button type="button"
                                 class="btn btn-outline-secondary w-100"
                                 id="togglePassword">
 
                                 <i class="bi bi-eye me-1"></i>
                                 Show Password
-
                             </button>
-
                         </div>
-
                     </div>
 
 
@@ -771,37 +739,54 @@
 
 
 <script>
-    const documentInput = document.getElementById('documents');
-    const selectedDocuments = document.getElementById('selectedDocuments');
+    const Documents = {
 
-    let selectedFiles = [];
+    selectedFiles: [],
 
+    init: function () {
+        this.input = document.getElementById('documents');
+        this.list = document.getElementById('selectedDocuments');
+        this.form = document.getElementById('employeeForm');
 
-    documentInput.addEventListener('change', function() {
+        if (!this.input || !this.list) return;
 
-        selectedFiles = [
-            ...selectedFiles,
-            ...Array.from(this.files)
+        this.input.addEventListener('change', (event) => {
+            this.addFiles(event.target.files);
+            event.target.value = '';
+        });
+
+        this.form?.addEventListener('submit', (event) => {
+            this.prepareForm(event);
+        });
+
+        this.updateList();
+    },
+
+    addFiles: function (files) {
+        this.selectedFiles = [
+            ...this.selectedFiles,
+            ...Array.from(files)
         ];
 
-        updateDocumentList();
+        this.updateList();
+    },
 
-        this.value = '';
-    });
+    remove: function (index) {
+        this.selectedFiles.splice(index, 1);
+        this.updateList();
+    },
 
+    updateList: function () {
+        this.list.innerHTML = '';
 
-    function updateDocumentList() {
-
-        selectedDocuments.innerHTML = '';
-
-        if (!selectedFiles.length) {
-            selectedDocuments.classList.add('d-none');
+        if (!this.selectedFiles.length) {
+            this.list.classList.add('d-none');
             return;
         }
 
-        selectedDocuments.classList.remove('d-none');
+        this.list.classList.remove('d-none');
 
-        selectedFiles.forEach((file, index) => {
+        this.selectedFiles.forEach((file, index) => {
 
             const row = document.createElement('div');
 
@@ -809,78 +794,48 @@
                 'list-group-item d-flex align-items-center justify-content-between';
 
             row.innerHTML = `
-            <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
 
-                <i class="bi bi-file-earmark-text fs-4 me-3 text-muted"></i>
+                    <i class="bi bi-file-earmark-text fs-4 me-3 text-muted"></i>
 
-                <div>
-                    <div class="fw-semibold">
-                        ${escapeHtml(file.name)}
+                    <div>
+                        <div class="fw-semibold">
+                            ${this.escapeHtml(file.name)}
+                        </div>
+
+                        <small class="text-muted">
+                            ${this.formatFileSize(file.size)}
+                        </small>
                     </div>
 
-                    <small class="text-muted">
-                        ${formatFileSize(file.size)}
-                    </small>
                 </div>
 
-            </div>
+                <button type="button"
+                        class="btn btn-sm btn-outline-danger"
+                        data-index="${index}"
+                        title="Remove">
 
-            <button type="button"
-                    class="btn btn-sm btn-outline-danger"
-                    onclick="removeDocument(${index})"
-                    title="Remove">
+                    <i class="bi bi-x-lg"></i>
 
-                <i class="bi bi-x-lg"></i>
+                </button>
+            `;
 
-            </button>
-        `;
+            row.querySelector('button').addEventListener('click', () => {
+                this.remove(index);
+            });
 
-            selectedDocuments.appendChild(row);
+            this.list.appendChild(row);
         });
-    }
+    },
 
-
-    function removeDocument(index) {
-
-        selectedFiles.splice(index, 1);
-
-        updateDocumentList();
-    }
-
-
-    function formatFileSize(bytes) {
-
-        if (bytes < 1024) {
-            return bytes + ' B';
-        }
-
-        if (bytes < 1024 * 1024) {
-            return (bytes / 1024).toFixed(1) + ' KB';
-        }
-
-        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-    }
-
-
-    function escapeHtml(value) {
-
-        const div = document.createElement('div');
-
-        div.textContent = value;
-
-        return div.innerHTML;
-    }
-
-
-    document.getElementById('employeeForm').addEventListener('submit', function(event) {
-
+    prepareForm: function (event) {
         event.preventDefault();
 
-        const formData = new FormData(this);
+        const formData = new FormData(this.form);
 
         formData.delete('documents[]');
 
-        selectedFiles.forEach(file => {
+        this.selectedFiles.forEach(file => {
             formData.append('documents[]', file);
         });
 
@@ -892,9 +847,154 @@
          *     body: formData
          * });
          */
-    });
+    },
+
+    formatFileSize: function (bytes) {
+
+        if (bytes < 1024) {
+            return bytes + ' B';
+        }
+
+        if (bytes < 1024 * 1024) {
+            return (bytes / 1024).toFixed(1) + ' KB';
+        }
+
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    },
+
+    escapeHtml: function (value) {
+        const div = document.createElement('div');
+
+        div.textContent = value;
+
+        return div.innerHTML;
+    }
+};
+
+
+const EmployeeAccess = {
+
+    init: function () {
+        this.access = document.getElementById('enable_access');
+        this.firstName = document.getElementById('first_name');
+        this.lastName = document.getElementById('last_name');
+        this.username = document.getElementById('username');
+        this.role = document.getElementById('role_id');
+        this.password = document.getElementById('password');
+        this.generateButton = document.getElementById('generatePassword');
+        this.toggleButton = document.getElementById('togglePassword');
+
+        if (!this.access) return;
+
+        this.access.addEventListener('change', () => this.update());
+
+        this.firstName?.addEventListener('input', () => {
+            this.generateUsername();
+        });
+
+        this.lastName?.addEventListener('input', () => {
+            this.generateUsername();
+        });
+
+        this.generateButton?.addEventListener('click', () => {
+            this.generatePassword();
+        });
+
+        this.toggleButton?.addEventListener('click', () => {
+            this.togglePassword();
+        });
+
+        this.update();
+    },
+
+    update: function () {
+        const enabled = this.access.checked;
+
+        this.username.disabled = !enabled;
+        this.role.disabled = !enabled;
+        this.password.disabled = !enabled;
+        this.generateButton.disabled = !enabled;
+        this.toggleButton.disabled = !enabled;
+
+        if (enabled) {
+            this.generateUsername();
+
+            if (!this.password.value) {
+                this.generatePassword();
+            }
+        } else {
+            this.password.value = '';
+            this.password.type = 'password';
+
+            this.toggleButton.innerHTML =
+                '<i class="bi bi-eye me-1"></i> Show Password';
+        }
+    },
+
+    generateUsername: function () {
+        if (!this.access.checked) return;
+
+        const firstName = this.firstName?.value.trim() || '';
+        const lastName = this.lastName?.value.trim() || '';
+
+        if (!firstName || !lastName) return;
+
+        let username = `${firstName}.${lastName}`;
+
+        username = username
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9.]/g, '')
+            .replace(/\.+/g, '.')
+            .replace(/^\.+|\.+$/g, '');
+
+        this.username.value = username;
+    },
+
+    generatePassword: function () {
+        if (!this.access.checked) return;
+
+        const chars =
+            'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
+
+        let password = '';
+
+        for (let i = 0; i < 12; i++) {
+            password += chars.charAt(
+                Math.floor(Math.random() * chars.length)
+            );
+        }
+
+        this.password.value = password;
+        this.password.type = 'text';
+
+        this.toggleButton.innerHTML =
+            '<i class="bi bi-eye-slash me-1"></i> Hide Password';
+    },
+
+    togglePassword: function () {
+        if (!this.access.checked) return;
+
+        if (this.password.type === 'password') {
+            this.password.type = 'text';
+
+            this.toggleButton.innerHTML =
+                '<i class="bi bi-eye-slash me-1"></i> Hide Password';
+        } else {
+            this.password.type = 'password';
+
+            this.toggleButton.innerHTML =
+                '<i class="bi bi-eye me-1"></i> Show Password';
+        }
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+    EmployeeAccess.init();
+    Documents.init();
+});
+
 </script>
-
-
 
 <?= $this->endSection() ?>

@@ -1,15 +1,14 @@
 CREATE TABLE `employees` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-
     `user_id` INT UNSIGNED DEFAULT NULL,
 
     `position` VARCHAR(100) DEFAULT NULL,
-    `department` VARCHAR(100) DEFAULT NULL,
 
     `hire_date` DATE DEFAULT NULL,
     `termination_date` DATE DEFAULT NULL,
 
     `status` VARCHAR(20) NOT NULL DEFAULT 'active',
+    `note` TEXT DEFAULT NULL,
 
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -19,7 +18,8 @@ CREATE TABLE `employees` (
 
     UNIQUE KEY `uk_employees_user_id` (`user_id`),
     KEY `idx_employees_status` (`status`),
-    KEY `idx_employees_department` (`department`),
+    KEY `idx_employees_position` (`position`),
+    KEY `idx_employees_deleted_at` (`deleted_at`),
 
     CONSTRAINT `fk_employees_user`
         FOREIGN KEY (`user_id`)
@@ -30,3 +30,24 @@ CREATE TABLE `employees` (
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE employee_documents (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    employee_id BIGINT UNSIGNED NOT NULL,
+    document_type VARCHAR(50) NOT NULL,
+    document_name VARCHAR(255) NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    mime_type VARCHAR(100) DEFAULT NULL,
+    file_size BIGINT UNSIGNED DEFAULT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+
+    INDEX idx_employee_id (employee_id),
+    INDEX idx_document_type (document_type),
+
+    CONSTRAINT fk_employee_documents_employee
+        FOREIGN KEY (employee_id) REFERENCES employees(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);

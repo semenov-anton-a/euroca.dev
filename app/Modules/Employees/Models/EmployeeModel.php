@@ -14,7 +14,7 @@ class EmployeeModel extends Model
     protected $allowedFields = [
         'user_id',
         'position',
-        'department',
+        'note',
         'hire_date',
         'termination_date',
         'status',
