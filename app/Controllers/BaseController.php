@@ -63,16 +63,15 @@ abstract class BaseController extends Controller
             'authServiceFile' => APPPATH . 'Modules/Auth/Config/Services.php',
             'file_exists' => is_file(APPPATH . 'Modules/Auth/Config/Services.php'),
             'class' => class_exists(\App\Modules\Auth\Config\Services::class),
-            // (new \Config\Autoload())->psr4,
-            // $locator->search('Config/Services'),
-            // 'auth' => \Config\Services::serviceExists('authService'),
-            // 'role' => \Config\Services::serviceExists('roleService'),
-            // 'permission' => \Config\Services::serviceExists('permissionService'),
-            
-            // 'class' => class_exists(\App\Modules\Auth\Config\Services::class),
-            // 'service' => \Config\Services::serviceExists('authService'),
-            // 'discover' => (new \Config\Modules())->shouldDiscover('services'),
-            // 'services' => \Config\Services::serviceExists('authService'),
+            (new \Config\Autoload())->psr4,
+            $locator->search('Config/Services'),
+            'auth' => \Config\Services::serviceExists('authService'),
+            'role' => \Config\Services::serviceExists('roleService'),
+            'permission' => \Config\Services::serviceExists('permissionService'),            
+            'class' => class_exists(\App\Modules\Auth\Config\Services::class),
+            'service' => \Config\Services::serviceExists('authService'),
+            'discover' => (new \Config\Modules())->shouldDiscover('services'),
+            'services' => \Config\Services::serviceExists('authService'),
         ]);
     }
     /**
@@ -91,7 +90,7 @@ abstract class BaseController extends Controller
         /**
          *  All TESTS HERE
          */
-            $this->__tests();
+            // $this->__tests();
         /**
          *  All TESTS HERE
          */
