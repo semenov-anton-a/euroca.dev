@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use Config\Services;
+// use Config\Services;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -11,14 +11,20 @@ use Psr\Log\LoggerInterface;
 // Only FOR TEST
 use App\Helpers\ClassHelper;
 
-// User
-use App\Modules\Users\Services\UserService;
+
+
+/** Auth Service */
+use App\Modules\Auth\Config\Services as AuthServices;
+use App\Modules\Auth\Services\AuthService;
 use App\Modules\Auth\Services\RoleService;
 use App\Modules\Auth\Services\PermissionService;
 
-
-use App\Modules\Auth\Services\AuthService;
+/** Users Service */
 use App\Modules\Users\Entities\User;
+use App\Modules\Users\Config\Services as UserServices;
+use App\Modules\Users\Services\UserService;
+
+
 // Traits
 use App\Traits\ModuleViewTrait;
 // Feature: Toast notifications
@@ -44,6 +50,30 @@ abstract class BaseController extends Controller
     protected RoleService $roleService;
     protected PermissionService $permissionService;
 
+    private function __tests()
+    {
+        $locator = \Config\Services::locator();
+
+         dd([
+            'servicesClass' => \Config\Services::serviceExists('authService'),
+            'moduleServicesClass' => class_exists(\App\Modules\Auth\Config\Services::class),
+            'moduleServices' => $locator->search('Modules/Auth/Config/Services'),
+            'moduleConfig' => $locator->search('Modules/Auth/Config'),
+            'search' => $locator->search('Config/Services'),
+            'authServiceFile' => APPPATH . 'Modules/Auth/Config/Services.php',
+            'file_exists' => is_file(APPPATH . 'Modules/Auth/Config/Services.php'),
+            'class' => class_exists(\App\Modules\Auth\Config\Services::class),
+            (new \Config\Autoload())->psr4,
+            $locator->search('Config/Services'),
+            'auth' => \Config\Services::serviceExists('authService'),
+            'role' => \Config\Services::serviceExists('roleService'),
+            'permission' => \Config\Services::serviceExists('permissionService'),            
+            'class' => class_exists(\App\Modules\Auth\Config\Services::class),
+            'service' => \Config\Services::serviceExists('authService'),
+            'discover' => (new \Config\Modules())->shouldDiscover('services'),
+            'services' => \Config\Services::serviceExists('authService'),
+        ]);
+    }
     /**
      * @return void
      */
@@ -56,11 +86,22 @@ abstract class BaseController extends Controller
         // Caution: Do not edit this line.
         parent::initController($request, $response, $logger);
         //////////////////////////////////////////////////////
+        
+        /**
+         *  All TESTS HERE
+         */
+            // $this->__tests();
+        /**
+         *  All TESTS HERE
+         */
 
-        $this->authService = Services::authService();
-        $this->userService = Services::userService();
-        $this->roleService = Services::roleService();
-        $this->permissionService = Services::permissionService();
+
+        // Load Services
+        $this->authService = AuthServices::authService();
+        $this->userService = UserServices::userService();
+        $this->roleService = AuthServices::roleService();
+        $this->permissionService = AuthServices::permissionService();
+        
     }
     
     /**

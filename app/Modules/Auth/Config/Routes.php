@@ -9,7 +9,8 @@ $routes->group('', [
 ], static function ($routes) {
 
     $routes->get('/', 'Auth::login');
-    $routes->get('/register', 'Auth::register');
-    $routes->post('login', 'Auth::authenticate');
     $routes->get('logout', 'Auth::logout');
+    $routes->post('login', 'Auth::authenticate');
+    
+    
 });
