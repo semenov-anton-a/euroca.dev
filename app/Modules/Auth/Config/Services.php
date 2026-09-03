@@ -24,6 +24,7 @@ class Services extends BaseService
             return static::getSharedInstance('authService');
         }
 
+
         return new AuthService(
             UserServices::userService(),
             static::roleService(),

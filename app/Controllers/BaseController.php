@@ -50,6 +50,31 @@ abstract class BaseController extends Controller
     protected RoleService $roleService;
     protected PermissionService $permissionService;
 
+    private function __tests()
+    {
+        $locator = \Config\Services::locator();
+
+         dd([
+            'servicesClass' => \Config\Services::serviceExists('authService'),
+            'moduleServicesClass' => class_exists(\App\Modules\Auth\Config\Services::class),
+            'moduleServices' => $locator->search('Modules/Auth/Config/Services'),
+            'moduleConfig' => $locator->search('Modules/Auth/Config'),
+            'search' => $locator->search('Config/Services'),
+            'authServiceFile' => APPPATH . 'Modules/Auth/Config/Services.php',
+            'file_exists' => is_file(APPPATH . 'Modules/Auth/Config/Services.php'),
+            'class' => class_exists(\App\Modules\Auth\Config\Services::class),
+            // (new \Config\Autoload())->psr4,
+            // $locator->search('Config/Services'),
+            // 'auth' => \Config\Services::serviceExists('authService'),
+            // 'role' => \Config\Services::serviceExists('roleService'),
+            // 'permission' => \Config\Services::serviceExists('permissionService'),
+            
+            // 'class' => class_exists(\App\Modules\Auth\Config\Services::class),
+            // 'service' => \Config\Services::serviceExists('authService'),
+            // 'discover' => (new \Config\Modules())->shouldDiscover('services'),
+            // 'services' => \Config\Services::serviceExists('authService'),
+        ]);
+    }
     /**
      * @return void
      */
@@ -62,8 +87,16 @@ abstract class BaseController extends Controller
         // Caution: Do not edit this line.
         parent::initController($request, $response, $logger);
         //////////////////////////////////////////////////////
+        
+        /**
+         *  All TESTS HERE
+         */
+            $this->__tests();
+        /**
+         *  All TESTS HERE
+         */
 
-        log_message('error', 'LOGIN METHOD START');
+
         // Load Services
         $this->authService = AuthServices::authService();
         $this->userService = UserServices::userService();
