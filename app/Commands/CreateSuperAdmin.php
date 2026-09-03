@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Commands\Auth;
+namespace App\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
 class CreateSuperAdmin extends BaseCommand
 {
-    protected $group = 'Auth';
+    protected $group = '_My Commands';
 
-    protected $name = 'auth:create-superadmin';
+    protected $name = 'my:create-superadmin';
 
     protected $description = 'Create the first Super Admin with full permissions.';
 
