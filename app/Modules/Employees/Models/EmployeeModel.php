@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Employees\Models;
 
 use CodeIgniter\Model;
@@ -14,10 +16,10 @@ class EmployeeModel extends Model
     protected $allowedFields = [
         'user_id',
         'position',
-        'note',
         'hire_date',
         'termination_date',
         'status',
+        'note',
     ];
 
     protected $useTimestamps = true;
@@ -26,5 +28,4 @@ class EmployeeModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     protected $deletedField = 'deleted_at';
-
 }

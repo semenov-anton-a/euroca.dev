@@ -13,6 +13,16 @@ class Services extends BaseService
         return \App\Modules\Auth\Config\Services::authService($getShared);
     }
 
+    public static function employeeDocumentService(bool $getShared = true): \App\Modules\Employees\Services\EmployeeDocumentService
+    {
+        return \App\Modules\Employees\Config\Services::employeeDocumentService($getShared);
+    }
+
+    public static function employeeService(bool $getShared = true): \App\Modules\Employees\Services\EmployeeService
+    {
+        return \App\Modules\Employees\Config\Services::employeeService($getShared);
+    }
+
     public static function permissionRepository(bool $getShared = true): \App\Modules\Auth\Repositories\PermissionRepository
     {
         return \App\Modules\Auth\Config\Services::permissionRepository($getShared);
