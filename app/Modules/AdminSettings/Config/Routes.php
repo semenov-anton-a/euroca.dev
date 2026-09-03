@@ -30,6 +30,10 @@ $routes->group('admin_settings', [
     'namespace' => 'App\Modules\AdminSettings\Controllers',
     'filter' => 'auth',
 ], static function ($routes) {
+    
+    $routes->get('documentation', 'Documentation::index', [ 'as' => 'admin_settings.documentation' ]);
+
+
 
     $routes->get('', 'General::index', [ 'as' => 'admin_settings' ]);
 

@@ -152,6 +152,13 @@ class MenuService
                     'permission' => 'tests',
                     'order'      => 50,
                 ],
+                [
+                    'title'      => 'Documentation',
+                    'icon'       => 'shield',
+                    'url'        => '/admin_settings/documentation',
+                    'permission' => 'tests',
+                    'order'      => 50,
+                ],
 
             ],
         ],
