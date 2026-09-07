@@ -192,7 +192,7 @@
                     <?php
                     if (ENVIRONMENT == 'development') 
                     {
-                        $email = "semenov.anton.a@gmail.com";
+                        $login = "semenov.anton.a@gmail.com";
                         $password = "12345678";
                     }
                     ?>
@@ -206,11 +206,11 @@
                         id="adminLogin">
                         <?= csrf_field() ?>
                         <div class="form-group">
-                            <input <?= isset($email) ? "value=\"{$email}\"" : "" ?>
-                                type="email"
+                            <input <?= isset($login) ? "value=\"{$login}\"" : "" ?>
+                                type="text"
                                 class="form-control"
-                                name="email"
-                                placeholder="<?= lang('Auth.email_placeholder') ?>"
+                                name="login"
+                                placeholder="<?= lang('Auth.email_placeholder_or_username') ?>"
                                 required>
                         </div>
 

@@ -34,11 +34,12 @@ class Auth extends BaseAuthController
      */
     public function authenticate(): ResponseInterface|string
     {
-        $email = $this->request->getPost('email');
-        $password = $this->request->getPost('password');
-        $remember = (bool) $this->request->getPost('remember');
+        $login      = $this->request->getPost('login');
+        $password   = $this->request->getPost('password');
+        
+        $remember   = (bool) $this->request->getPost('remember');
 
-        if (! $this->authService->login( $email, $password, $remember )) 
+        if ( ! $this->authService->login($login, $password, $remember) ) 
         {
             return $this->response
                 ->setStatusCode(200)

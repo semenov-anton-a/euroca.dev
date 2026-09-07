@@ -25,6 +25,16 @@ class UserRepository
             ->first();
     }
 
+    public function findByLogin(string $login): ?User
+    {
+        return $this->userModel
+            ->groupStart()
+                ->where('username', $login)
+                ->orWhere('email', $login)
+            ->groupEnd()
+            ->first();
+    }
+
     public function existsByEmail(string $email): bool
     {
         return $this->userModel

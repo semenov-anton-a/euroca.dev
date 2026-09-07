@@ -58,7 +58,7 @@ CREATE TABLE `users` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `role_id` INT UNSIGNED NOT NULL,
 
-    `email` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) DEFAULT NULL,
     `username` VARCHAR(100) NOT NULL,
     `password_hash` VARCHAR(255) NOT NULL,
 

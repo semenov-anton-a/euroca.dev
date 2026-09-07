@@ -19,19 +19,15 @@ class AuthService
     /**
      * Проверить учетные данные пользователя.
      */
-    public function authenticate(string $email, string $password): ?User
+    public function authenticate(string $login, string $password): ?User
     {
-        $user = $this->userService->findByEmail($email);
+        $user = $this->userService->findByLogin($login);
 
         if ($user === null) {
             return null;
         }
 
-        if ($user->isDeleted()) {
-            return null;
-        }
-
-        if (!$user->isActive()) {
+        if ($user->isDeleted() || !$user->isActive()) {
             return null;
         }
 
@@ -46,11 +42,12 @@ class AuthService
      * Авторизовать пользователя.
      */
     public function login(
-        string $email,
+        string $login,
         string $password,
         bool $remember = false
     ): bool {
-        $user = $this->authenticate($email, $password);
+
+        $user = $this->authenticate($login, $password);
 
         if ($user === null) {
             return false;
