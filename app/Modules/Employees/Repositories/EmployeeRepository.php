@@ -1,17 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Employees\Repositories;
 
-use App\Modules\Employees\Models\EmployeeModel;
 use App\Modules\Employees\Entities\Employee;
+use App\Modules\Employees\Models\EmployeeModel;
 
 class EmployeeRepository
 {
     public function __construct(
-        protected EmployeeModel $model = new EmployeeModel()
+        protected EmployeeModel $model
     ) {}
 
-    public function find(int $id): ?Employee
+    public function paginate(int $perPage = 20): array
+    {
+        return $this->model
+            ->orderBy('id', 'DESC')
+            ->paginate($perPage);
+    }
+
+    public function pager()
+    {
+        return $this->model->pager;
+    }
+
+    public function findById(int $id): ?Employee
     {
         return $this->model->find($id);
     }
@@ -23,9 +37,19 @@ class EmployeeRepository
             ->first();
     }
 
-    public function all(): array
+    public function findAll(): array
     {
-        return $this->model->findAll();
+        return $this->model
+            ->orderBy('id', 'DESC')
+            ->findAll();
+    }
+
+    public function findActive(): array
+    {
+        return $this->model
+            ->where('status', 'active')
+            ->orderBy('id', 'DESC')
+            ->findAll();
     }
 
     public function create(array $data): int
@@ -41,5 +65,12 @@ class EmployeeRepository
     public function delete(int $id): bool
     {
         return $this->model->delete($id);
+    }
+
+    public function existsByUserId(int $userId): bool
+    {
+        return $this->model
+            ->where('user_id', $userId)
+            ->countAllResults() > 0;
     }
 }

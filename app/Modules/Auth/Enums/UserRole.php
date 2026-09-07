@@ -12,13 +12,6 @@ enum UserRole: string
 {
     case SuperAdmin = 'super_admin';
 
-    case Admin = 'admin';
-
-    case Employee = 'employee';
-
-    case Client = 'client';
-
-
     /**
      * Получить все роли.
      */
