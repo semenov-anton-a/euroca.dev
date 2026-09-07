@@ -13,11 +13,10 @@ $routes->group('employees', [
     /** Show */
     $routes->get('(:num)', 'Employees::show/$1', ['as' => 'employees.show']);
     
-    /** Create */
-    $routes->get('create', 'Employees::create', ['as' => 'employees.create']);
+    /** Store */
+    $routes->post('store', 'Employees::store', ['as' => 'employees.store']);
     
-    /** Edit */
-    $routes->post('create', 'Employees::store', ['as' => 'employees.store']);
+    /** Edit */    
     $routes->get('(:num)/edit', 'Employees::edit/$1', ['as' => 'employees.edit']);
     
     /** Update */

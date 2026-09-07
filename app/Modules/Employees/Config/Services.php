@@ -11,6 +11,7 @@ use App\Modules\Employees\Repositories\EmployeeRepository;
 use App\Modules\Employees\Repositories\EmployeeDocumentRepository;
 use App\Modules\Employees\Services\EmployeeService;
 use App\Modules\Employees\Services\EmployeeDocumentService;
+use App\Modules\Users\Config\Services as UserServices;
 
 class Services extends BaseService
 {
@@ -21,9 +22,8 @@ class Services extends BaseService
         }
 
         return new EmployeeService(
-            new EmployeeRepository(
-                new EmployeeModel()
-            )
+            new EmployeeRepository(new EmployeeModel()),
+            UserServices::userService()
         );
     }
 
@@ -34,9 +34,7 @@ class Services extends BaseService
         }
 
         return new EmployeeDocumentService(
-            new EmployeeDocumentRepository(
-                new EmployeeDocumentModel()
-            )
+            new EmployeeDocumentRepository(new EmployeeDocumentModel())
         );
     }
 }

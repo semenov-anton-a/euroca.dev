@@ -1,284 +1,3 @@
-<?= $this->extend('layouts/main') ?>
-
-<?= $this->section('headerContentModule') ?>
-<?= $this->endSection() ?>
-
-<?= $this->section('content') ?>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-
-            <!-- Card Header -->
-            <div class="card-header border-0">
-                <h3 class="card-title">
-                    <i class="bi bi-people me-2"></i>Employees
-                </h3>
-
-                <div class="card-tools">
-                    <button type="button"
-                        class="btn btn-primary btn-sm"
-                        data-bs-toggle="modal"
-                        data-bs-target="#employeeModal">
-                        <i class="bi bi-person-plus me-1"></i>
-                        New Employee
-                    </button>
-                </div>
-
-            </div>
-
-            <!-- Card Body -->
-            <div class="card-body table-responsive p-0">
-
-                <table class="table table-hover align-middle mb-0" data-accordion>
-
-                    <thead>
-                        <tr>
-                            <th style="width: 40px;"></th>
-                            <th>Employee</th>
-                            <th>Position</th>
-                            <th>Department</th>
-                            <th>Hire Date</th>
-                            <th>Status</th>
-                            <th class="text-end">Actions</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        <!-- Employee #1 -->
-                        <tr class="accordion-row"
-                            data-accordion-row
-                            data-accordion-target="employee-1">
-
-                            <td>
-                                <i class="bi bi-chevron-right accordion-icon"
-                                    data-accordion-icon></i>
-                            </td>
-
-                            <td>
-                                <div class="d-flex align-items-center">
-
-                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
-                                        style="width:40px;height:40px;">
-                                        <strong>AS</strong>
-                                    </div>
-
-                                    <div>
-                                        <div class="fw-semibold">
-                                            Anton Semenov
-                                        </div>
-                                        <small class="text-muted">
-                                            anton@example.com
-                                        </small>
-                                    </div>
-
-                                </div>
-                            </td>
-
-                            <td>Manager</td>
-
-                            <td>
-                                <span class="text-muted">
-                                    Logistics
-                                </span>
-                            </td>
-
-                            <td>20.02.2025</td>
-
-                            <td>
-                                <span class="badge text-bg-success">
-                                    Active
-                                </span>
-                            </td>
-
-                            <td class="text-end">
-                                <div class="btn-group btn-group-sm">
-
-                                    <button type="button"
-                                        class="btn btn-outline-primary"
-                                        title="Edit">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-
-                                    <button type="button"
-                                        class="btn btn-outline-danger"
-                                        title="Delete">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-
-                                </div>
-                            </td>
-
-                        </tr>
-
-                        <!-- Employee #1 Details -->
-                        <tr id="employee-1" class="accordion-details">
-                            <td colspan="7">
-
-                                <div class="accordion-content"
-                                    data-accordion-content>
-
-                                    <div class="p-3">
-
-                                        <div class="row g-3">
-
-                                            <div class="col-md-4">
-                                                <small class="text-muted d-block">
-                                                    Full Name
-                                                </small>
-                                                <strong>
-                                                    Anton Semenov
-                                                </strong>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <small class="text-muted d-block">
-                                                    Email
-                                                </small>
-                                                <strong>
-                                                    anton@example.com
-                                                </strong>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <small class="text-muted d-block">
-                                                    Phone
-                                                </small>
-                                                <strong>
-                                                    +358 40 123 4567
-                                                </strong>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <small class="text-muted d-block">
-                                                    Position
-                                                </small>
-                                                <strong>
-                                                    Manager
-                                                </strong>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <small class="text-muted d-block">
-                                                    Department
-                                                </small>
-                                                <strong>
-                                                    Logistics
-                                                </strong>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <small class="text-muted d-block">
-                                                    Hire Date
-                                                </small>
-                                                <strong>
-                                                    20.02.2025
-                                                </strong>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="mt-4">
-                                            <small class="text-muted d-block mb-1">
-                                                Additional Information
-                                            </small>
-
-                                            <div>
-                                                Has access to warehouse keys
-                                                and company vehicle.
-                                            </div>
-                                        </div>
-                                        <!-- Documents -->
-                                        <div class="mt-4">
-                                            <div class="d-flex align-items-center justify-content-between mb-2"> <small class="text-muted"> Documents </small> <span class="badge text-bg-secondary"> 3 files </span> </div>
-                                            <div class="list-group list-group-flush border rounded"> <!-- Passport -->
-                                                <div class="list-group-item d-flex align-items-center justify-content-between">
-                                                    <div class="d-flex align-items-center"> <i class="bi bi-file-earmark-person fs-4 text-muted me-3"></i>
-                                                        <div>
-                                                            <div class="fw-semibold"> Passport </div> <small class="text-muted"> passport.pdf · 2.4 MB </small>
-                                                        </div>
-                                                    </div> <a href="<?= route_to('employees.document.view', 1) ?>" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary"> <i class="bi bi-eye me-1"></i> View </a>
-                                                </div> <!-- Employment Contract -->
-                                                <div class="list-group-item d-flex align-items-center justify-content-between">
-                                                    <div class="d-flex align-items-center"> <i class="bi bi-file-earmark-text fs-4 text-muted me-3"></i>
-                                                        <div>
-                                                            <div class="fw-semibold"> Employment Contract </div> <small class="text-muted"> employment-contract.pdf · 1.8 MB </small>
-                                                        </div>
-                                                    </div> <a href="<?= route_to('employees.document.view', 2) ?>" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary"> <i class="bi bi-eye me-1"></i> View </a>
-                                                </div> <!-- Certificate -->
-                                                <div class="list-group-item d-flex align-items-center justify-content-between">
-                                                    <div class="d-flex align-items-center"> <i class="bi bi-file-earmark-check fs-4 text-muted me-3"></i>
-                                                        <div>
-                                                            <div class="fw-semibold"> Certificate </div> <small class="text-muted"> certificate.pdf · 950 KB </small>
-                                                        </div>
-                                                    </div> <a href="<?= route_to('employees.document.view', 3) ?>" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary"> <i class="bi bi-eye me-1"></i> View </a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <hr>
-
-                                        <div class="d-flex justify-content-end gap-2">
-
-                                            <button type="button"
-                                                class="btn btn-sm btn-primary">
-                                                <i class="bi bi-pencil me-1"></i>
-                                                Edit Employee
-                                            </button>
-
-                                            <button type="button"
-                                                class="btn btn-sm btn-outline-danger">
-                                                <i class="bi bi-trash me-1"></i>
-                                                Delete
-                                            </button>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-
-                            </td>
-                        </tr>
-
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-            <!-- Card Footer -->
-            <div class="card-footer clearfix">
-
-                <div class="float-start text-muted small">
-                    Showing 1–2 of 2 employees
-                </div>
-
-                <ul class="pagination pagination-sm m-0 float-end">
-
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">&laquo;</a>
-                    </li>
-
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">&raquo;</a>
-                    </li>
-
-                </ul>
-
-            </div>
-
-        </div>
-    </div>
-</div>
 
 <!-- ========================================================= -->
 <!-- NEW EMPLOYEE MODAL -->
@@ -309,15 +28,11 @@
 
             <!-- Body -->
             <div class="modal-body">
-                <div id="employee-message"></div>
+
                 <form id="employeeForm"
                     method="post"
-                    enctype="multipart/form-data"
-                    hx-post="<?= route_to('employees.store') ?>"
-                    hx-target="#employee-message"
-                    hx-swap="innerHTML"
-                    hx-indicator="#employee-spinner">
-                    
+                    enctype="multipart/form-data">
+
                     <!-- Personal Information -->
                     <h6 class="text-muted border-bottom pb-2 mb-3">
                         Personal Information
@@ -442,11 +157,11 @@
                                 <option value="" selected disabled>
                                     Select role
                                 </option>
-                                <?php foreach ($roles as $role): ?>
-                                    <option value="<?= esc($role->id) ?>">
-                                        <?= esc($role->name) ?>
-                                    </option>
-                                <?php endforeach; ?>
+
+                                <option value="2">Accountant</option>
+                                <option value="3">Manager</option>
+                                <option value="4">Warehouse Manager</option>
+
                             </select>
 
                             <div class="form-text">
@@ -549,8 +264,8 @@
                     <div class="mb-2">
 
                         <textarea class="form-control"
-                            id="note"
-                            name="note"
+                            id="notes"
+                            name="notes"
                             rows="4"
                             placeholder="Enter any additional information about the employee..."></textarea>
 
@@ -559,7 +274,7 @@
                         </div>
 
                     </div>
-                    
+
                 </form>
 
             </div>
@@ -574,17 +289,13 @@
                     Cancel
                 </button>
 
-                <div id="employee-spinner" class="htmx-indicator text-center py-2">
-                    <div class="spinner-border spinner-border-sm me-2"></div>
-                    Creating employee...
-                </div>
-
                 <button type="submit"
                     form="employeeForm"
                     class="btn btn-primary">
 
                     <i class="bi bi-check-lg me-1"></i>
                     Create Employee
+
                 </button>
 
             </div>
@@ -853,5 +564,3 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 </script>
-
-<?= $this->endSection() ?>

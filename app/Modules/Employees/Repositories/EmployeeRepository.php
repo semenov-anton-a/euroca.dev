@@ -13,6 +13,18 @@ class EmployeeRepository
         protected EmployeeModel $model
     ) {}
 
+    public function paginate(int $perPage = 20): array
+    {
+        return $this->model
+            ->orderBy('id', 'DESC')
+            ->paginate($perPage);
+    }
+
+    public function pager()
+    {
+        return $this->model->pager;
+    }
+
     public function findById(int $id): ?Employee
     {
         return $this->model->find($id);
