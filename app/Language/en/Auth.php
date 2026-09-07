@@ -13,5 +13,6 @@ return [
     'login_button' => 'Login',
     'no_account' => "Don't have an account?",
     'register' => 'Register',
+    'error_login' => 'Invalid email or password',
     
 ];

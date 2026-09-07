@@ -4,95 +4,80 @@ declare(strict_types=1);
 
 namespace App\Modules\Cargo\Controllers;
 
-use App\Controllers\BaseController;
-use CodeIgniter\HTTP\ResponseInterface;
-use App\Modules\Cargo\Services\CargoService;
 
 /**
  * Cargo controller for logistics operations.
  * Handles cargo listing, creation, editing, and viewing.
  */
-class Cargo extends BaseController
-{
-    protected CargoService $cargoService;
-
-    public function __construct()
-    {
-        $this->cargoService = new CargoService();
-    }
-
+class Cargo extends BaseCargoController
+{  
     /**
      * List all cargo items.
      */
     public function index(): string
     {
-        $cargos = $this->cargoService->getAll();
-        
-        return view('index', ['cargos' => $cargos]);
+        return $this->viewModule('index_test');
     }
 
     /**
      * Show cargo creation form.
      */
-    public function create(): string
-    {
-        return view('create');
-    }
+    // public function create(): string
+    // {
+    //     return $this->viewModule('create');
+    // }
 
-    /**
-     * Store new cargo.
-     */
-    public function store(): ResponseInterface
-    {
-        // To be implemented
-        return redirect()->to('/cargo');
-    }
+    // /**
+    //  * Store new cargo.
+    //  */
+    // public function store(): ResponseInterface
+    // {
+    //     // To be implemented
+    //     return redirect()->to('/cargo');
+    // }
 
-    /**
-     * Show cargo details.
-     */
-    public function show(int $id): string
-    {
-        $cargo = $this->cargoService->find($id);
+    // /**
+    //  * Show cargo details.
+    //  */
+    // public function show(int $id): string
+    // {
+
+    //     return "TEST show";
+    //     // $cargo = $this->cargoService->find($id);
         
-        return view('show', ['cargo' => $cargo]);
-    }
+    //     // return $this->viewModule('show', ['cargo' => $cargo]);
+    // }
 
-    /**
-     * Show cargo edit form.
-     */
-    public function edit(int $id): string
-    {
-        $cargo = $this->cargoService->find($id);
+    // /**
+    //  * Show cargo edit form.
+    //  */
+    // public function edit(int $id): string
+    // {
         
-        return view('edit', ['cargo' => $cargo]);
-    }
+    //     return "TEST edit";
+    // }
 
-    /**
-     * Update cargo.
-     */
-    public function update(int $id): ResponseInterface
-    {
-        // To be implemented
-        return redirect()->to('/cargo');
-    }
+    // /**
+    //  * Update cargo.
+    //  */
+    // public function update(int $id): ResponseInterface
+    // {
+    //      return "TEST UPDATE";
+    // }
 
-    /**
-     * Delete cargo.
-     */
-    public function delete(int $id): ResponseInterface
-    {
-        // To be implemented
-        return redirect()->to('/cargo');
-    }
+    // /**
+    //  * Delete cargo.
+    //  */
+    // public function delete(int $id): ResponseInterface
+    // {
+    //      return "TEST DELETE";
+    // }
 
-    /**
-     * API index for HTMX.
-     */
-    public function apiIndex(): string
-    {
-        $cargos = $this->cargoService->getAll();
-        
-        return view('Cargo::parts/list', ['cargos' => $cargos]);
-    }
+    // /**
+    //  * API index for HTMX.
+    //  */
+    // public function apiIndex(): string
+    // {
+    //      return "TEST API iNDEX";
+    // }
 }

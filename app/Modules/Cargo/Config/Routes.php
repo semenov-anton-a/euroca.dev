@@ -8,7 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->group('', 
         [
             'namespace' => 'App\Modules\Cargo\Controllers', 
-            'filter' => 'auth'
+            // 'filter' => 'auth'
         ], static function ($routes) 
     {
     $routes->get('cargo', 'Cargo::index');

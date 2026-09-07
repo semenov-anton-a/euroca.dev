@@ -188,7 +188,15 @@
                     <h4 class="modal-title">EuroCargo Finland</h4>
                 </div>
                 <div class="modal-body">
-
+                
+                    <?php
+                    if (ENVIRONMENT == 'development') 
+                    {
+                        $email = "semenov.anton.a@gmail.com";
+                        $password = "12345678";
+                    }
+                    ?>
+                
                     <form
                         hx-post="<?= base_url('login') ?>"
                         hx-target="#login-message"
@@ -196,10 +204,9 @@
                         hx-disabled-elt="button"
                         autocomplete="off"
                         id="adminLogin">
-                        <?= csrf_field('csrf_token') ?>
-
+                        <?= csrf_field() ?>
                         <div class="form-group">
-                            <input
+                            <input <?= isset($email) ? "value=\"{$email}\"" : "" ?>
                                 type="email"
                                 class="form-control"
                                 name="email"
@@ -208,7 +215,7 @@
                         </div>
 
                         <div class="form-group">
-                            <input
+                            <input <?= isset($password) ? "value=\"{$password}\"" : "" ?>
                                 type="password"
                                 class="form-control"
                                 name="password"
@@ -224,6 +231,8 @@
                                 </label>
                             </div>
 
+                            <div id="login-message" class="alert alert-danger "></div>
+
                             <button
                                 type="submit"
                                 class="btn btn-primary btn-lg btn-block login-btn">
@@ -237,16 +246,6 @@
                             </button>
                         </div>
                     </form>
-                    <div id="login-message" class="alert alert-info "></div>
-                    <?php
-                    if (ENVIRONMENT == 'development') 
-                    {
-                        echo '<div class="alert alert-danger" role="alert">';
-                        echo 'Development Mode: Use <strong>admin@eurocargo.local</strong> <br/> <strong>password123</strong>';
-                        echo '</div>';
-                    }
-                    ?>
-                </div>
             </div>
         </div>
     </div>

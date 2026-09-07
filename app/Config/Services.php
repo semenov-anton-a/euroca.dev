@@ -1,32 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Config;
 
 use CodeIgniter\Config\BaseService;
 
-/**
- * Services Configuration file.
- *
- * Services are simply other classes/libraries that the system uses
- * to do its job. This is used by CodeIgniter to allow the core of the
- * framework to be swapped out easily without affecting the usage within
- * the rest of your application.
- *
- * This file holds any application-specific services, or service overrides
- * that you might need. An example has been included with the general
- * method format you should use for your service methods. For more examples,
- * see the core Services file at system/Config/Services.php.
- */
 class Services extends BaseService
 {
-    /*
-     * public static function example($getShared = true)
-     * {
-     *     if ($getShared) {
-     *         return static::getSharedInstance('example');
-     *     }
-     *
-     *     return new \CodeIgniter\Example();
-     * }
-     */
+    public static function authService(bool $getShared = true): \App\Modules\Auth\Services\AuthService
+    {
+        return \App\Modules\Auth\Config\Services::authService($getShared);
+    }
+
+    public static function permissionRepository(bool $getShared = true): \App\Modules\Auth\Repositories\PermissionRepository
+    {
+        return \App\Modules\Auth\Config\Services::permissionRepository($getShared);
+    }
+
+    public static function permissionService(bool $getShared = true): \App\Modules\Auth\Services\PermissionService
+    {
+        return \App\Modules\Auth\Config\Services::permissionService($getShared);
+    }
+
+    public static function roleRepository(bool $getShared = true): \App\Modules\Auth\Repositories\RoleRepository
+    {
+        return \App\Modules\Auth\Config\Services::roleRepository($getShared);
+    }
+
+    public static function roleService(bool $getShared = true): \App\Modules\Auth\Services\RoleService
+    {
+        return \App\Modules\Auth\Config\Services::roleService($getShared);
+    }
+
+    public static function userRepository(bool $getShared = true): \App\Modules\Users\Repositories\UserRepository
+    {
+        return \App\Modules\Users\Config\Services::userRepository($getShared);
+    }
+
+    public static function userService(bool $getShared = true): \App\Modules\Users\Services\UserService
+    {
+        return \App\Modules\Users\Config\Services::userService($getShared);
+    }
 }
