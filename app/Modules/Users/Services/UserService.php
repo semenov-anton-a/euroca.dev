@@ -23,6 +23,11 @@ class UserService
         return $this->userRepository->findByEmail($email);
     }
 
+    public function findByLogin(string $login): ?User
+    {
+        return $this->userRepository->findByLogin($login);
+    }
+
     public function create(array $data): int
     {
         return $this->userRepository->create($data);

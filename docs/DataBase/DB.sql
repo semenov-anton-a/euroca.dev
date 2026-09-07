@@ -122,87 +122,6 @@ CREATE TABLE `role_permissions` (
 
 
 -- ============================================================
--- ROLES
--- ============================================================
-
--- INSERT INTO `roles` (`name`, `description`) VALUES
--- ('super_admin', 'Full access to the entire system.'),
--- ('admin', 'Administrative access to the system.'),
--- ('employee', 'Employee access to assigned system functions.'),
--- ('client', 'Client access to own cargo and related documents.');
-
-
--- ============================================================
--- PERMISSIONS
--- ============================================================
-
--- INSERT INTO `permissions` (`name`, `description`) VALUES
-
--- -- Customers
--- ('customers.view',   'View customers.'),
--- ('customers.create', 'Create customers.'),
--- ('customers.edit',   'Edit customers.'),
--- ('customers.delete', 'Delete customers.'),
-
--- -- Cargo
--- ('cargo.view',       'View cargo.'),
--- ('cargo.create',     'Create cargo.'),
--- ('cargo.edit',       'Edit cargo.'),
--- ('cargo.delete',     'Delete cargo.'),
-
--- -- Invoices
--- ('invoices.view',    'View invoices.'),
--- ('invoices.create',  'Create invoices.'),
--- ('invoices.edit',    'Edit invoices.'),
--- ('invoices.delete',  'Delete invoices.'),
-
--- -- Accounting
--- ('accounting.view',   'View accounting.'),
--- ('accounting.create', 'Create accounting records.'),
--- ('accounting.edit',   'Edit accounting records.'),
--- ('accounting.delete', 'Delete accounting records.'),
-
--- -- Users
--- ('users.view',       'View users.'),
--- ('users.create',     'Create users.'),
--- ('users.edit',       'Edit users.'),
--- ('users.delete',     'Delete users.'),
-
--- -- Roles
--- ('roles.view',       'View roles.'),
--- ('roles.create',     'Create roles.'),
--- ('roles.edit',       'Edit roles.'),
--- ('roles.delete',     'Delete roles.'),
-
--- -- Permissions
--- ('permissions.view',   'View permissions.'),
--- ('permissions.assign', 'Assign permissions to roles.'),
-
--- -- Warehouse
--- ('warehouse.view',   'View warehouse.'),
--- ('warehouse.create', 'Create warehouse records.'),
--- ('warehouse.edit',   'Edit warehouse records.'),
--- ('warehouse.delete', 'Delete warehouse records.'),
-
--- -- Customs
--- ('customs.view',   'View customs declarations.'),
--- ('customs.create', 'Create customs declarations.'),
--- ('customs.edit',   'Edit customs declarations.'),
--- ('customs.delete', 'Delete customs declarations.'),
-
--- -- Documents
--- ('documents.view',   'View documents.'),
--- ('documents.create', 'Upload documents.'),
--- ('documents.edit',   'Edit documents.'),
--- ('documents.delete', 'Delete documents.'),
-
--- -- Cargo comments / photos
--- ('cargo.documents.create', 'Add documents to cargo.'),
--- ('cargo.photos.create',    'Add photos to cargo.'),
--- ('cargo.comments.create',  'Add comments to cargo.');
-
-
--- ============================================================
 -- SUPER ADMIN -> ALL PERMISSIONS
 -- ============================================================
 
@@ -218,3 +137,63 @@ WHERE r.name = 'super_admin';
 -- ============================================================
 -- END
 -- ============================================================
+
+CREATE TABLE `employees` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_id` INT UNSIGNED DEFAULT NULL,
+
+    `position` VARCHAR(100) DEFAULT NULL,
+
+    `hire_date` DATE DEFAULT NULL,
+    `termination_date` DATE DEFAULT NULL,
+
+    `status` VARCHAR(20) NOT NULL DEFAULT 'active',
+    `note` TEXT DEFAULT NULL,
+
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` DATETIME DEFAULT NULL,
+
+    PRIMARY KEY (`id`),
+
+    UNIQUE KEY `uk_employees_user_id` (`user_id`),
+    KEY `idx_employees_status` (`status`),
+    KEY `idx_employees_position` (`position`),
+    KEY `idx_employees_deleted_at` (`deleted_at`),
+
+    CONSTRAINT `fk_employees_user`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `users` (`id`)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `employee_documents` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `employee_id` INT UNSIGNED NOT NULL,
+    `document_type` VARCHAR(50) NOT NULL,
+    `document_name` VARCHAR(255) NOT NULL,
+    `file_name` VARCHAR(255) NOT NULL,
+    `file_path` VARCHAR(500) NOT NULL,
+    `mime_type` VARCHAR(100) DEFAULT NULL,
+    `file_size` BIGINT UNSIGNED DEFAULT NULL,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (`id`),
+
+    KEY `idx_employee_documents_employee_id` (`employee_id`),
+    KEY `idx_employee_documents_type` (`document_type`),
+
+    CONSTRAINT `fk_employee_documents_employee`
+        FOREIGN KEY (`employee_id`)
+        REFERENCES `employees` (`id`)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
