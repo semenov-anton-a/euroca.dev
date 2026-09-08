@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace App\Modules\Auth\Enums;
 
-
-// use in a code
-// if ($role === UserRole::SuperAdmin->value) 
-
 enum UserRole: string
 {
-    case SuperAdmin = 'super_admin';
+    case NoSystemAccess = 'No System Access';
+    case SuperAdmin = 'Super Admin';
+    case Admin = 'Administrator';
+    case Manager = 'Manager';
+    case Employee = 'Employee';
+    case Accountant = 'Accountant';
 
-    /**
-     * Получить все роли.
-     */
+    case Client = 'Client';
+
     public static function values(): array
     {
-        return array_map( fn(self $role) => $role->value, self::cases() );
+        return array_map(
+            fn(self $role) => $role->value,
+            self::cases()
+        );
     }
 }

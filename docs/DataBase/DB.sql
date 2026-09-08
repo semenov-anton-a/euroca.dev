@@ -8,8 +8,12 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `role_permissions`;
 DROP TABLE IF EXISTS `permissions`;
+
 DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `roles`;
+
+DROP TABLE IF EXISTS `employees`;
+DROP TABLE IF EXISTS `employee_documents`;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -22,14 +26,28 @@ CREATE TABLE `roles` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NOT NULL,
     `description` VARCHAR(255) DEFAULT NULL,
+    `system_access` TINYINT(1) NOT NULL DEFAULT 1,
+    `sort_order` INT UNSIGNED NOT NULL DEFAULT 0,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_roles_name` (`name`)
+    UNIQUE KEY `uk_roles_name` (`name`),
+    KEY `idx_roles_system_access` (`system_access`),
+    KEY `idx_roles_sort_order` (`sort_order`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `roles` (`name`, `description`, `system_access`, `sort_order`) 
+VALUES
+('No System Access', 'Employee has no access to the system', 0, 1),
+('Super Admin', 'Super administrator with full access', 1, 2),
+('Administrator', 'Administrator access', 1, 3),
+('Manager', 'Manager access', 1, 4),
+('Employee', 'Regular system employee', 1, 5),
+('Accountant', 'Accounting access', 1, 6),
+('Client', 'Client access', 1, 7);
 
 
 -- ============================================================

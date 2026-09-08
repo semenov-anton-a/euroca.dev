@@ -192,7 +192,7 @@
                     <?php
                     if (ENVIRONMENT == 'development') 
                     {
-                        $login = "semenov.anton.a@gmail.com";
+                        $login = "info@eurocargo.fi";
                         $password = "12345678";
                     }
                     ?>

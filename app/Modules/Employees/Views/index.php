@@ -317,7 +317,7 @@
                     hx-target="#employee-message"
                     hx-swap="innerHTML"
                     hx-indicator="#employee-spinner">
-                    
+
                     <!-- Personal Information -->
                     <h6 class="text-muted border-bottom pb-2 mb-3">
                         Personal Information
@@ -334,7 +334,7 @@
                                 class="form-control"
                                 id="first_name"
                                 name="first_name"
-                                required>
+                                required pattern="<?= $rules['name'] ?>">
                         </div>
 
                         <div class="col-md-6">
@@ -346,20 +346,19 @@
                                 class="form-control"
                                 id="last_name"
                                 name="last_name"
-                                required>
+                                required pattern="<?= $rules['name'] ?>">
                         </div>
-                        
+
                         <div class="col-md-6">
                             <label for="email" class="form-label">
-                                Email
+                                Email not required
                             </label>
 
                             <input type="email"
                                 class="form-control"
                                 id="email"
                                 name="email"
-                                placeholder="email@example.com"
-                                required>
+                                placeholder="email@example.com">
                         </div>
 
                         <div class="col-md-6">
@@ -383,7 +382,6 @@
                     </h6>
 
                     <div class="row g-3">
-
                         <div class="col-md-6">
                             <label for="position" class="form-label">
                                 Position
@@ -393,7 +391,8 @@
                                 class="form-control"
                                 id="position"
                                 name="position"
-                                placeholder="e.g. Accountant">
+                                placeholder="e.g. Accountant"
+                                pattern="<?= $rules['name'] ?>">
                         </div>
 
                         <div class="col-md-6">
@@ -406,7 +405,6 @@
                                 id="hire_date"
                                 name="hire_date">
                         </div>
-
                     </div>
 
 
@@ -414,22 +412,24 @@
                     <h6 class="text-muted border-bottom pb-2 mt-4 mb-3">
                         System Access
                     </h6>
-
                     <div class="row g-3">
+                        <div class="row mt-3">
+                            <div class="col-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input"
+                                        type="checkbox"
+                                        role="switch"
+                                        id="enable_access"
+                                        name="enable_access">
 
-                        <div class="col-md-6">
-                            <label for="username" class="form-label">
-                                Username
-                            </label>
-
-                            <input type="text"
-                                class="form-control"
-                                id="username"
-                                name="username"
-                                autocomplete="off"
-                                placeholder="Username">
-                        </div>
-
+                                    <label class="form-check-label"
+                                        for="enable_access">
+                                        Enable system access
+                                    </label>
+                                </div>
+                            </div>
+                        </div>                       
+                        
                         <div class="col-md-6">
                             <label for="role_id" class="form-label">
                                 Role
@@ -438,7 +438,6 @@
                             <select class="form-select"
                                 id="role_id"
                                 name="role_id">
-
                                 <option value="" selected disabled>
                                     Select role
                                 </option>
@@ -453,25 +452,19 @@
                                 The role determines system permissions.
                             </div>
                         </div>
-
-
-                        <div class="col-12">
-
-                            <div class="form-check form-switch">
-                                <input class="form-check-input"
-                                    type="checkbox"
-                                    role="switch"
-                                    id="enable_access"
-                                    name="enable_access">
-
-                                <label class="form-check-label"
-                                    for="enable_access">
-                                    Enable system access
-                                </label>
+                        <div class="col-md-6">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text"
+                                class="form-control"
+                                id="username"
+                                name="username"
+                                autocomplete="off"
+                                placeholder="Username"
+                                readonly disabled>
+                            <div class="form-text">
+                                Username is generated automatically from first and last name.
                             </div>
-
                         </div>
-
 
                         <div class="col-md-8">
 
@@ -559,7 +552,7 @@
                         </div>
 
                     </div>
-                    
+
                 </form>
 
             </div>
@@ -598,59 +591,59 @@
 <script>
     const Documents = {
 
-    selectedFiles: [],
+        selectedFiles: [],
 
-    init: function () {
-        this.input = document.getElementById('documents');
-        this.list = document.getElementById('selectedDocuments');
-        this.form = document.getElementById('employeeForm');
+        init: function() {
+            this.input = document.getElementById('documents');
+            this.list = document.getElementById('selectedDocuments');
+            this.form = document.getElementById('employeeForm');
 
-        if (!this.input || !this.list) return;
+            if (!this.input || !this.list) return;
 
-        this.input.addEventListener('change', (event) => {
-            this.addFiles(event.target.files);
-            event.target.value = '';
-        });
+            this.input.addEventListener('change', (event) => {
+                this.addFiles(event.target.files);
+                event.target.value = '';
+            });
 
-        this.form?.addEventListener('submit', (event) => {
-            this.prepareForm(event);
-        });
+            this.form?.addEventListener('submit', (event) => {
+                this.prepareForm(event);
+            });
 
-        this.updateList();
-    },
+            this.updateList();
+        },
 
-    addFiles: function (files) {
-        this.selectedFiles = [
-            ...this.selectedFiles,
-            ...Array.from(files)
-        ];
+        addFiles: function(files) {
+            this.selectedFiles = [
+                ...this.selectedFiles,
+                ...Array.from(files)
+            ];
 
-        this.updateList();
-    },
+            this.updateList();
+        },
 
-    remove: function (index) {
-        this.selectedFiles.splice(index, 1);
-        this.updateList();
-    },
+        remove: function(index) {
+            this.selectedFiles.splice(index, 1);
+            this.updateList();
+        },
 
-    updateList: function () {
-        this.list.innerHTML = '';
+        updateList: function() {
+            this.list.innerHTML = '';
 
-        if (!this.selectedFiles.length) {
-            this.list.classList.add('d-none');
-            return;
-        }
+            if (!this.selectedFiles.length) {
+                this.list.classList.add('d-none');
+                return;
+            }
 
-        this.list.classList.remove('d-none');
+            this.list.classList.remove('d-none');
 
-        this.selectedFiles.forEach((file, index) => {
+            this.selectedFiles.forEach((file, index) => {
 
-            const row = document.createElement('div');
+                const row = document.createElement('div');
 
-            row.className =
-                'list-group-item d-flex align-items-center justify-content-between';
+                row.className =
+                    'list-group-item d-flex align-items-center justify-content-between';
 
-            row.innerHTML = `
+                row.innerHTML = `
                 <div class="d-flex align-items-center">
 
                     <i class="bi bi-file-earmark-text fs-4 me-3 text-muted"></i>
@@ -677,60 +670,59 @@
                 </button>
             `;
 
-            row.querySelector('button').addEventListener('click', () => {
-                this.remove(index);
+                row.querySelector('button').addEventListener('click', () => {
+                    this.remove(index);
+                });
+
+                this.list.appendChild(row);
+            });
+        },
+
+        prepareForm: function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this.form);
+
+            formData.delete('documents[]');
+
+            this.selectedFiles.forEach(file => {
+                formData.append('documents[]', file);
             });
 
-            this.list.appendChild(row);
-        });
-    },
+            /*
+             * Здесь позже будет HTMX / fetch:
+             *
+             * fetch('/employees/create', {
+             *     method: 'POST',
+             *     body: formData
+             * });
+             */
+        },
 
-    prepareForm: function (event) {
-        event.preventDefault();
+        formatFileSize: function(bytes) {
 
-        const formData = new FormData(this.form);
+            if (bytes < 1024) {
+                return bytes + ' B';
+            }
 
-        formData.delete('documents[]');
+            if (bytes < 1024 * 1024) {
+                return (bytes / 1024).toFixed(1) + ' KB';
+            }
 
-        this.selectedFiles.forEach(file => {
-            formData.append('documents[]', file);
-        });
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        },
 
-        /*
-         * Здесь позже будет HTMX / fetch:
-         *
-         * fetch('/employees/create', {
-         *     method: 'POST',
-         *     body: formData
-         * });
-         */
-    },
+        escapeHtml: function(value) {
+            const div = document.createElement('div');
 
-    formatFileSize: function (bytes) {
+            div.textContent = value;
 
-        if (bytes < 1024) {
-            return bytes + ' B';
+            return div.innerHTML;
         }
-
-        if (bytes < 1024 * 1024) {
-            return (bytes / 1024).toFixed(1) + ' KB';
-        }
-
-        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-    },
-
-    escapeHtml: function (value) {
-        const div = document.createElement('div');
-
-        div.textContent = value;
-
-        return div.innerHTML;
-    }
-};
+    };
 
 
-const EmployeeAccess = {
-
+    const EmployeeAccess = {
     init: function () {
         this.access = document.getElementById('enable_access');
         this.firstName = document.getElementById('first_name');
@@ -741,41 +733,32 @@ const EmployeeAccess = {
         this.generateButton = document.getElementById('generatePassword');
         this.toggleButton = document.getElementById('togglePassword');
 
-        if (!this.access) return;
+        if (!this.username) return;
 
-        this.access.addEventListener('change', () => this.update());
+        this.firstName?.addEventListener('input', () => this.generateUsername());
+        this.lastName?.addEventListener('input', () => this.generateUsername());
 
-        this.firstName?.addEventListener('input', () => {
-            this.generateUsername();
-        });
+        this.access?.addEventListener('change', () => this.update());
 
-        this.lastName?.addEventListener('input', () => {
-            this.generateUsername();
-        });
+        this.generateButton?.addEventListener('click', () => this.generatePassword());
+        this.toggleButton?.addEventListener('click', () => this.togglePassword());
 
-        this.generateButton?.addEventListener('click', () => {
-            this.generatePassword();
-        });
-
-        this.toggleButton?.addEventListener('click', () => {
-            this.togglePassword();
-        });
-
+        this.generateUsername();
         this.update();
     },
 
     update: function () {
-        const enabled = this.access.checked;
+        
+        const enabled = this.access?.checked ?? false;
 
-        this.username.disabled = !enabled;
-        this.role.disabled = !enabled;
-        this.password.disabled = !enabled;
-        this.generateButton.disabled = !enabled;
-        this.toggleButton.disabled = !enabled;
+        if (this.password) this.password.disabled = !enabled;
+        if (this.generateButton) this.generateButton.disabled = !enabled;
+        if (this.toggleButton) this.toggleButton.disabled = !enabled;
+
+        this.username.disabled = false;
+        this.username.readOnly = true;
 
         if (enabled) {
-            this.generateUsername();
-
             if (!this.password.value) {
                 this.generatePassword();
             }
@@ -783,18 +766,21 @@ const EmployeeAccess = {
             this.password.value = '';
             this.password.type = 'password';
 
-            this.toggleButton.innerHTML =
-                '<i class="bi bi-eye me-1"></i> Show Password';
+            if (this.toggleButton) {
+                this.toggleButton.innerHTML =
+                    '<i class="bi bi-eye me-1"></i> Show Password';
+            }
         }
     },
 
     generateUsername: function () {
-        if (!this.access.checked) return;
-
         const firstName = this.firstName?.value.trim() || '';
         const lastName = this.lastName?.value.trim() || '';
 
-        if (!firstName || !lastName) return;
+        if (!firstName || !lastName) {
+            this.username.value = '';
+            return;
+        }
 
         let username = `${firstName}.${lastName}`;
 
@@ -802,15 +788,16 @@ const EmployeeAccess = {
             .toLowerCase()
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^a-z0-9.]/g, '')
+            .replace(/[^a-z0-9.-]/g, '')
             .replace(/\.+/g, '.')
+            .replace(/^-+|-+$/g, '')
             .replace(/^\.+|\.+$/g, '');
 
-        this.username.value = username;
+        this.username.value = username.substring(0, 50);
     },
 
     generatePassword: function () {
-        if (!this.access.checked) return;
+        if (!this.access?.checked) return;
 
         const chars =
             'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
@@ -831,7 +818,7 @@ const EmployeeAccess = {
     },
 
     togglePassword: function () {
-        if (!this.access.checked) return;
+        if (!this.access?.checked) return;
 
         if (this.password.type === 'password') {
             this.password.type = 'text';
@@ -847,11 +834,10 @@ const EmployeeAccess = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function () {
-    EmployeeAccess.init();
-    Documents.init();
-});
-
+    document.addEventListener('DOMContentLoaded', function() {
+        EmployeeAccess.init();
+        Documents.init();
+    });
 </script>
 
 <?= $this->endSection() ?>
