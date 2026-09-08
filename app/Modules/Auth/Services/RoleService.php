@@ -77,7 +77,7 @@ class RoleService
 
     public function getManageableRoles(): array
     {
-        return $this->roleRepository->getManageableRoles( UserRole::SuperAdmin->value );
+        return $this->roleRepository->getManageableRoles( UserRole::SuperAdmin->value, UserRole::NoSystemAccess->value, UserRole::Admin->value );
     }
 
     public function delete(int $roleId): bool
