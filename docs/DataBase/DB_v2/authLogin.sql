@@ -102,11 +102,21 @@ CREATE TABLE employees (
 
 CREATE TABLE roles (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE,
+    `key` VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
     description VARCHAR(255) NULL,
     created_at DATETIME NULL,
     updated_at DATETIME NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO roles (`key`, name, description, created_at, updated_at)
+VALUES
+('super_admin', 'Super Admin', 'Full system access', NOW(), NOW()),
+('admin', 'Administrator', 'Administrator', NOW(), NOW()),
+('manager', 'Manager', 'Manager', NOW(), NOW()),
+('accountant', 'Accountant', 'Accountant', NOW(), NOW()),
+('employee', 'Employee', 'Employee', NOW(), NOW()),
+('client', 'Client', 'Client', NOW(), NOW());
 
 -- =========================================================
 -- PERMISSIONS
@@ -162,7 +172,7 @@ CREATE TABLE users (
 
     failed_login_count INT UNSIGNED NOT NULL DEFAULT 0,
     locked_until DATETIME NULL,
-
+    locale VARCHAR(2) NOT NULL DEFAULT 'en',
     last_login_at DATETIME NULL,
     last_login_ip VARCHAR(45) NULL,
     password_changed_at DATETIME NULL,
@@ -193,3 +203,4 @@ CREATE TABLE users (
             (employee_id IS NULL AND customer_id IS NOT NULL)
         )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
