@@ -25,6 +25,13 @@ class UserRepository
             ->first();
     }
 
+    public function findByUsername(string $username): ?User
+    {
+        return $this->userModel
+            ->where('username', $username)
+            ->first();
+    }
+
     public function findByLogin(string $login): ?User
     {
         return $this->userModel
@@ -52,7 +59,6 @@ class UserRepository
     public function create(array $data): int
     {
         $this->userModel->insert($data);
-
         return (int) $this->userModel->getInsertID();
     }
 

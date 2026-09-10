@@ -38,7 +38,7 @@
                             <th>Employee</th>
                             <th>Position</th>
                             <th>Department</th>
-                            <th>Hire Date</th>
+                            <th>Birthday</th>
                             <th>Status</th>
                             <th class="text-end">Actions</th>
                         </tr>
@@ -170,7 +170,7 @@
 
                                             <div class="col-md-4">
                                                 <small class="text-muted d-block">
-                                                    Hire Date
+                                                    Birthday
                                                 </small>
                                                 <strong>
                                                     20.02.2025
@@ -306,10 +306,11 @@
                     aria-label="Close"></button>
             </div>
 
-
             <!-- Body -->
             <div class="modal-body">
+
                 <div id="employee-message"></div>
+
                 <form id="employeeForm"
                     method="post"
                     enctype="multipart/form-data"
@@ -317,8 +318,11 @@
                     hx-target="#employee-message"
                     hx-swap="innerHTML"
                     hx-indicator="#employee-spinner">
+                    
+                    <!-- ================================================= -->
+                    <!-- PERSONAL INFORMATION -->
+                    <!-- ================================================= -->
 
-                    <!-- Personal Information -->
                     <h6 class="text-muted border-bottom pb-2 mb-3">
                         Personal Information
                     </h6>
@@ -334,7 +338,9 @@
                                 class="form-control"
                                 id="first_name"
                                 name="first_name"
-                                required pattern="<?= $rules['name'] ?>">
+                                maxlength="100"
+                                autocomplete="given-name"
+                                required>
                         </div>
 
                         <div class="col-md-6">
@@ -346,19 +352,27 @@
                                 class="form-control"
                                 id="last_name"
                                 name="last_name"
-                                required pattern="<?= $rules['name'] ?>">
+                                maxlength="100"
+                                autocomplete="family-name"
+                                required>
                         </div>
 
                         <div class="col-md-6">
                             <label for="email" class="form-label">
-                                Email not required
+                                Email
                             </label>
 
                             <input type="email"
                                 class="form-control"
                                 id="email"
                                 name="email"
+                                maxlength="191"
+                                autocomplete="email"
                                 placeholder="email@example.com">
+
+                            <div class="form-text">
+                                Optional.
+                            </div>
                         </div>
 
                         <div class="col-md-6">
@@ -366,22 +380,28 @@
                                 Phone
                             </label>
 
-                            <input type="text"
+                            <input type="tel"
                                 class="form-control"
                                 id="phone"
                                 name="phone"
+                                maxlength="50"
+                                autocomplete="tel"
                                 placeholder="+358 ...">
                         </div>
 
                     </div>
 
 
-                    <!-- Employment Information -->
+                    <!-- ================================================= -->
+                    <!-- EMPLOYMENT INFORMATION -->
+                    <!-- ================================================= -->
+
                     <h6 class="text-muted border-bottom pb-2 mt-4 mb-3">
                         Employment Information
                     </h6>
 
                     <div class="row g-3">
+
                         <div class="col-md-6">
                             <label for="position" class="form-label">
                                 Position
@@ -391,78 +411,76 @@
                                 class="form-control"
                                 id="position"
                                 name="position"
-                                placeholder="e.g. Accountant"
-                                pattern="<?= $rules['name'] ?>">
+                                maxlength="100"
+                                placeholder="e.g. Accountant">
                         </div>
 
                         <div class="col-md-6">
-                            <label for="hire_date" class="form-label">
-                                Hire Date
+                            <label for="birthday" class="form-label">
+                                Birthday
                             </label>
 
                             <input type="date"
                                 class="form-control"
-                                id="hire_date"
-                                name="hire_date">
+                                id="birthday"
+                                name="birthday" required>
                         </div>
+
                     </div>
 
 
-                    <!-- System Access -->
+                    <!-- ================================================= -->
+                    <!-- SYSTEM ACCESS -->
+                    <!-- ================================================= -->
+
                     <h6 class="text-muted border-bottom pb-2 mt-4 mb-3">
                         System Access
                     </h6>
-                    <div class="row g-3">
-                        <div class="row mt-3">
-                            <div class="col-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input"
-                                        type="checkbox"
-                                        role="switch"
-                                        id="enable_access"
-                                        name="enable_access">
 
-                                    <label class="form-check-label"
-                                        for="enable_access">
-                                        Enable system access
-                                    </label>
-                                </div>
-                            </div>
-                        </div>                       
-                        
+                    <div class="row g-3">
+
                         <div class="col-md-6">
                             <label for="role_id" class="form-label">
-                                Role
+                                Role 
+                                <pre><?= print_r($roles[0]) ?></pre>
                             </label>
-
+                            
                             <select class="form-select"
                                 id="role_id"
-                                name="role_id">
-                                <option value="" selected disabled>
-                                    Select role
-                                </option>
+                                name="role_id"
+                                required>
+
                                 <?php foreach ($roles as $role): ?>
-                                    <option value="<?= esc($role->id) ?>">
+                                    <option value="<?= esc($role->id) ?>"
+                                        data-system-access="<?= (int) $role->system_access ?>"
+                                        <?= (int) $role->system_access === 0 ? 'selected' : '' ?>>
                                         <?= esc($role->name) ?>
                                     </option>
                                 <?php endforeach; ?>
+
                             </select>
 
-                            <div class="form-text">
-                                The role determines system permissions.
+                            <div class="form-text" id="roleHelp">
+                                Select a role to determine system access.
                             </div>
                         </div>
+
+
                         <div class="col-md-6">
-                            <label for="username" class="form-label">Username</label>
+                            <label for="username" class="form-label">
+                                Username
+                            </label>
+
                             <input type="text"
                                 class="form-control"
                                 id="username"
                                 name="username"
-                                autocomplete="off"
-                                placeholder="Username"
-                                readonly disabled>
+                                maxlength="100"
+                                autocomplete="off"                                
+                                required>
+
                             <div class="form-text">
-                                Username is generated automatically from first and last name.
+                                Generated automatically from first and last name.
                             </div>
                         </div>
 
@@ -502,7 +520,11 @@
                     </div>
 
 
-                    <!-- Documents -->
+
+                    <!-- ================================================= -->
+                    <!-- DOCUMENTS -->
+                    <!-- ================================================= -->
+
                     <h6 class="text-muted border-bottom pb-2 mt-4 mb-3">
                         Documents
                     </h6>
@@ -521,20 +543,20 @@
                             accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
 
                         <div class="form-text">
-                            Select multiple documents at once.
                             PDF, JPG, PNG, DOC and DOCX.
                         </div>
 
                     </div>
 
-
-                    <!-- Selected Files -->
                     <div id="selectedDocuments"
                         class="list-group mb-3 d-none">
                     </div>
 
 
-                    <!-- Additional Information -->
+                    <!-- ================================================= -->
+                    <!-- ADDITIONAL INFORMATION -->
+                    <!-- ================================================= -->
+
                     <h6 class="text-muted border-bottom pb-2 mt-4 mb-3">
                         Additional Information
                     </h6>
@@ -545,6 +567,7 @@
                             id="note"
                             name="note"
                             rows="4"
+                            maxlength="5000"
                             placeholder="Enter any additional information about the employee..."></textarea>
 
                         <div class="form-text">
@@ -554,11 +577,13 @@
                     </div>
 
                 </form>
-
             </div>
 
 
-            <!-- Footer -->
+            <!-- ========================================================= -->
+            <!-- FOOTER -->
+            <!-- ========================================================= -->
+
             <div class="modal-footer">
 
                 <button type="button"
@@ -567,15 +592,16 @@
                     Cancel
                 </button>
 
-                <div id="employee-spinner" class="htmx-indicator text-center py-2">
+                <div id="employee-spinner"
+                    class="htmx-indicator text-center py-2">
                     <div class="spinner-border spinner-border-sm me-2"></div>
                     Creating employee...
                 </div>
 
                 <button type="submit"
                     form="employeeForm"
-                    class="btn btn-primary">
-
+                    class="btn btn-primary"
+                    id="createEmployeeButton">
                     <i class="bi bi-check-lg me-1"></i>
                     Create Employee
                 </button>
@@ -584,49 +610,281 @@
 
         </div>
     </div>
-
 </div>
 
 
 <script>
+    const EmployeeAccess = {
+
+        init: function() {
+            this.firstName = document.getElementById('first_name');
+            this.lastName = document.getElementById('last_name');
+            this.username = document.getElementById('username');
+
+            this.role = document.getElementById('role_id');
+
+            this.password = document.getElementById('password');
+            this.generateButton = document.getElementById('generatePassword');
+            this.toggleButton = document.getElementById('togglePassword');
+
+            if (!this.role || !this.username) {
+                return;
+            }
+
+            this.firstName?.addEventListener('input', () => {
+                this.generateUsername();
+            });
+
+            this.lastName?.addEventListener('input', () => {
+                this.generateUsername();
+            });
+
+            this.role.addEventListener('change', () => {
+                this.update();
+            });
+
+            this.generateButton?.addEventListener('click', () => {
+                this.generatePassword();
+            });
+
+            this.toggleButton?.addEventListener('click', () => {
+                this.togglePassword();
+            });
+
+            this.generateUsername();
+            this.update();
+        },
+
+
+        reset: function() {
+            if (this.firstName) {
+                this.firstName.value = '';
+            }
+
+            if (this.lastName) {
+                this.lastName.value = '';
+            }
+
+            if (this.username) {
+                this.username.value = '';
+            }
+
+            if (this.password) {
+                this.password.value = '';
+                this.password.type = 'password';
+            }
+
+            if (this.role) {
+                const noAccessOption = Array.from(this.role.options)
+                    .find(option => option.dataset.systemAccess === '0');
+
+                if (noAccessOption) {
+                    this.role.value = noAccessOption.value;
+                } else {
+                    this.role.selectedIndex = 0;
+                }
+            }
+
+            this.update();
+        },
+
+
+        update: function() {
+            const option = this.role?.options[this.role.selectedIndex];
+            const enabled = option?.dataset.systemAccess === '1';
+
+            if (this.password) {
+                this.password.disabled = !enabled;
+                this.password.required = enabled;
+
+                if (!enabled) {
+                    this.password.value = '';
+                    this.password.type = 'password';
+                }
+            }
+
+            if (this.generateButton) {
+                this.generateButton.disabled = !enabled;
+            }
+
+            if (this.toggleButton) {
+                this.toggleButton.disabled = !enabled;
+            }
+
+            if (this.toggleButton && !enabled) {
+                this.toggleButton.innerHTML =
+                    '<i class="bi bi-eye me-1"></i> Show Password';
+            }
+
+            if (enabled && this.password && !this.password.value) {
+                this.generatePassword();
+            }
+        },
+
+
+        generateUsername: function() 
+        {
+            const firstName = this.firstName?.value.trim() || '';
+            const lastName = this.lastName?.value.trim() || '';
+
+            if (!firstName || !lastName) {
+                this.username.value = '';
+                return;
+            }
+
+            let username = `${firstName}.${lastName}`;
+
+            username = username 
+                .toLowerCase() 
+                .normalize('NFD') 
+                .replace(/[\u0300-\u036f]/g, '') 
+                .replace(/[^a-z0-9.-]/g, '') 
+                .replace(/\.{2,}/g, '.') 
+                .replace(/^-+|-+$/g, '') 
+                .replace(/^\.+|\.+$/g, '');
+
+            this.username.value = username.substring(0, 50);
+        },
+
+
+        generatePassword: function() {
+            const option = this.role?.options[this.role.selectedIndex];
+
+            if (option?.dataset.systemAccess !== '1' || !this.password) {
+                return;
+            }
+
+            const chars =
+                'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
+
+            const array = new Uint32Array(8);
+            crypto.getRandomValues(array);
+
+            let password = '';
+
+            for (let i = 0; i < array.length; i++) {
+                password += chars[array[i] % chars.length];
+            }
+
+            this.password.value = password;
+            this.password.type = 'text';
+
+            if (this.toggleButton) {
+                this.toggleButton.innerHTML =
+                    '<i class="bi bi-eye-slash me-1"></i> Hide Password';
+            }
+        },
+
+
+        togglePassword: function() {
+            if (!this.password || !this.toggleButton) {
+                return;
+            }
+
+            const option = this.role?.options[this.role.selectedIndex];
+
+            if (option?.dataset.systemAccess !== '1') {
+                return;
+            }
+
+            if (this.password.type === 'password') {
+
+                this.password.type = 'text';
+
+                this.toggleButton.innerHTML =
+                    '<i class="bi bi-eye-slash me-1"></i> Hide Password';
+
+            } else {
+
+                this.password.type = 'password';
+
+                this.toggleButton.innerHTML =
+                    '<i class="bi bi-eye me-1"></i> Show Password';
+            }
+        }
+
+    };
+
+
     const Documents = {
 
         selectedFiles: [],
 
+
         init: function() {
             this.input = document.getElementById('documents');
             this.list = document.getElementById('selectedDocuments');
-            this.form = document.getElementById('employeeForm');
 
-            if (!this.input || !this.list) return;
+            if (!this.input || !this.list) {
+                return;
+            }
 
-            this.input.addEventListener('change', (event) => {
+            this.input.addEventListener('change', event => {
                 this.addFiles(event.target.files);
-                event.target.value = '';
-            });
-
-            this.form?.addEventListener('submit', (event) => {
-                this.prepareForm(event);
             });
 
             this.updateList();
         },
 
+
+        reset: function() {
+            this.selectedFiles = [];
+
+            if (this.input) {
+                this.input.value = '';
+            }
+
+            this.updateList();
+        },
+
+
         addFiles: function(files) {
+            if (!files?.length) {
+                return;
+            }
+
             this.selectedFiles = [
                 ...this.selectedFiles,
                 ...Array.from(files)
             ];
 
+            this.syncInput();
             this.updateList();
         },
+
 
         remove: function(index) {
+            if (index < 0 || index >= this.selectedFiles.length) {
+                return;
+            }
+
             this.selectedFiles.splice(index, 1);
+
+            this.syncInput();
             this.updateList();
         },
 
+
+        syncInput: function() {
+            if (!this.input || typeof DataTransfer === 'undefined') {
+                return;
+            }
+
+            const dataTransfer = new DataTransfer();
+
+            this.selectedFiles.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+
+            this.input.files = dataTransfer.files;
+        },
+
+
         updateList: function() {
+            if (!this.list) {
+                return;
+            }
+
             this.list.innerHTML = '';
 
             if (!this.selectedFiles.length) {
@@ -645,7 +903,6 @@
 
                 row.innerHTML = `
                 <div class="d-flex align-items-center">
-
                     <i class="bi bi-file-earmark-text fs-4 me-3 text-muted"></i>
 
                     <div>
@@ -657,20 +914,17 @@
                             ${this.formatFileSize(file.size)}
                         </small>
                     </div>
-
                 </div>
 
                 <button type="button"
                         class="btn btn-sm btn-outline-danger"
                         data-index="${index}"
                         title="Remove">
-
                     <i class="bi bi-x-lg"></i>
-
                 </button>
             `;
 
-                row.querySelector('button').addEventListener('click', () => {
+                row.querySelector('button')?.addEventListener('click', () => {
                     this.remove(index);
                 });
 
@@ -678,39 +932,19 @@
             });
         },
 
-        prepareForm: function(event) {
-            event.preventDefault();
-
-            const formData = new FormData(this.form);
-
-            formData.delete('documents[]');
-
-            this.selectedFiles.forEach(file => {
-                formData.append('documents[]', file);
-            });
-
-            /*
-             * Здесь позже будет HTMX / fetch:
-             *
-             * fetch('/employees/create', {
-             *     method: 'POST',
-             *     body: formData
-             * });
-             */
-        },
 
         formatFileSize: function(bytes) {
-
             if (bytes < 1024) {
-                return bytes + ' B';
+                return `${bytes} B`;
             }
 
             if (bytes < 1024 * 1024) {
-                return (bytes / 1024).toFixed(1) + ' KB';
+                return `${(bytes / 1024).toFixed(1)} KB`;
             }
 
-            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+            return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
         },
+
 
         escapeHtml: function(value) {
             const div = document.createElement('div');
@@ -719,124 +953,25 @@
 
             return div.innerHTML;
         }
+
     };
 
 
-    const EmployeeAccess = {
-    init: function () {
-        this.access = document.getElementById('enable_access');
-        this.firstName = document.getElementById('first_name');
-        this.lastName = document.getElementById('last_name');
-        this.username = document.getElementById('username');
-        this.role = document.getElementById('role_id');
-        this.password = document.getElementById('password');
-        this.generateButton = document.getElementById('generatePassword');
-        this.toggleButton = document.getElementById('togglePassword');
-
-        if (!this.username) return;
-
-        this.firstName?.addEventListener('input', () => this.generateUsername());
-        this.lastName?.addEventListener('input', () => this.generateUsername());
-
-        this.access?.addEventListener('change', () => this.update());
-
-        this.generateButton?.addEventListener('click', () => this.generatePassword());
-        this.toggleButton?.addEventListener('click', () => this.togglePassword());
-
-        this.generateUsername();
-        this.update();
-    },
-
-    update: function () {
-        
-        const enabled = this.access?.checked ?? false;
-
-        if (this.password) this.password.disabled = !enabled;
-        if (this.generateButton) this.generateButton.disabled = !enabled;
-        if (this.toggleButton) this.toggleButton.disabled = !enabled;
-
-        this.username.disabled = false;
-        this.username.readOnly = true;
-
-        if (enabled) {
-            if (!this.password.value) {
-                this.generatePassword();
-            }
-        } else {
-            this.password.value = '';
-            this.password.type = 'password';
-
-            if (this.toggleButton) {
-                this.toggleButton.innerHTML =
-                    '<i class="bi bi-eye me-1"></i> Show Password';
-            }
-        }
-    },
-
-    generateUsername: function () {
-        const firstName = this.firstName?.value.trim() || '';
-        const lastName = this.lastName?.value.trim() || '';
-
-        if (!firstName || !lastName) {
-            this.username.value = '';
-            return;
-        }
-
-        let username = `${firstName}.${lastName}`;
-
-        username = username
-            .toLowerCase()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .replace(/[^a-z0-9.-]/g, '')
-            .replace(/\.+/g, '.')
-            .replace(/^-+|-+$/g, '')
-            .replace(/^\.+|\.+$/g, '');
-
-        this.username.value = username.substring(0, 50);
-    },
-
-    generatePassword: function () {
-        if (!this.access?.checked) return;
-
-        const chars =
-            'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
-
-        let password = '';
-
-        for (let i = 0; i < 12; i++) {
-            password += chars.charAt(
-                Math.floor(Math.random() * chars.length)
-            );
-        }
-
-        this.password.value = password;
-        this.password.type = 'text';
-
-        this.toggleButton.innerHTML =
-            '<i class="bi bi-eye-slash me-1"></i> Hide Password';
-    },
-
-    togglePassword: function () {
-        if (!this.access?.checked) return;
-
-        if (this.password.type === 'password') {
-            this.password.type = 'text';
-
-            this.toggleButton.innerHTML =
-                '<i class="bi bi-eye-slash me-1"></i> Hide Password';
-        } else {
-            this.password.type = 'password';
-
-            this.toggleButton.innerHTML =
-                '<i class="bi bi-eye me-1"></i> Show Password';
-        }
-    }
-};
-
     document.addEventListener('DOMContentLoaded', function() {
+
         EmployeeAccess.init();
         Documents.init();
+
+        const modal = document.getElementById('employeeModal');
+
+        modal?.addEventListener('hidden.bs.modal', function() {
+            document.getElementById('employeeForm')?.reset();
+            document.getElementById('employee-message').innerHTML = '';
+
+            EmployeeAccess.reset();
+            Documents.reset();
+        });
+
     });
 </script>
 

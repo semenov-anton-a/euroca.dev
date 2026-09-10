@@ -164,7 +164,7 @@ function closeAccordion(row, content, icon) {
 const Toast = {
 
     container: null,
-
+    
     config: {
         alert: {
             class: 'toast-secondary',

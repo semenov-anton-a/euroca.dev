@@ -167,14 +167,21 @@ abstract class BaseController extends Controller
     }
 
 
+    /**
+     * Summary of htmxToastMessage
+     * @param string $type :  alert | primary | secondary | success | info | warning | danger | light | dark
+     * @param string $message
+     * @param string $title
+     * @return BaseController
+     */
     protected function htmxToastMessage( string $type, string $message, string $title = ''  ): static
     {
         if ($title === '') { $title = $type; }
 
-        $title = (string) "Toast." . $title;
+        $title = (string) lang( 'Toast.'.$title );
 
         $data = [
-            'type' => $type,
+            'type'    => $type,
             'title'   => lang( $title ),
             'message' => $message
         ];

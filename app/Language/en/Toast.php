@@ -7,4 +7,5 @@ return [
     'warning'   => 'Warning',
     'danger'    => 'Error',
     'info'      => 'Information',
+    'error'     => 'Error',
 ];

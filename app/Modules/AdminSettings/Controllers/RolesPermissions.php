@@ -15,8 +15,11 @@ class RolesPermissions extends BaseAdminSettingsController
     public function index(): string
     {
         return $this->viewModule('RolesPermissions/index2', [
-            'title' => 'Roles & Permissions',
-            'roles' => $this->roleService->getManageableRoles(),
+            'title' => 'Roles & Permissions',            
+            'roles' => $this->roleService->getManageableRoles( 
+                \App\Modules\Auth\Enums\UserRole::Admin->value, 
+                \App\Modules\Auth\Enums\UserRole::NoSystemAccess->value 
+            ),
             'formRules' => [
                 'roleName' => trim((string) RulesRegex::RoleName->value, '/$^'),
                 'description' => trim((string) RulesRegex::DescriptionName->value, '/$^'),

@@ -75,9 +75,10 @@ class RoleService
         return $this->roleRepository->update($roleId, $data);
     }
 
-    public function getManageableRoles(): array
+    public function getManageableRoles( string ...$excludedRoles ): array
     {
-        return $this->roleRepository->getManageableRoles( UserRole::SuperAdmin->value, UserRole::NoSystemAccess->value, UserRole::Admin->value );
+        $excludedRoles[] = UserRole::SuperAdmin->value;        
+        return $this->roleRepository->getManageableRoles( ...$excludedRoles );
     }
 
     public function delete(int $roleId): bool

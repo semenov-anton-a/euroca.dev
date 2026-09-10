@@ -32,32 +32,27 @@ class Employees extends BaseEmployeesController
         
     }
 
-
-
     public function store(): ResponseInterface|string
     {
         try {
             $data = $this->request->getPost();
 
-            $storeResult = $this->employeeService->create($data);
+            $storeResult = $this->employeeService->create( $data );
 
-            return $this->response->setBody(
-                '<pre>' . esc(print_r($data, true)) . '</pre>'
+            // return $this->htmxToastMessage("success", "Employee.employee_created_successfully" )
+            //         ->response->setStatusCode(200);
+
+            return $this->htmxToastMessage("success", lang("Employee.employee_created_successfully") )
+                ->response->setBody(
+                    '<pre>' . esc(print_r($data, true)) . '</pre>'
+                    // . '<pre>' . esc(print_r($storeResult, true)) . '</pre>'
             );
 
         } catch (\Throwable $e) {
-            $error = '<pre>' . esc(
-                $e::class . "\n" .
-                $e->getMessage() . "\n\n" .
-                $e->getFile() . ':' . $e->getLine() . "\n\n" .
-                $e->getTraceAsString()
-            ) . '</pre>';
 
-            log_message('error', $error);
-            
-            return $this->response
-                ->setStatusCode(500)
-                ->setBody( $error );
+            log_message('error', $e->getMessage());
+
+            return $this->htmxToastMessage("danger", lang( $e->getMessage() ) )->response->setStatusCode(422);
         }
     }
     
