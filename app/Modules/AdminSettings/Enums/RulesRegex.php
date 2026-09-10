@@ -7,7 +7,7 @@ namespace App\Modules\AdminSettings\Enums;
 
 enum RulesRegex: string
 {
-    case RoleName = '/^[a-z][a-z0-9_]{2,49}$/';
+    case RoleName = '/^[A-z0-9 ]{2,15}$/';
     case DescriptionName = '/^.{10,255}$/';
     case PermissionName = '/^[a-z][a-z0-9_.]*$/';
 

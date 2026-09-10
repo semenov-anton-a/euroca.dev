@@ -30,6 +30,14 @@ class RoleService
         return $role['name'] ?? null;
     }
 
+    public function getUserRoleKey(int $userId): ?string
+    {
+        $role = $this->getUserRole($userId);
+
+        return $role['key'] ?? null;
+    }
+
+
     public function hasRole(int $userId, UserRole $role): bool
     {
         return $this->getUserRoleName($userId) === $role->value;

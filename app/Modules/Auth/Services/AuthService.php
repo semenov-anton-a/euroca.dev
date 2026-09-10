@@ -95,7 +95,7 @@ class AuthService
             'customer_id' => $user->customer_id,
             'diplayName'  => $displayName,
             'role_id'     => (int) $role['id'],
-            'role'        => $role['name'],
+            'role'        => $role['key'],
             'permissions' => array_column($permissions, 'name'),
             'logged_in'   => true,
             'locale'      => $user->locale,

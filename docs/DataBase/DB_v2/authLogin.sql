@@ -85,7 +85,7 @@ CREATE TABLE employees (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    birthday DATE NOT NULL,
+    birthday DATE NULL,
     email VARCHAR(255) NULL,
     phone VARCHAR(100) NULL,
     position VARCHAR(150) NULL,
@@ -105,18 +105,26 @@ CREATE TABLE roles (
     `key` VARCHAR(50) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(255) NULL,
-    created_at DATETIME NULL,
-    updated_at DATETIME NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    sort_order INT UNSIGNED NOT NULL DEFAULT 0,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
-INSERT INTO roles (`key`, name, description, created_at, updated_at)
+INSERT INTO roles (
+    `key`,
+    name,
+    description,
+    sort_order,
+    created_at,
+    updated_at
+)
 VALUES
-('super_admin', 'Super Admin', 'Full system access', NOW(), NOW()),
-('admin', 'Administrator', 'Administrator', NOW(), NOW()),
-('manager', 'Manager', 'Manager', NOW(), NOW()),
-('accountant', 'Accountant', 'Accountant', NOW(), NOW()),
-('employee', 'Employee', 'Employee', NOW(), NOW()),
-('client', 'Client', 'Client', NOW(), NOW());
+    ('super_admin', 'Super Admin', 'Full system access', 1, NOW(), NOW()),
+    ('admin', 'Administrator', 'Administrator', 2, NOW(), NOW()),
+    ('manager', 'Manager', 'Manager', 3, NOW(), NOW()),
+    ('accountant', 'Accountant', 'Accountant', 4, NOW(), NOW()),
+    ('employee', 'Employee', 'Employee', 5, NOW(), NOW()),
+    ('client', 'Client', 'Client', 6, NOW(), NOW());
 
 -- =========================================================
 -- PERMISSIONS
@@ -203,4 +211,3 @@ CREATE TABLE users (
             (employee_id IS NULL AND customer_id IS NOT NULL)
         )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-

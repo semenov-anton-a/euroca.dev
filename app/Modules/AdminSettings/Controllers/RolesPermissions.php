@@ -18,7 +18,7 @@ class RolesPermissions extends BaseAdminSettingsController
             'title' => 'Roles & Permissions',            
             'roles' => $this->roleService->getManageableRoles( 
                 \App\Modules\Auth\Enums\UserRole::Admin->value, 
-                \App\Modules\Auth\Enums\UserRole::NoSystemAccess->value 
+                
             ),
             'formRules' => [
                 'roleName' => trim((string) RulesRegex::RoleName->value, '/$^'),
@@ -81,7 +81,10 @@ class RolesPermissions extends BaseAdminSettingsController
         }
 
         try{
+            
+            $roleData['key'] = strtolower( preg_replace('/\s+/', '_', trim($name)) );
             $this->roleService->create( $roleData );
+
         }catch( \Throwable $err ){
             log_message( 'error', 'Failed to create role: ' . $err->getMessage() );
             return $this->addHtmxTrigger( "errorMessage", [
