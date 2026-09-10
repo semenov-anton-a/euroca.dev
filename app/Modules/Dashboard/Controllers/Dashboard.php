@@ -17,6 +17,9 @@ class Dashboard extends BaseDashboardController
 
     public function test()
     {
-        return "hello dachbourd test";
+        $user = $this->userService->findByUsername(session( 'username' ));
+
+        
+
     }
 }

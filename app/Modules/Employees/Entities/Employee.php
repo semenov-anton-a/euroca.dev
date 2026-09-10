@@ -11,9 +11,14 @@ class Employee extends Entity
     protected $datamap = [];
 
     protected $casts = [
-        'id' => 'integer',
-        'user_id' => '?integer',
-        'hire_date' => 'date',
-        'termination_date' => '?date',
+        'id' => 'integer',        
     ];
+
+    public function getFullName(): string
+    {
+        return trim($this->first_name . ' ' . $this->last_name);
+    }
+
+
 }
+

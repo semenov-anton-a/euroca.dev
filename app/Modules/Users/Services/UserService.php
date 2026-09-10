@@ -13,40 +13,20 @@ class UserService
         protected UserRepository $userRepository
     ) {}
 
-    public function generateUsernameIncrement(string $baseUsername): string
-    {
-        if ( !$this->userRepository->existsByUsername($baseUsername) ) {
-            return $baseUsername;
-        }
-
-        $counter = 2;
-
-        do {
-            $username = $baseUsername . '_' . $counter;
-            $counter++;
-        } while ($this->userRepository->existsByUsername($username));
-
-        return $username;
-    }
-
     public function findById(int $userId): ?User
     {
         return $this->userRepository->findById($userId);
     }
 
-    public function findByEmail(string $email): ?User
-    {
-        return $this->userRepository->findByEmail($email);
-    }
 
     public function findByUsername(string $username): ?User
     {
         return $this->userRepository->findByUsername($username);
     }
 
-    public function findByLogin(string $login): ?User
+    public function getOwnerId(User $user): ?int
     {
-        return $this->userRepository->findByLogin($login);
+        return $user->employee_id ?? $user->customer_id;
     }
 
     public function create(array $data): int
@@ -62,11 +42,6 @@ class UserService
     public function delete(int $userId): bool
     {
         return $this->userRepository->delete($userId);
-    }
-
-    public function existsByEmail(string $email): bool
-    {
-        return $this->userRepository->existsByEmail($email);
     }
 
     public function existsByUsername(string $username): bool

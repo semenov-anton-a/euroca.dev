@@ -9,14 +9,18 @@ use CodeIgniter\Entity\Entity;
 
 /**
  * @property int|null $id
+ * @property int|null $employee_id
+ * @property int|null $customer_id
  * @property int|null $role_id
- * @property string|null $email
  * @property string|null $username
  * @property string|null $password_hash
- * @property string|null $first_name
- * @property string|null $last_name
- * @property string|null $phone
+ * @property string|null $locale
  * @property UserStatus $status
+ * @property int|null $failed_login_count
+ * @property string|null $locked_until
+ * @property string|null $last_login_at
+ * @property string|null $last_login_ip
+ * @property string|null $password_changed_at
  * @property string|null $created_at
  * @property string|null $updated_at
  * @property string|null $deleted_at
@@ -24,30 +28,39 @@ use CodeIgniter\Entity\Entity;
 class User extends Entity
 {
     protected $attributes = [
-        'id'            => null,
-        'role_id'       => null,
-        'email'         => null,
-        'username'      => null,
-        'password_hash' => null,
-        'first_name'    => null,
-        'last_name'     => null,
-        'phone'         => null,
-        'status'        => UserStatus::Active->value,
-        'created_at'    => null,
-        'updated_at'    => null,
-        'deleted_at'    => null,
+        'id'                  => null,
+        'employee_id'         => null,
+        'customer_id'         => null,
+        'role_id'             => null,
+        'username'            => null,
+        'password_hash'       => null,
+        'locale'              => 'en',
+        'status'              => UserStatus::Active->value,
+        'failed_login_count'  => 0,
+        'locked_until'        => null,
+        'last_login_at'       => null,
+        'last_login_ip'       => null,
+        'password_changed_at' => null,
+        'created_at'          => null,
+        'updated_at'          => null,
+        'deleted_at'          => null,
     ];
 
     protected $dates = [
+        'locked_until',
+        'last_login_at',
+        'password_changed_at',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
     protected $casts = [
-        'id'      => 'int',
+        'id' => 'int',
+        'employee_id' => '?int',
+        'customer_id' => '?int',
         'role_id' => 'int',
-        // 'status'  => UserStatus::class,
+        'failed_login_count' => 'int',
     ];
 
     public function getStatus(): UserStatus
@@ -62,13 +75,6 @@ class User extends Entity
             : $status;
     }
 
-    public function getFullName(): string
-    {
-        return trim(
-            $this->first_name . ' ' . $this->last_name
-        );
-    }
-
     public function isActive(): bool
     {
         return $this->getStatus() === UserStatus::Active;
@@ -77,5 +83,15 @@ class User extends Entity
     public function isDeleted(): bool
     {
         return $this->deleted_at !== null;
+    }
+
+    public function isEmployee(): bool
+    {
+        return $this->employee_id !== null;
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->customer_id !== null;
     }
 }

@@ -13,20 +13,7 @@ class EmployeeRepository
         protected EmployeeModel $employeeModel
     ) {}
 
-    public function existsByNameAndBirthday(
-        string $firstName,
-        string $lastName,
-        ?string $birthday
-    ): bool
-    {
-        return $this->employeeModel
-            ->join('users', 'users.id = employees.user_id')
-            ->where('users.first_name', $firstName)
-            ->where('users.last_name', $lastName)
-            ->where('employees.birthday', $birthday)
-            ->countAllResults() > 0;
-    }
-
+    
     public function paginate(int $perPage = 20): array
     {
         return $this->employeeModel
@@ -42,13 +29,6 @@ class EmployeeRepository
     public function findById(int $id): ?Employee
     {
         return $this->employeeModel->find($id);
-    }
-
-    public function findByUserId(int $userId): ?Employee
-    {
-        return $this->employeeModel
-            ->where('user_id', $userId)
-            ->first();
     }
 
     public function findAll(): array
@@ -81,10 +61,21 @@ class EmployeeRepository
         return $this->employeeModel->delete($id);
     }
 
-    public function existsByUserId(int $userId): bool
-    {
-        return $this->employeeModel
-            ->where('user_id', $userId)
-            ->countAllResults() > 0;
+    public function existsByNameAndBirthday(
+        string $firstName,
+        string $lastName,
+        ?string $birthday
+    ): bool {
+        $builder = $this->employeeModel
+            ->where('first_name', $firstName)
+            ->where('last_name', $lastName);
+
+        if ($birthday === null) {
+            $builder->where('birthday IS NULL', null, false);
+        } else {
+            $builder->where('birthday', $birthday);
+        }
+
+        return $builder->countAllResults() > 0;
     }
 }

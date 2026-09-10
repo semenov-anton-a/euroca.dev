@@ -5,7 +5,7 @@ return [
     'login_subtitle' => 'Sign in to your account',
     'login_error' => 'Invalid email or password',
     'email' => 'Email',
-    'email_placeholder_or_username' => 'Enter your email or username',
+    'enter_username' => 'Enter your username',
     'password' => 'Password',
     'password_placeholder' => 'Enter your password',
     'remember_me' => 'Remember me',

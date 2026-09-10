@@ -192,7 +192,7 @@
                     <?php
                     if (ENVIRONMENT == 'development') 
                     {
-                        $login = "info@eurocargo.fi";
+                        $login = "superAdminEur";
                         $password = "12345678";
                     }
                     ?>
@@ -210,7 +210,7 @@
                                 type="text"
                                 class="form-control"
                                 name="login"
-                                placeholder="<?= lang('Auth.email_placeholder_or_username') ?>"
+                                placeholder="<?= lang('Auth.enter_username') ?>"
                                 required>
                         </div>
 

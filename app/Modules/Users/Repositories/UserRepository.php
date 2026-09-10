@@ -18,37 +18,13 @@ class UserRepository
         return $this->userModel->find($userId);
     }
 
-    public function findByEmail(string $email): ?User
-    {
-        return $this->userModel
-            ->where('email', $email)
-            ->first();
-    }
-
     public function findByUsername(string $username): ?User
     {
         return $this->userModel
             ->where('username', $username)
             ->first();
     }
-
-    public function findByLogin(string $login): ?User
-    {
-        return $this->userModel
-            ->groupStart()
-                ->where('username', $login)
-                ->orWhere('email', $login)
-            ->groupEnd()
-            ->first();
-    }
-
-    public function existsByEmail(string $email): bool
-    {
-        return $this->userModel
-            ->where('email', $email)
-            ->countAllResults() > 0;
-    }
-
+    
     public function existsByUsername(string $username): bool
     {
         return $this->userModel
@@ -66,7 +42,6 @@ class UserRepository
     {
         return $this->userModel->update($userId, $data);
     }
-
     public function delete(int $userId): bool
     {
         return $this->userModel->delete($userId);

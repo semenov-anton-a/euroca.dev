@@ -4,43 +4,33 @@ declare(strict_types=1);
 
 namespace App\Modules\Employees\Services;
 
-use App\Modules\Auth\Enums\UserStatus;
 use App\Modules\Employees\Entities\Employee;
 use App\Modules\Employees\Repositories\EmployeeRepository;
-// use App\Modules\Employees\Models\EmployeeModel as EmployeeModel;
-
 use App\Modules\Users\Services\UserService;
 
 class EmployeeService
 {
     public function __construct(
         protected EmployeeRepository $employeeRepository,
-        protected UserService $userService,
-        // protected EmployeeModel $employeeModel
+        protected UserService $userService
     ) {}
-    
+
     public function paginate(int $perPage = 20): array
     {
         return $this->employeeRepository->paginate($perPage);
     }
 
-
     public function getPaginated(int $perPage = 20): array
     {
         return [
             'employees' => $this->employeeRepository->paginate($perPage),
-            'pager'     => $this->employeeRepository->pager(),
+            'pager' => $this->employeeRepository->pager(),
         ];
     }
 
     public function findById(int $id): ?Employee
     {
         return $this->employeeRepository->findById($id);
-    }
-
-    public function findByUserId(int $userId): ?Employee
-    {
-        return $this->employeeRepository->findByUserId($userId);
     }
 
     public function findAll(): array
@@ -55,35 +45,47 @@ class EmployeeService
 
     public function create(array $data): int
     {
-        if ( 
-            $this->employeeRepository
-                ->existsByNameAndBirthday(
-                    $data['first_name'], $data['last_name'], $data['birthday']) 
-        )
-        {
-            return throw new \RuntimeException( 'Employee.employee_username_birtday_exist' );
+        if ($this->employeeRepository->existsByNameAndBirthday(
+            $data['first_name'],
+            $data['last_name'],
+            $data['birthday'] ?? null
+        )) {
+            throw new \RuntimeException(
+                'Employee.employee_name_birthday_exist'
+            );
         }
-        
+
         $db = \Config\Database::connect();
         $db->transBegin();
 
         try {
-            $userId = $this->userService->create([
-                'role_id' => $data['role_id'],
-                'username' => $data['username'],
-                'email' => trim($data['email'] ?? '') ?: null,
+            $employeeId = $this->employeeRepository->create([
                 'first_name' => trim($data['first_name']),
                 'last_name' => trim($data['last_name']),
+                'birthday' => $data['birthday'] ?? null,
+                'email' => trim($data['email'] ?? '') ?: null,
                 'phone' => trim($data['phone'] ?? '') ?: null,
-                'status' => ( (int) $data['role_id'] === 0 ) ? UserStatus::Banned->value : UserStatus::Active->value
-            ]);
-
-            $employeeId = $this->employeeRepository->create([
-                'user_id' => $userId,
-                'birthday' => $data['birthday'],
-                'position' => $data['position'] ?? '',
+                'position' => trim($data['position'] ?? '') ?: null,
+                'hire_date' => $data['hire_date'] ?? null,
+                'status' => $data['status'] ?? 'active',
                 'note' => $data['note'] ?? null,
             ]);
+
+            if (!$employeeId) {
+                throw new \RuntimeException('Failed to create employee.');
+            }
+
+            if (!empty($data['username'])) {
+                $this->userService->create([
+                    'employee_id' => $employeeId,
+                    'customer_id' => null,
+                    'role_id' => (int) $data['role_id'],
+                    'username' => trim($data['username']),
+                    'password_hash' => $data['password_hash'],
+                    'status' => $data['user_status'] ?? 'active',
+                    'locale' => $data['locale'] ?? 'en',
+                ]);
+            }
 
             if ($db->transStatus() === false) {
                 throw new \RuntimeException('Failed to create employee.');
@@ -92,13 +94,11 @@ class EmployeeService
             $db->transCommit();
 
             return $employeeId;
-
         } catch (\Throwable $e) {
             $db->transRollback();
             throw $e;
         }
     }
-
 
     public function update(int $id, array $data): bool
     {
@@ -110,8 +110,5 @@ class EmployeeService
         return $this->employeeRepository->delete($id);
     }
 
-    public function existsByUserId(int $userId): bool
-    {
-        return $this->employeeRepository->existsByUserId($userId);
-    }
+    
 }
