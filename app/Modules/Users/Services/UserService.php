@@ -13,6 +13,22 @@ class UserService
         protected UserRepository $userRepository
     ) {}
 
+    public function generateUsernameIncrement(string $baseUsername): string
+    {
+        if ( !$this->userRepository->existsByUsername($baseUsername) ) {
+            return $baseUsername;
+        }
+
+        $counter = 2;
+
+        do {
+            $username = $baseUsername . '_' . $counter;
+            $counter++;
+        } while ($this->userRepository->existsByUsername($username));
+
+        return $username;
+    }
+
     public function findById(int $userId): ?User
     {
         return $this->userRepository->findById($userId);
@@ -21,6 +37,11 @@ class UserService
     public function findByEmail(string $email): ?User
     {
         return $this->userRepository->findByEmail($email);
+    }
+
+    public function findByUsername(string $username): ?User
+    {
+        return $this->userRepository->findByUsername($username);
     }
 
     public function findByLogin(string $login): ?User

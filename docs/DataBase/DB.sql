@@ -161,9 +161,7 @@ CREATE TABLE `employees` (
     `user_id` INT UNSIGNED DEFAULT NULL,
 
     `position` VARCHAR(100) DEFAULT NULL,
-
-    `hire_date` DATE DEFAULT NULL,
-    `termination_date` DATE DEFAULT NULL,
+    `birthday` DATE NOT NULL,
 
     `status` VARCHAR(20) NOT NULL DEFAULT 'active',
     `note` TEXT DEFAULT NULL,

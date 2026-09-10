@@ -23,6 +23,7 @@ die;
   <!--begin::Head-->
   <head>
     <meta name="csrf-token" content="<?= csrf_hash() ?>">
+    <meta name="csrf-header" content="<?= csrf_header() ?>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>AdminLTE v4 | Dashboard</title>
 
@@ -316,9 +317,11 @@ const HtmxCsrf = {
     },
 
     send: function (event) {
-        const meta = document.querySelector('meta[name="csrf-token"]');
-        if (meta) {
-            event.detail.headers['X-CSRF-TOKEN'] = meta.content;
+        const token = document.querySelector('meta[name="csrf-token"]');
+        const header = document.querySelector('meta[name="csrf-header"]');
+
+        if (token && header) {
+            event.detail.headers[header.content] = token.content;
         }
     },
 
@@ -333,7 +336,7 @@ const HtmxCsrf = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => { HtmxCsrf.init(); });
+document.body.addEventListener('htmx:configRequest', event => { HtmxCsrf.send(event); });
 </script>
    
   </body>

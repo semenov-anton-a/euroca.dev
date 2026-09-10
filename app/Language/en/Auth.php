@@ -14,5 +14,6 @@ return [
     'no_account' => "Don't have an account?",
     'register' => 'Register',
     'error_login' => 'Invalid email or password',
-    
+    'username_exists' => 'Username already exists.',
+    'email_exists' => 'Email already exists.'
 ];

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Modules\Employees\Services;
 
+use App\Modules\Auth\Enums\UserStatus;
 use App\Modules\Employees\Entities\Employee;
 use App\Modules\Employees\Repositories\EmployeeRepository;
-
-/** Auth ENUM */
-use App\Modules\Auth\Enums\UserStatus;
+// use App\Modules\Employees\Models\EmployeeModel as EmployeeModel;
 
 use App\Modules\Users\Services\UserService;
 
@@ -16,7 +15,8 @@ class EmployeeService
 {
     public function __construct(
         protected EmployeeRepository $employeeRepository,
-        protected UserService $userService
+        protected UserService $userService,
+        // protected EmployeeModel $employeeModel
     ) {}
     
     public function paginate(int $perPage = 20): array
@@ -55,33 +55,50 @@ class EmployeeService
 
     public function create(array $data): int
     {
-        $hasAccess = !empty( $data['enable_access'] );
+        if ( 
+            $this->employeeRepository
+                ->existsByNameAndBirthday(
+                    $data['first_name'], $data['last_name'], $data['birthday']) 
+        )
+        {
+            return throw new \RuntimeException( 'Employee.employee_username_birtday_exist' );
+        }
+        
+        $db = \Config\Database::connect();
+        $db->transBegin();
 
-        $password = $hasAccess
-            ? $data['password']
-            : bin2hex(random_bytes(16));
+        try {
+            $userId = $this->userService->create([
+                'role_id' => $data['role_id'],
+                'username' => $data['username'],
+                'email' => trim($data['email'] ?? '') ?: null,
+                'first_name' => trim($data['first_name']),
+                'last_name' => trim($data['last_name']),
+                'phone' => trim($data['phone'] ?? '') ?: null,
+                'status' => ( (int) $data['role_id'] === 0 ) ? UserStatus::Banned->value : UserStatus::Active->value
+            ]);
 
-        $userId = $this->userService->create([
-            'role_id'       => $data['role_id'],
-            'email'         => $data['email'],
-            'username'      => $data['username'],
-            'password_hash' => $password,
-            'first_name'    => $data['first_name'],
-            'last_name'     => $data['last_name'],
-            'phone'         => $data['phone'] ?? null,
-            'status' => $hasAccess
-                ? UserStatus::Active->value
-                : UserStatus::Banned->value,
-        ]);
+            $employeeId = $this->employeeRepository->create([
+                'user_id' => $userId,
+                'birthday' => $data['birthday'],
+                'position' => $data['position'] ?? '',
+                'note' => $data['note'] ?? null,
+            ]);
 
-        return $this->employeeRepository->create([
-            'user_id' => $userId,
-            'position' => $data['position'] ?? null,
-            'hire_date' => $data['hire_date'] ?? null,
-            'status' => 'active',
-            'note' => $data['note'] ?? null,
-        ]);
+            if ($db->transStatus() === false) {
+                throw new \RuntimeException('Failed to create employee.');
+            }
+
+            $db->transCommit();
+
+            return $employeeId;
+
+        } catch (\Throwable $e) {
+            $db->transRollback();
+            throw $e;
+        }
     }
+
 
     public function update(int $id, array $data): bool
     {
