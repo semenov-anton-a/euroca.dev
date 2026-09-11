@@ -16,6 +16,11 @@ use App\Modules\Auth\Services\RoleService;
 /** Users Services */
 use App\Modules\Users\Config\Services as UserServices;
 
+
+/** Employee Service */
+use App\Modules\Employees\Config\Services as EmployeeServices;
+
+
 class Services extends BaseService
 {
     public static function authService(bool $getShared = true): AuthService
@@ -28,7 +33,8 @@ class Services extends BaseService
         return new AuthService(
             UserServices::userService(),
             static::roleService(),
-            static::permissionService()
+            static::permissionService(),
+            EmployeeServices::employeeService()
         );
     }
 

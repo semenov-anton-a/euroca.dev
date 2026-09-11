@@ -66,7 +66,7 @@
               </ul>
             </li>
             <!--end::Color Mode Toggle-->
-              <?php if (session('logged_in')) : $userName = esc(session('user_name'));  ?>
+              <?php if (session('logged_in')) : $userName = esc(session('diplayName'));  ?>
               <!--begin::User Menu Dropdown-->
               <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
