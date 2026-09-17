@@ -21,18 +21,20 @@ class UserModel extends Model
 
     protected $dateFormat = 'datetime';
 
-    protected $allowedFields = [ 
-        'role_id', 
-        'email', 
-        'username', 
-        'password_hash', 
-        'first_name', 
-        'last_name', 
-        'phone', 
-        'status', 
-        'deleted_at', 
-        'created_at', 
-        'updated_at' 
+    protected $allowedFields = [
+        'employee_id',
+        'customer_id',
+        'username',
+        'password',
+        'password_hash',
+        'role_id',
+        'status',
+        'failed_login_count',
+        'locked_until',
+        'locale',
+        'last_login_at',
+        'last_login_ip',
+        'password_changed_at',
     ];
 
     protected $beforeInsert = [
@@ -45,18 +47,13 @@ class UserModel extends Model
 
     protected function hashPassword(array $data): array
     {
-        if (
-            isset($data['data']['password_hash'])
-            && !empty($data['data']['password_hash'])
-        ) {
-            $password = $data['data']['password_hash'];
+        if (!empty($data['data']['password'])) {
+            $data['data']['password_hash'] = password_hash(
+                $data['data']['password'],
+                PASSWORD_DEFAULT
+            );
 
-            if (password_get_info($password)['algo'] === 0) {
-                $data['data']['password_hash'] = password_hash(
-                    $password,
-                    PASSWORD_DEFAULT
-                );
-            }
+            unset($data['data']['password']);
         }
 
         return $data;

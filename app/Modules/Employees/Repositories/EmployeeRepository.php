@@ -13,19 +13,6 @@ class EmployeeRepository
         protected EmployeeModel $employeeModel
     ) {}
 
-    
-    public function paginate(int $perPage = 20): array
-    {
-        return $this->employeeModel
-            ->orderBy('id', 'DESC')
-            ->paginate($perPage);
-    }
-
-    public function pager()
-    {
-        return $this->employeeModel->pager;
-    }
-
     public function findById(int $id): ?Employee
     {
         return $this->employeeModel->find($id);
@@ -78,4 +65,43 @@ class EmployeeRepository
 
         return $builder->countAllResults() > 0;
     }
+
+
+    public function paginateWithUsers(int $perPage = 20): array
+    {
+        return $this->employeeModel
+            ->select('
+                employees.id,
+                employees.first_name,
+                employees.last_name,
+                employees.email,
+                employees.position,
+                employees.birthday,
+                employees.status,
+                users.id AS user_id,
+                users.username,
+                users.role_id,
+                users.status AS user_status,
+                users.locale,
+                users.last_login_at,
+                roles.name AS role_name
+            ')
+            ->join('users', 'users.employee_id = employees.id', 'left')
+            ->join('roles', 'roles.id = users.role_id', 'left')
+            ->orderBy('employees.id', 'DESC')
+            ->paginate($perPage);
+    }
+
+    public function paginate(int $perPage = 20): array
+    {
+        return $this->employeeModel
+            ->orderBy('id', 'DESC')
+            ->paginate($perPage);
+    }
+
+    public function pager()
+    {
+        return $this->employeeModel->pager;
+    }
+
 }

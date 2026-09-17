@@ -192,4 +192,18 @@ abstract class BaseController extends Controller
         return $this->addHtmxTrigger('toast', $data );        
     }
 
+    protected function htmlFormViewError( array $err )
+    {
+        $html = '<div class="alert alert-danger"><ul class="mb-0">';
+
+        foreach ($err['errors'] as $error) {
+            $html .= '<li>' . esc($error) . '</li>';
+        }
+
+        $html .= '</ul></div>';
+
+        return $html;
+        
+    }
+
 }

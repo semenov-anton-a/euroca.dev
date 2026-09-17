@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Config;
@@ -21,6 +20,15 @@ class Services extends BaseService
     public static function employeeService(bool $getShared = true): \App\Modules\Employees\Services\EmployeeService
     {
         return \App\Modules\Employees\Config\Services::employeeService($getShared);
+    }
+
+    public static function fileService(bool $getShared = true): \App\Services\FileService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('fileService');
+        }
+
+        return new \App\Services\FileService();
     }
 
     public static function permissionRepository(bool $getShared = true): \App\Modules\Auth\Repositories\PermissionRepository

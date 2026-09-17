@@ -9,9 +9,9 @@ $routes->group('employees', [
 ], static function ($routes) {
 
     $routes->get('/', 'Employees::index', ['as' => 'employees.index']);
-    
-    /** Show */
-    $routes->get('(:num)', 'Employees::show/$1', ['as' => 'employees.show']);
+   
+    /** New employee */
+    $routes->get('(:num)', 'Employees::employee/$1', ['as' => 'employees.show']);
     
     /** Store */
     $routes->post('store', 'Employees::store', ['as' => 'employees.store']);

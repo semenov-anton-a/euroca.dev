@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Modules\Employees\Models;
 
-use CodeIgniter\Model;
 use App\Modules\Employees\Entities\Employee;
+use CodeIgniter\Model;
 
 class EmployeeModel extends Model
 {
@@ -14,9 +14,12 @@ class EmployeeModel extends Model
     protected $returnType = Employee::class;
 
     protected $allowedFields = [
-        'user_id',
-        'position',
+        'first_name',
+        'last_name',
         'birthday',
+        'email',
+        'phone',
+        'position',
         'status',
         'note',
     ];
@@ -28,9 +31,8 @@ class EmployeeModel extends Model
     protected $updatedField = 'updated_at';
     protected $deletedField = 'deleted_at';
 
-
     public function pager()
     {
-        return $this->model->pager;
+        return $this->pager;
     }
 }

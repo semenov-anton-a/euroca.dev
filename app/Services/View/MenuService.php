@@ -89,8 +89,8 @@ class MenuService
                 [
                     'title'      => 'Create Employee',
                     'icon'       => 'plus',
-                    'url'        => '/employees/create',
-                    'permission' => 'employees.create',
+                    'url'        => '/employees/new',
+                    'permission' => 'employees.new',
                     'order'      => 20,
                 ],
 
