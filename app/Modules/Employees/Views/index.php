@@ -21,108 +21,10 @@
                     </a>
                 </div>
             </div>
-
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th style="width:40px;"></th>
-                            <th>Employee</th>
-                            <th>Position</th>
-                            <th>Department</th>
-                            <th>Birthday</th>
-                            <th>Status</th>
-                            <th class="text-end">Actions</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <?php foreach ($employees['employees'] as $employee): ?>
-                            <?php
-                            $initials = mb_strtoupper(
-                                mb_substr($employee->first_name, 0, 1) .
-                                mb_substr($employee->last_name, 0, 1)
-                            );
-                            ?>
-
-                            <tr class="accordion-row"
-                                data-accordion-row
-                                data-employee-id="<?= $employee->id ?>">
-                                <td>
-                                    <i class="bi bi-chevron-right" data-accordion-icon></i>
-                                </td>
-
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
-                                             style="width:40px;height:40px;">
-                                            <strong><?= esc($initials) ?></strong>
-                                        </div>
-
-                                        <div>
-                                            <div class="fw-semibold">
-                                                <?= esc($employee->first_name . ' ' . $employee->last_name) ?>
-                                            </div>
-
-                                            <?php if ($employee->email): ?>
-                                                <small class="text-muted">
-                                                    <?= esc($employee->email) ?>
-                                                </small>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </td>
-
-                                <td><?= esc($employee->position ?? '—') ?></td>
-                                <td><span class="text-muted">—</span></td>
-
-                                <td>
-                                    <?= $employee->birthday
-                                        ? esc(date('d.m.Y', strtotime($employee->birthday)))
-                                        : '—'
-                                    ?>
-                                </td>
-
-                                <td>
-                                    <?php if ($employee->status === 'active'): ?>
-                                        <span class="badge text-bg-success">Active</span>
-                                    <?php elseif ($employee->status === 'inactive'): ?>
-                                        <span class="badge text-bg-secondary">Inactive</span>
-                                    <?php else: ?>
-                                        <span class="badge text-bg-danger">
-                                            <?= esc(ucfirst($employee->status)) ?>
-                                        </span>
-                                    <?php endif; ?>
-                                </td>
-
-                                <td class="text-end">
-                                    <div class="btn-group btn-group-sm">
-                                        <a href="<?= route_to('employees.edit', $employee->id) ?>"
-                                           class="btn btn-outline-primary">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-
-                                        <button type="button"
-                                                class="btn btn-outline-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card-footer clearfix">
-                <div class="float-start text-muted small">
-                    Showing <?= count($employees['employees']) ?>
-                    of <?= $employees['pager']->getTotal() ?> employees
-                </div>
-
-                <div class="float-end">
-                    <?= $employees['pager']->links() ?>
-                </div>
+            <div id="employees-table"> 
+                <div class="card-body table-responsive p-0"> 
+                    <?= view($viewTemplatePath, ['employees' => $employees]) ?> 
+                </div> 
             </div>
         </div>
     </div>
@@ -146,6 +48,7 @@ const EmployeeAccordion = {
 
     toggle(row) {
         const employeeId = row.dataset.employeeId;
+
         const nextRow = row.nextElementSibling;
         const icon = row.querySelector('[data-accordion-icon]');
 
