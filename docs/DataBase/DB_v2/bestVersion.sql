@@ -97,6 +97,35 @@ CREATE TABLE employees (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================================================
+-- EMPLOYEES Documents
+-- EuroCargo employees.
+-- =========================================================
+
+CREATE TABLE employee_documents (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    employee_id BIGINT UNSIGNED NOT NULL,
+    document_type VARCHAR(50) NOT NULL,
+    document_number VARCHAR(100) NULL,
+    title VARCHAR(255) NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    mime_type VARCHAR(100) NULL,
+    file_size BIGINT UNSIGNED NULL,
+    issued_at DATE NULL,
+    expires_at DATE NULL,
+    note TEXT NULL,
+    created_at DATETIME NULL,
+    updated_at DATETIME NULL,
+    deleted_at DATETIME NULL,
+    CONSTRAINT fk_employee_documents_employee
+        FOREIGN KEY (employee_id) REFERENCES employees(id)
+        ON DELETE RESTRICT,
+    INDEX idx_employee_documents_employee_id (employee_id),
+    INDEX idx_employee_documents_type (document_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- =========================================================
 -- ROLES
 -- =========================================================
 

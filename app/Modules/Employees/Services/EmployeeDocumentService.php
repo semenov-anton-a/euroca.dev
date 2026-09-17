@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Modules\Employees\Services;
 
 use App\Modules\Employees\Entities\EmployeeDocument;

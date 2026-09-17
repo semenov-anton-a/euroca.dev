@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Modules\Employees\Models;
 
-use CodeIgniter\Model;
 use App\Modules\Employees\Entities\EmployeeDocument;
+use CodeIgniter\Model;
 
 class EmployeeDocumentModel extends Model
 {
@@ -16,15 +14,21 @@ class EmployeeDocumentModel extends Model
     protected $allowedFields = [
         'employee_id',
         'document_type',
-        'document_name',
+        'document_number',
+        'title',
         'file_name',
         'file_path',
         'mime_type',
         'file_size',
+        'issued_at',
+        'expires_at',
+        'note',
     ];
 
     protected $useTimestamps = true;
+    protected $useSoftDeletes = true;
 
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
+    protected $deletedField = 'deleted_at';
 }
