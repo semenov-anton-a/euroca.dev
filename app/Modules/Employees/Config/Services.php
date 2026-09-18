@@ -21,10 +21,7 @@ class Services extends BaseService
             return static::getSharedInstance('employeeService');
         }
 
-        return new EmployeeService(
-            new EmployeeRepository(new EmployeeModel()),
-            UserServices::userService()
-        );
+        return new EmployeeService(  new EmployeeRepository(new EmployeeModel()) );
     }
 
     public static function employeeDocumentService(bool $getShared = true): EmployeeDocumentService

@@ -15,7 +15,11 @@ use App\Services\Modules\EmployeeUserService;
  * Handles employee-related actions.
  */
 class Employees extends BaseEmployeesController
-{
+{   
+    /**
+     * Show all employee table
+     * @return ResponseInterface|string
+     */
     public function index(): ResponseInterface|string
     {
         $roles = $this->roleService->getManageableRoles();
@@ -42,6 +46,11 @@ class Employees extends BaseEmployeesController
         ]);
     }
 
+    /**
+     * Get Employeaa data only data
+     * @param int $id
+     * @return ResponseInterface
+     */
     public function employee(int $id): ResponseInterface|string
     {
         $employee = $this->employeeService->findById($id);
@@ -59,7 +68,11 @@ class Employees extends BaseEmployeesController
             // ->setBody('<pre>' . print_r($employee, true) . '</pre>');
     }
 
-    public function new()
+    /**
+     * Create new employee
+     * @return string
+     */
+    public function create()
     {
         return $this->viewModule( 'newemployee',  [
             'roles' => $this->roleService->getManageableRoles(),
@@ -68,21 +81,30 @@ class Employees extends BaseEmployeesController
                 'name' => trim((string) RulesRegex::Name->value, '/$^'),
                 'phone' => trim((string) RulesRegex::Phone->value, '/$^'),
                 'password' => trim((string) RulesRegex::Password->value, '/$^'),
-            ],
+                ],
             ]);
     }
 
+
+    /**
+     * Save new employee
+     * @return ResponseInterface
+     */
     public function store(): ResponseInterface|string
     {
         try {
             
-            $employeeUserService = new EmployeeUserService( $this->employeeService, $this->userService );
+            $employeeUserService = new EmployeeUserService( 
+                $this->employeeService,
+                $this->employeeDocumentService,
+                $this->userService
+            );
 
             $employee = $this->request->getPost();
             $files = $this->request->getFileMultiple('documents') ?? [];
-
-            $result = $employeeUserService->create($employee, $files);            
             
+            $result = $employeeUserService->create($employee, $files);            
+                        
             if( $result['success'] === true )
             {
                 return $this->setHtmxRedirect( route_to('employees.index') )->response;    

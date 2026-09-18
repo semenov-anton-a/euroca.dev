@@ -3,26 +3,30 @@ declare(strict_types=1);
 
 namespace App\Services\Modules;
 
+use CodeIgniter\Validation\ValidationInterface;
+
+use App\Modules\Users\Services\UserService;
+
 use App\Modules\Employees\Enums\RulesRegex;
 use App\Modules\Employees\Services\EmployeeService;
-use App\Modules\Users\Services\UserService;
+use App\Modules\Employees\Services\EmployeeDocumentService;
+
 use App\Services\FileService;
-use CodeIgniter\Validation\ValidationInterface;
 
 class EmployeeUserService
 {
     protected ValidationInterface $validation;
     protected FileService $fileService;
 
-
     public function __construct(
         protected EmployeeService $employeeService,
+        protected EmployeeDocumentService $employeeDocumentService,
         protected UserService $userService,
-        
     ) {
-        $this->validation   = service('validation');
-        $this->fileService  = service('fileService');
+        $this->validation = service('validation');
+        $this->fileService = service('fileService');
     }
+
 
     public function create(array $data, array $files = []): array
     {
@@ -30,7 +34,8 @@ class EmployeeUserService
 
         $errors = $this->validate($data);
 
-        if ($errors !== []) {
+        if ($errors !== []) 
+        {
             return [
                 'success' => false,
                 'errors' => $errors,
@@ -39,7 +44,8 @@ class EmployeeUserService
 
         $fileErrors = $this->fileService->validate($files);
 
-        if ($fileErrors !== []) {
+        if ($fileErrors !== []) 
+        {
             return [
                 'success' => false,
                 'errors' => $fileErrors,
@@ -47,6 +53,7 @@ class EmployeeUserService
         }
 
         $db = db_connect();
+
         $employeeID = null;
         $savedFiles = [];
         $directory = '';
@@ -61,12 +68,27 @@ class EmployeeUserService
                 $this->userService->create($data);
             }
 
-            if ($files !== []) {
+            if ($files !== []) 
+            {
                 $directory = 'employees/' . $employeeID;
                 $savedFiles = $this->fileService->save($files, $directory);
+
+                foreach ($savedFiles as $file) 
+                {
+                    $this->employeeDocumentService->create([
+                        'employee_id' => $employeeID,
+                        'document_type' => 'document',
+                        'title' => $file['original_name'],
+                        'file_name' => $file['filename'],
+                        'file_path' => $directory . '/' . $file['filename'],
+                        'mime_type' => $file['mime_type'],
+                        'file_size' => $file['size'],
+                    ]);
+                }
             }
 
-            if ($db->transStatus() === false) {
+            if ($db->transStatus() === false) 
+            {
                 throw new \RuntimeException('Unable to create employee.');
             }
 
@@ -80,7 +102,8 @@ class EmployeeUserService
         } catch (\Throwable $e) {
             $db->transRollback();
 
-            if ($savedFiles !== []) {
+            if ($savedFiles !== []) 
+            {
                 $this->fileService->delete($savedFiles, $directory);
             }
 

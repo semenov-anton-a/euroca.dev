@@ -14,7 +14,7 @@
                 </h3>
 
                 <div class="card-tools">
-                    <a href="<?= route_to('employees.newemployee') ?>"
+                    <a href="<?= route_to('employees.new_employee') ?>"
                        class="btn btn-primary btn-sm">
                         <i class="bi bi-person-plus me-1"></i>
                         New Employee

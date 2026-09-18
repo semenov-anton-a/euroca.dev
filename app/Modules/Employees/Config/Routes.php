@@ -10,8 +10,10 @@ $routes->group('employees', [
 
     $routes->get('/', 'Employees::index', ['as' => 'employees.index']);
    
-    /** New employee */
+    /** Show Employee */
     $routes->get('(:num)', 'Employees::employee/$1', ['as' => 'employees.show']);
+
+    $routes->get('create', 'Employees::create', ['as' => 'employees.new_employee']);
     
     /** Store */
     $routes->post('store', 'Employees::store', ['as' => 'employees.store']);
