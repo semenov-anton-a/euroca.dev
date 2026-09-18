@@ -310,13 +310,12 @@ die;
 </div>
 <script>
 const HtmxCsrf = {
-
-    init: function () {
+    init() {
         document.body.addEventListener('htmx:configRequest', this.send);
         document.body.addEventListener('htmx:afterRequest', this.update);
     },
 
-    send: function (event) {
+    send(event) {
         const token = document.querySelector('meta[name="csrf-token"]');
         const header = document.querySelector('meta[name="csrf-header"]');
 
@@ -325,18 +324,17 @@ const HtmxCsrf = {
         }
     },
 
-    update: function (event) {
+    update(event) {
         const token = event.detail.xhr.getResponseHeader('X-CSRF-TOKEN');
         const meta = document.querySelector('meta[name="csrf-token"]');
 
         if (token && meta) {
-            meta.setAttribute('content', token);
+            meta.content = token;
         }
-
     }
 };
 
-document.body.addEventListener('htmx:configRequest', event => { HtmxCsrf.send(event); });
+HtmxCsrf.init();
 </script>
    
   </body>
