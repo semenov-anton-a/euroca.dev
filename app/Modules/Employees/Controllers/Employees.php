@@ -68,8 +68,7 @@ class Employees extends BaseEmployeesController
 
         return $this->response
             ->setStatusCode(200)
-            ->setBody($view);
-        // ->setBody('<pre>' . print_r($employee, true) . '</pre>');
+            ->setBody($view);        
     }
 
     /**
@@ -196,26 +195,19 @@ class Employees extends BaseEmployeesController
     {
         $document = $this->employeeDocumentService->findByFileName($fileName);
 
-        if ($document === null) {
-            throw PageNotFoundException::forPageNotFound();
-            return $this->response->setStatusCode(404);
+        if ($document === null) 
+        {
+            throw PageNotFoundException::forPageNotFound();    
         }
 
         $path = WRITEPATH . 'uploads/' . $document->file_path;
 
-        if (!is_file($path)) {
+        if (!is_file($path)) 
+        {
             return $this->response->setStatusCode(404);
         }
 
         return $this->responseShowDocument($path, $document->mime_type, $document->title);
 
-
-        return $this->responceShowDocument($path)->response;
-
-        return $this->response
-            ->setHeader('Content-Type', $document->mime_type ?? 'application/octet-stream')
-            ->setHeader('Content-Disposition', 'inline; filename="' . addslashes($document->title) . '"')
-            ->setHeader('Content-Length', (string) filesize($path))
-            ->setBody(file_get_contents($path));
     }
 }
