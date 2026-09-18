@@ -194,11 +194,33 @@ abstract class BaseController extends Controller
         return $this->addHtmxTrigger('toast', $data);
     }
 
+    protected function flashToast(string $type,string $message,string $title = ''): void 
+    {   
+        if ($title === '') {
+            $title = $type;
+        }
+
+        $title = (string) lang('Toast.' . $title);
+
+        $data = [
+            'type'    => $type,
+            'title'   => lang($title),
+            'message' => $message
+        ];
+
+        session()->setFlashdata('toast', [
+            'type' => $type,
+            'message' => $message,
+            'title' => $title,
+        ]);
+    }
+
     protected function htmlFormViewError(array $err)
     {
         $html = '<div class="alert alert-danger"><ul class="mb-0">';
 
-        foreach ($err['errors'] as $error) {
+        foreach ($err['errors'] as $error) 
+        {
             $html .= '<li>' . esc($error) . '</li>';
         }
 

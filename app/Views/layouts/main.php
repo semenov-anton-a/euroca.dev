@@ -336,6 +336,17 @@ const HtmxCsrf = {
 
 HtmxCsrf.init();
 </script>
+<?php if ($toast = session()->getFlashdata('toast')): ?>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    Toast.init().show(
+        <?= json_encode($toast['type']) ?>,
+        <?= json_encode($toast['message']) ?>,
+        <?= json_encode($toast['title']) ?>
+    );
+});
+</script>
+<?php endif; ?>
    
   </body>
   <!--end::Body-->

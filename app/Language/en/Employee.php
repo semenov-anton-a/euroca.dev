@@ -23,4 +23,6 @@ return [
     'error_deleting_employee' => 'Error deleting employee.',
     'employee_birthday_required' => 'Employee birthday required',
 
+    'danger_update'=>'Unable to update employee. Please try again later.'
+
 ];

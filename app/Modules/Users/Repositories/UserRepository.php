@@ -18,6 +18,13 @@ class UserRepository
         return $this->userModel->find($userId);
     }
 
+    public function findByEmployeeId(int $employeeId): ?User
+    {
+        return $this->userModel
+            ->where('employee_id', $employeeId)
+            ->first();
+    }
+
     public function findByUsername(string $username): ?User
     {
         return $this->userModel

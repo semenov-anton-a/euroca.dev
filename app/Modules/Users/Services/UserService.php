@@ -18,6 +18,11 @@ class UserService
         return $this->userRepository->findById($userId);
     }
 
+    public function findByEmployeeId(int $employeeId): ?User
+    {
+        return $this->userRepository->findByEmployeeId($employeeId);    
+    }
+
 
     public function findByUsername(string $username): ?User
     {

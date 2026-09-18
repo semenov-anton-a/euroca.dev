@@ -16,7 +16,7 @@ use App\Services\Modules\EmployeeUserService;
  * Handles employee-related actions.
  */
 class Employees extends BaseEmployeesController
-{   
+{
     /**
      * Show all employee table
      * @return ResponseInterface|string
@@ -28,10 +28,9 @@ class Employees extends BaseEmployeesController
 
         $viewTemplatePath = 'App\Modules\Employees\Views\employees-table';
 
-        if ($this->request->getHeaderLine('HX-Request') === 'true') 
-        {            
-            $view = view($viewTemplatePath, [ 'employees' => $employees ]);
-            return $this->response->setStatusCode(200)->setBody( $view );   
+        if ($this->request->getHeaderLine('HX-Request') === 'true') {
+            $view = view($viewTemplatePath, ['employees' => $employees]);
+            return $this->response->setStatusCode(200)->setBody($view);
         }
 
         return $this->viewModule('index', [
@@ -57,18 +56,20 @@ class Employees extends BaseEmployeesController
         $employee = $this->employeeService->findById($id);
 
         /** 404 Error */
-        if (!$employee) { return $this->response->setStatusCode(404); }
+        if (!$employee) {
+            return $this->response->setStatusCode(404);
+        }
 
         $documents = $this->employeeDocumentService->findByEmployeeId($id);
         $view = view('App\Modules\Employees\Views\employee-details', [
-                'employee' => $employee,
-                'documents' => $documents ?? null
-            ]);        
-        
+            'employee' => $employee,
+            'documents' => $documents ?? null
+        ]);
+
         return $this->response
             ->setStatusCode(200)
-            ->setBody( $view );
-            // ->setBody('<pre>' . print_r($employee, true) . '</pre>');
+            ->setBody($view);
+        // ->setBody('<pre>' . print_r($employee, true) . '</pre>');
     }
 
     /**
@@ -77,15 +78,15 @@ class Employees extends BaseEmployeesController
      */
     public function create()
     {
-        return $this->viewModule( 'newemployee',  [
+        return $this->viewModule('newemployee',  [
             'roles' => $this->roleService->getManageableRoles(),
             'rules' => [
                 'username' => trim((string) RulesRegex::Username->value, '/$^'),
                 'name' => trim((string) RulesRegex::Name->value, '/$^'),
                 'phone' => trim((string) RulesRegex::Phone->value, '/$^'),
                 'password' => trim((string) RulesRegex::Password->value, '/$^'),
-                ],
-            ]);
+            ],
+        ]);
     }
 
 
@@ -96,8 +97,8 @@ class Employees extends BaseEmployeesController
     public function store(): ResponseInterface|string
     {
         try {
-            
-            $employeeUserService = new EmployeeUserService( 
+
+            $employeeUserService = new EmployeeUserService(
                 $this->employeeService,
                 $this->employeeDocumentService,
                 $this->userService
@@ -105,28 +106,95 @@ class Employees extends BaseEmployeesController
 
             $employee = $this->request->getPost();
             $files = $this->request->getFileMultiple('documents') ?? [];
-            
-            $result = $employeeUserService->create($employee, $files);            
-                        
-            if( $result['success'] === true )
-            {
-                return $this->setHtmxRedirect( route_to('employees.index') )->response;    
-            }else{
-                return $this->response
-                        ->setStatusCode(200)
-                        ->setBody( $this->htmlFormViewError($result) );
-            }           
 
+            $result = $employeeUserService->create($employee, $files);
+
+            if ($result['success'] === true) {
+                return $this->setHtmxRedirect(route_to('employees.index'))->response;
+            } else {
+                return $this->response
+                    ->setStatusCode(200)
+                    ->setBody($this->htmlFormViewError($result));
+            }
         } catch (\Throwable $e) {
 
             log_message('error', $e->getMessage());
-            return $this->htmxToastMessage("danger", "Error create employee." )->response->setStatusCode(422);
+            return $this->htmxToastMessage("danger", "Error create employee.")->response->setStatusCode(422);
         }
     }
-    
-    public function document(string $fileName) : ResponseInterface
+
+
+    public function edit(int $id)
     {
-        $document = $this->employeeDocumentService->findByFileName( $fileName );
+        $employee = $this->employeeService->findById($id);
+
+        if ($employee === null) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $user = $this->userService->findByEmployeeId($id);
+        $documents = $this->employeeDocumentService->findByEmployeeId($id);
+
+        return view('App\Modules\Employees\Views\employee-edit', [
+            'employee' => $employee,
+            'user' => $user,
+            'documents' => $documents,
+            'roles' => $this->roleService->getManageableRoles(),
+        ]);
+    }
+
+
+    public function update(int $id)
+    {
+        $employeeUserService = new EmployeeUserService(
+            $this->employeeService,
+            $this->employeeDocumentService,
+            $this->userService,
+        );
+
+        $files = $this->request->getFileMultiple('documents') ?? [];
+
+        $files = array_values(array_filter(
+            $files,
+            static fn ($file) => $file->isValid()
+        ));
+
+        try {
+            $result = $employeeUserService->update(
+                $id,
+                $this->request->getPost(),
+                $files
+            );
+
+            if (!$result['success']) 
+            {
+                return $this->response
+                    ->setStatusCode(200)
+                    ->setBody( $this->htmlFormViewError($result) );
+            }
+
+            $this->flashToast('success', lang('Employee.employee_updated_successfully') );
+            return $this->setHtmxRedirect(route_to('employees.index'))->response;
+            
+        } catch (\Throwable $e) {
+
+            log_message(
+                'error',
+                'Employee update failed. Employee ID: {id}. Error: {message}',
+                [
+                    'id' => $id,
+                    'message' => $e->getMessage(),
+                ]
+            );
+
+            $this->flashToast('danger', lang('Employee.danger_update') );
+            return $this->setHtmxRedirect(route_to('employees.index'))->response;
+        }
+    }
+
+    public function document(string $fileName): ResponseInterface
+    {
+        $document = $this->employeeDocumentService->findByFileName($fileName);
 
         if ($document === null) {
             throw PageNotFoundException::forPageNotFound();
@@ -139,17 +207,15 @@ class Employees extends BaseEmployeesController
             return $this->response->setStatusCode(404);
         }
 
-        return $this->responseShowDocument( $path, $document->mime_type, $document->title );
+        return $this->responseShowDocument($path, $document->mime_type, $document->title);
 
 
-        return $this->responceShowDocument( $path )->response;
+        return $this->responceShowDocument($path)->response;
 
         return $this->response
-            ->setHeader('Content-Type', $document->mime_type ?? 'application/octet-stream') 
-            ->setHeader('Content-Disposition', 'inline; filename="' . addslashes($document->title) . '"') 
-            ->setHeader('Content-Length', (string) filesize($path)) 
+            ->setHeader('Content-Type', $document->mime_type ?? 'application/octet-stream')
+            ->setHeader('Content-Disposition', 'inline; filename="' . addslashes($document->title) . '"')
+            ->setHeader('Content-Length', (string) filesize($path))
             ->setBody(file_get_contents($path));
     }
-    
-
 }
