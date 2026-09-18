@@ -73,6 +73,7 @@ class MenuService
         [
             'title'      => 'Employees',
             'icon'       => 'user-group',
+            'url'        => '/employees',
             'permission' => 'employees.view',
             'order'      => 70,
 
