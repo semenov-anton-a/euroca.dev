@@ -21,6 +21,13 @@ class EmployeeDocumentService
         return $this->repository->findByEmployeeId($employeeId);
     }
 
+
+    public function findByFileName(string $fileName): ?EmployeeDocument
+    {
+        return $this->repository->findByFileName($fileName);
+    }
+
+
     public function create(array $data): int
     {
         return $this->repository->create($data);

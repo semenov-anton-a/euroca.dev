@@ -27,5 +27,10 @@ $routes->group('employees', [
     /**Delete */
     $routes->post('(:num)/delete', 'Employees::delete/$1', ['as' => 'employees.delete']);
 
+
+    /** Get documents */
+    // $routes->get('documents/(:num)', 'Employees::document/$1', ['as' => 'employees.document']);
+    $routes->get('documents/(:segment)', 'Employees::document/$1', [ 'as' => 'employees.document' ]);
+
 });
   

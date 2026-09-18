@@ -24,6 +24,13 @@ class EmployeeDocumentRepository
             ->findAll();
     }
 
+    public function findByFileName(string $fileName): ?EmployeeDocument 
+    { 
+        return $this->documentModel 
+            ->where('file_name', $fileName) 
+            ->first(); 
+    }
+
     public function create(array $data): int
     {
         return $this->documentModel->insert($data, true);

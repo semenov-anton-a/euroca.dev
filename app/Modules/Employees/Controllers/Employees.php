@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Employees\Controllers;
 
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Modules\Employees\Enums\RulesRegex;
 
@@ -55,11 +56,13 @@ class Employees extends BaseEmployeesController
     {
         $employee = $this->employeeService->findById($id);
 
+        /** 404 Error */
         if (!$employee) { return $this->response->setStatusCode(404); }
 
+        $documents = $this->employeeDocumentService->findByEmployeeId($id);
         $view = view('App\Modules\Employees\Views\employee-details', [
                 'employee' => $employee,
-                // 'files' => $files ?? null
+                'documents' => $documents ?? null
             ]);        
         
         return $this->response
@@ -121,6 +124,32 @@ class Employees extends BaseEmployeesController
         }
     }
     
+    public function document(string $fileName) : ResponseInterface
+    {
+        $document = $this->employeeDocumentService->findByFileName( $fileName );
+
+        if ($document === null) {
+            throw PageNotFoundException::forPageNotFound();
+            return $this->response->setStatusCode(404);
+        }
+
+        $path = WRITEPATH . 'uploads/' . $document->file_path;
+
+        if (!is_file($path)) {
+            return $this->response->setStatusCode(404);
+        }
+
+        return $this->responseShowDocument( $path, $document->mime_type, $document->title );
+
+
+        return $this->responceShowDocument( $path )->response;
+
+        return $this->response
+            ->setHeader('Content-Type', $document->mime_type ?? 'application/octet-stream') 
+            ->setHeader('Content-Disposition', 'inline; filename="' . addslashes($document->title) . '"') 
+            ->setHeader('Content-Length', (string) filesize($path)) 
+            ->setBody(file_get_contents($path));
+    }
     
 
 }

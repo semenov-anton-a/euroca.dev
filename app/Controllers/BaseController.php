@@ -14,12 +14,14 @@ use App\Helpers\ClassHelper;
 
 
 /** Auth Service */
+
 use App\Modules\Auth\Config\Services as AuthServices;
 use App\Modules\Auth\Services\AuthService;
 use App\Modules\Auth\Services\RoleService;
 use App\Modules\Auth\Services\PermissionService;
 
 /** Users Service */
+
 use App\Modules\Users\Entities\User;
 use App\Modules\Users\Config\Services as UserServices;
 use App\Modules\Users\Services\UserService;
@@ -46,7 +48,7 @@ use App\Traits\ModuleViewTrait;
  */
 abstract class BaseController extends Controller
 {
-    use ModuleViewTrait; 
+    use ModuleViewTrait;
 
     protected AuthService $authService;
     protected UserService $userService;
@@ -63,12 +65,12 @@ abstract class BaseController extends Controller
         // $this->helpers = ['form', 'url'];
 
 
-        
+
 
         // Caution: Do not edit this line.
         parent::initController($request, $response, $logger);
         //////////////////////////////////////////////////////
-        
+
         /**
          *  All TESTS HERE
          */
@@ -83,19 +85,18 @@ abstract class BaseController extends Controller
         $this->userService = UserServices::userService();
         $this->roleService = AuthServices::roleService();
         $this->permissionService = AuthServices::permissionService();
-        
     }
-    
+
     /**
      * Build menu based on user permissions.
      */
     protected function buildMenu(): array
     {
-        return [ 'menu'=>  "Feature not implemented yet." ];
-    
+        return ['menu' =>  "Feature not implemented yet."];
+
         // $permissions = session('permissions', []);
         // return $this->menuService->getMenu($permissions);
-    }  
+    }
 
     /**
      * Check if user is logged in.
@@ -127,7 +128,7 @@ abstract class BaseController extends Controller
      *
      * @return static
      */
-    protected function addHtmxTrigger( string $name, mixed $data = null ): static 
+    protected function addHtmxTrigger(string $name, mixed $data = null): static
     {
         $triggers = [];
 
@@ -136,8 +137,7 @@ abstract class BaseController extends Controller
         if ($existing !== '') {
             $decoded = json_decode($existing, true);
 
-            if (is_array($decoded)) 
-            {
+            if (is_array($decoded)) {
                 $triggers = $decoded;
             }
         }
@@ -177,22 +177,24 @@ abstract class BaseController extends Controller
      * @param string $title
      * @return BaseController
      */
-    protected function htmxToastMessage( string $type, string $message, string $title = ''  ): static
+    protected function htmxToastMessage(string $type, string $message, string $title = ''): static
     {
-        if ($title === '') { $title = $type; }
+        if ($title === '') {
+            $title = $type;
+        }
 
-        $title = (string) lang( 'Toast.'.$title );
+        $title = (string) lang('Toast.' . $title);
 
         $data = [
             'type'    => $type,
-            'title'   => lang( $title ),
+            'title'   => lang($title),
             'message' => $message
         ];
 
-        return $this->addHtmxTrigger('toast', $data );        
+        return $this->addHtmxTrigger('toast', $data);
     }
 
-    protected function htmlFormViewError( array $err )
+    protected function htmlFormViewError(array $err)
     {
         $html = '<div class="alert alert-danger"><ul class="mb-0">';
 
@@ -203,7 +205,34 @@ abstract class BaseController extends Controller
         $html .= '</ul></div>';
 
         return $html;
-        
     }
 
+
+    protected function responseShowDocument(string $path, ?string $mimeType = null, ?string $fileName = null): ResponseInterface
+    {
+        if (!is_file($path)) {
+            return $this->response->setStatusCode(404);
+        }
+        $mimeType ??= mime_content_type($path) ?: 'application/octet-stream';
+        $fileName ??= basename($path);
+        
+        $inlineTypes = [
+            'application/pdf', 
+            'image/jpeg', 
+            'image/png', 
+            'image/gif', 
+            'image/webp', 
+            'text/plain', 
+            'text/html',
+        ];
+        
+        $disposition = in_array($mimeType, $inlineTypes, true) ? 'inline' : 'attachment';
+        
+        return $this->response
+            ->setHeader('Content-Type', $mimeType)
+            ->setHeader('Content-Disposition', $disposition . '; filename="' . addslashes($fileName) . '"')
+            ->setHeader('Content-Length', (string) filesize($path))
+            ->setBody(file_get_contents($path));
+            
+    }
 }
