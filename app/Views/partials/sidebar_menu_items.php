@@ -31,14 +31,39 @@
 
     // Родитель открыт, если активен он сам
     // или один из его children
-    $isOpen = $isActive || $hasActiveChild;
+    $isParentActive = false;
+
+    if ($hasChildren) {
+        foreach ($item['children'] as $child) {
+            $childUrl = $child['url'] ?? '#';
+
+            if ($childUrl === '#') {
+                continue;
+            }
+
+            $childPath = trim(
+                (string) parse_url($childUrl, PHP_URL_PATH),
+                '/'
+            );
+
+            if (
+                $childPath !== ''
+                && str_starts_with($currentPath, $childPath . '/')
+            ) {
+                $isParentActive = true;
+                break;
+            }
+        }
+    }
+
+    $isOpen = $isActive || $hasActiveChild || $isParentActive;
     
     ?>
 
     <li class="nav-item <?= $isOpen ? 'menu-open' : '' ?>">
         
         <a  href="<?= esc($url) ?>"
-            class="nav-link <?= $isActive ? 'active' : '' ?>  <?= esc( $item['css'] ?? ' ' ) ?>" style="padding-left: 3px">
+            class="nav-link <?= ($isActive || $isParentActive) ? 'active' : '' ?> <?= esc($item['css'] ?? '') ?>" style="padding-left: 3px">
 
             <i class="nav-icon <?= esc($item['icon'] ?? '') ?>"></i>
 
