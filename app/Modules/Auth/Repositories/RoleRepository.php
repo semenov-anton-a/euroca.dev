@@ -80,8 +80,8 @@ class RoleRepository
     {
         return $this->db
             ->table($this->_tableName)
-            ->whereNotIn('name', $excludedRoles)
-            ->orderBy('name', 'ASC')
+            ->whereNotIn('key', $excludedRoles)
+            ->orderBy('sort_order', 'ASC')
             ->get()
             ->getResultObject();
     }
@@ -93,7 +93,7 @@ class RoleRepository
     {
         return $this->db
             ->table($this->_tableName)
-            ->orderBy('name', 'ASC')
+            ->orderBy('sort_order', 'ASC')
             ->get()
             ->getResultObject();
     }

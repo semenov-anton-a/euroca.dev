@@ -30,6 +30,14 @@ class RoleService
         return $role['name'] ?? null;
     }
 
+    public function getUserRoleKey(int $userId): ?string
+    {
+        $role = $this->getUserRole($userId);
+
+        return $role['key'] ?? null;
+    }
+
+
     public function hasRole(int $userId, UserRole $role): bool
     {
         return $this->getUserRoleName($userId) === $role->value;
@@ -75,12 +83,10 @@ class RoleService
         return $this->roleRepository->update($roleId, $data);
     }
 
-    public function getManageableRoles(): array
+    public function getManageableRoles( string ...$excludedRoles ): array
     {
-        return $this->roleRepository->getManageableRoles(
-            UserRole::SuperAdmin->value,
-            UserRole::Admin->value
-        );
+        $excludedRoles[] = UserRole::SuperAdmin->value;        
+        return $this->roleRepository->getManageableRoles( ...$excludedRoles );
     }
 
     public function delete(int $roleId): bool

@@ -31,23 +31,29 @@ CREATE TABLE `employees` (
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE employee_documents (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    employee_id BIGINT UNSIGNED NOT NULL,
-    document_type VARCHAR(50) NOT NULL,
-    document_name VARCHAR(255) NOT NULL,
-    file_name VARCHAR(255) NOT NULL,
-    file_path VARCHAR(500) NOT NULL,
-    mime_type VARCHAR(100) DEFAULT NULL,
-    file_size BIGINT UNSIGNED DEFAULT NULL,
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+CREATE TABLE `employee_documents` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `employee_id` INT UNSIGNED NOT NULL,
+    `document_type` VARCHAR(50) NOT NULL,
+    `document_name` VARCHAR(255) NOT NULL,
+    `file_name` VARCHAR(255) NOT NULL,
+    `file_path` VARCHAR(500) NOT NULL,
+    `mime_type` VARCHAR(100) DEFAULT NULL,
+    `file_size` BIGINT UNSIGNED DEFAULT NULL,
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
 
-    INDEX idx_employee_id (employee_id),
-    INDEX idx_document_type (document_type),
+    PRIMARY KEY (`id`),
 
-    CONSTRAINT fk_employee_documents_employee
-        FOREIGN KEY (employee_id) REFERENCES employees(id)
+    KEY `idx_employee_documents_employee_id` (`employee_id`),
+    KEY `idx_employee_documents_type` (`document_type`),
+
+    CONSTRAINT `fk_employee_documents_employee`
+        FOREIGN KEY (`employee_id`)
+        REFERENCES `employees` (`id`)
         ON DELETE CASCADE
         ON UPDATE CASCADE
-);
+
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;

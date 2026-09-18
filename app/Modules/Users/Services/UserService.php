@@ -18,9 +18,20 @@ class UserService
         return $this->userRepository->findById($userId);
     }
 
-    public function findByEmail(string $email): ?User
+    public function findByEmployeeId(int $employeeId): ?User
     {
-        return $this->userRepository->findByEmail($email);
+        return $this->userRepository->findByEmployeeId($employeeId);    
+    }
+
+
+    public function findByUsername(string $username): ?User
+    {
+        return $this->userRepository->findByUsername($username);
+    }
+
+    public function getOwnerId(User $user): ?int
+    {
+        return $user->employee_id ?? $user->customer_id;
     }
 
     public function create(array $data): int
@@ -36,11 +47,6 @@ class UserService
     public function delete(int $userId): bool
     {
         return $this->userRepository->delete($userId);
-    }
-
-    public function existsByEmail(string $email): bool
-    {
-        return $this->userRepository->existsByEmail($email);
     }
 
     public function existsByUsername(string $username): bool

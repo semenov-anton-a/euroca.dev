@@ -14,6 +14,10 @@ class Tests extends BaseController
         return $this->viewModule("index", [ "urls" => $this->_getUrls() ]);
     }
 
+    public function phpIni()
+    {
+        return $this->response->setBody( '<pre>' . esc(print_r( phpinfo(), true)) . '</pre>' );
+    }
 
 
     public function form_login()

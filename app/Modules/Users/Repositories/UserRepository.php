@@ -18,20 +18,20 @@ class UserRepository
         return $this->userModel->find($userId);
     }
 
-    public function findByEmail(string $email): ?User
+    public function findByEmployeeId(int $employeeId): ?User
     {
         return $this->userModel
-            ->where('email', $email)
+            ->where('employee_id', $employeeId)
             ->first();
     }
 
-    public function existsByEmail(string $email): bool
+    public function findByUsername(string $username): ?User
     {
         return $this->userModel
-            ->where('email', $email)
-            ->countAllResults() > 0;
+            ->where('username', $username)
+            ->first();
     }
-
+    
     public function existsByUsername(string $username): bool
     {
         return $this->userModel
@@ -42,7 +42,6 @@ class UserRepository
     public function create(array $data): int
     {
         $this->userModel->insert($data);
-
         return (int) $this->userModel->getInsertID();
     }
 
@@ -50,7 +49,6 @@ class UserRepository
     {
         return $this->userModel->update($userId, $data);
     }
-
     public function delete(int $userId): bool
     {
         return $this->userModel->delete($userId);

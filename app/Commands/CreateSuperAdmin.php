@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Commands\Auth;
+namespace App\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
+use App\Modules\Auth\Enums\UserRole;
 
 class CreateSuperAdmin extends BaseCommand
 {
-    protected $group = 'Auth';
-
-    protected $name = 'auth:create-superadmin';
-
-    protected $description = 'Create the first Super Admin with full permissions.';
+    protected $group = '_My Commands';
+    protected $name = 'my:create-superadmin';
+    protected $description = 'Create the first Super Admin employee with full permissions.';
 
     public function run(array $params)
     {
@@ -25,24 +24,25 @@ class CreateSuperAdmin extends BaseCommand
 
         /*
         |--------------------------------------------------------------------------
-        | Check Super Admin role
+        | Find Super Admin role
         |--------------------------------------------------------------------------
         */
 
-        $superAdminRole = $db
-            ->table('roles')
-            ->where('name', 'super_admin')
+        $role = $db->table('roles')
+            ->where('key', UserRole::SuperAdmin->value)
             ->get()
             ->getRowArray();
 
-        if ($superAdminRole !== null) {
-            CLI::error('Super Admin role already exists.');
+        if ($role === null) {
+            CLI::error('Super Admin role does not exist.');
             return;
         }
 
+        $roleId = (int) $role['id'];
+
         /*
         |--------------------------------------------------------------------------
-        | User data
+        | Employee data
         |--------------------------------------------------------------------------
         */
 
@@ -52,7 +52,7 @@ class CreateSuperAdmin extends BaseCommand
         $lastName = trim(CLI::prompt('Last name'));
 
         if ($email === '' || $username === '' || $firstName === '' || $lastName === '') {
-            CLI::error('All user fields are required.');
+            CLI::error('All fields are required.');
             return;
         }
 
@@ -64,6 +64,11 @@ class CreateSuperAdmin extends BaseCommand
 
         $password = CLI::prompt('Password');
         $passwordConfirm = CLI::prompt('Confirm password');
+
+        if ($password === '' || $passwordConfirm === '') {
+            CLI::error('Password is required.');
+            return;
+        }
 
         if ($password !== $passwordConfirm) {
             CLI::error('Passwords do not match.');
@@ -77,34 +82,14 @@ class CreateSuperAdmin extends BaseCommand
 
         /*
         |--------------------------------------------------------------------------
-        | Check email
+        | Check existing username
         |--------------------------------------------------------------------------
         */
 
-        if (
-            $db->table('users')
-                ->where('email', $email)
-                ->countAllResults() > 0
-        ) {
-            CLI::error('User with this email already exists.');
-            return;
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Check username
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-            $db->table('users')
-                ->where('username', $username)
-                ->countAllResults() > 0
-        ) {
+        if ($db->table('users')->where('username', $username)->countAllResults() > 0) {
             CLI::error('User with this username already exists.');
             return;
         }
-
 
         /*
         |--------------------------------------------------------------------------
@@ -121,78 +106,61 @@ class CreateSuperAdmin extends BaseCommand
 
         /*
         |--------------------------------------------------------------------------
-        | Transaction
+        | Create employee + user
         |--------------------------------------------------------------------------
         */
 
         $db->transBegin();
 
         try {
-
             /*
-            |--------------------------------------------------------------------------
-            | 1. Create Super Admin role
-            |--------------------------------------------------------------------------
+            |----------------------------------------------------------------------
+            | Create employee
+            |----------------------------------------------------------------------
             */
 
-            $roleInserted = $db
-                ->table('roles')
-                ->insert([
-                    'name' => 'super_admin',
-                    'description' => 'Full access to the entire system.',
-                ]);
+            $inserted = $db->table('employees')->insert([
+                'first_name' => $firstName,
+                'last_name' => $lastName,
+                'email' => $email,
+                'status' => 'active',
+            ]);
 
-            if (!$roleInserted) {
-                throw new \RuntimeException(
-                    'Failed to create Super Admin role.'
-                );
+            if (!$inserted) {
+                throw new \RuntimeException('Failed to create employee.');
             }
 
-            $roleId = (int) $db->insertID();
-            
+            $employeeId = (int) $db->insertID();
 
             /*
-            |--------------------------------------------------------------------------
-            | 3. Create Super Admin user
-            |--------------------------------------------------------------------------
+            |----------------------------------------------------------------------
+            | Create user
+            |----------------------------------------------------------------------
             */
 
-            $userInserted = $db
-                ->table('users')
-                ->insert([
-                    'email' => $email,
-                    'username' => $username,
-                    'first_name' => $firstName,
-                    'last_name' => $lastName,
-                    'password_hash' => $passwordHash,
-                    'status' => 'active',
-                    'role_id' => $roleId,
-                ]);
+            $inserted = $db->table('users')->insert([
+                'employee_id' => $employeeId,
+                'customer_id' => null,
+                'username' => $username,
+                'password_hash' => $passwordHash,
+                'role_id' => $roleId,
+                'status' => 'active',
+                'password_changed_at' => date('Y-m-d H:i:s'),
+            ]);
 
-            if (!$userInserted) {
-                throw new \RuntimeException(
-                    'Failed to create Super Admin user.'
-                );
+            if (!$inserted) {
+                throw new \RuntimeException('Failed to create user.');
             }
 
             $userId = (int) $db->insertID();
 
-            /*
-            |--------------------------------------------------------------------------
-            | Commit
-            |--------------------------------------------------------------------------
-            */
-
             if ($db->transStatus() === false) {
-                throw new \RuntimeException(
-                    'Database transaction failed.'
-                );
+                throw new \RuntimeException('Database transaction failed.');
             }
 
             $db->transCommit();
 
         } catch (\Throwable $e) {
-
             $db->transRollback();
 
             CLI::error('Failed to create Super Admin.');
@@ -209,24 +177,19 @@ class CreateSuperAdmin extends BaseCommand
 
         CLI::newLine();
 
-        CLI::write(
-            'Super Admin created successfully!',
-            'green'
-        );
-
+        CLI::write('Super Admin created successfully!', 'green');
         CLI::newLine();
 
+        CLI::write('Employee ID: ' . $employeeId, 'green');
         CLI::write('User ID: ' . $userId, 'green');
         CLI::write('Username: ' . $username, 'green');
         CLI::write('Email: ' . $email);
-        CLI::write('Role: super_admin');
-        CLI::write('Permissions: assigned later by scanner');
+        CLI::write('Name: ' . $firstName . ' ' . $lastName);
+        CLI::write('Role: ' . $role['name']);
+        CLI::write('Status: active');
 
         CLI::newLine();
 
-        CLI::write(
-            'You can now login to the application.',
-            'green'
-        );
+        CLI::write('You can now login to the application.', 'green');
     }
 }

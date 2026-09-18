@@ -188,7 +188,15 @@
                     <h4 class="modal-title">EuroCargo Finland</h4>
                 </div>
                 <div class="modal-body">
-
+                
+                    <?php
+                    if (ENVIRONMENT == 'development') 
+                    {
+                        $login = "superAdminEur";
+                        $password = "12345678";
+                    }
+                    ?>
+                
                     <form
                         hx-post="<?= base_url('login') ?>"
                         hx-target="#login-message"
@@ -198,16 +206,16 @@
                         id="adminLogin">
                         <?= csrf_field() ?>
                         <div class="form-group">
-                            <input
-                                type="email"
+                            <input <?= isset($login) ? "value=\"{$login}\"" : "" ?>
+                                type="text"
                                 class="form-control"
-                                name="email"
-                                placeholder="<?= lang('Auth.email_placeholder') ?>"
+                                name="login"
+                                placeholder="<?= lang('Auth.enter_username') ?>"
                                 required>
                         </div>
 
                         <div class="form-group">
-                            <input
+                            <input <?= isset($password) ? "value=\"{$password}\"" : "" ?>
                                 type="password"
                                 class="form-control"
                                 name="password"
@@ -223,6 +231,8 @@
                                 </label>
                             </div>
 
+                            <div id="login-message" class="alert alert-danger "></div>
+
                             <button
                                 type="submit"
                                 class="btn btn-primary btn-lg btn-block login-btn">
@@ -236,16 +246,6 @@
                             </button>
                         </div>
                     </form>
-                    <div id="login-message" class="alert alert-info "></div>
-                    <?php
-                    if (ENVIRONMENT == 'development') 
-                    {
-                        echo '<div class="alert alert-danger" role="alert">';
-                        echo 'Development Mode: Use <strong>admin@eurocargo.local</strong> <br/> <strong>password123</strong>';
-                        echo '</div>';
-                    }
-                    ?>
-                </div>
             </div>
         </div>
     </div>

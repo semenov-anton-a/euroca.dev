@@ -23,6 +23,7 @@ die;
   <!--begin::Head-->
   <head>
     <meta name="csrf-token" content="<?= csrf_hash() ?>">
+    <meta name="csrf-header" content="<?= csrf_header() ?>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>AdminLTE v4 | Dashboard</title>
 
@@ -309,32 +310,43 @@ die;
 </div>
 <script>
 const HtmxCsrf = {
-
-    init: function () {
+    init() {
         document.body.addEventListener('htmx:configRequest', this.send);
         document.body.addEventListener('htmx:afterRequest', this.update);
     },
 
-    send: function (event) {
-        const meta = document.querySelector('meta[name="csrf-token"]');
-        if (meta) {
-            event.detail.headers['X-CSRF-TOKEN'] = meta.content;
+    send(event) {
+        const token = document.querySelector('meta[name="csrf-token"]');
+        const header = document.querySelector('meta[name="csrf-header"]');
+
+        if (token && header) {
+            event.detail.headers[header.content] = token.content;
         }
     },
 
-    update: function (event) {
+    update(event) {
         const token = event.detail.xhr.getResponseHeader('X-CSRF-TOKEN');
         const meta = document.querySelector('meta[name="csrf-token"]');
 
         if (token && meta) {
-            meta.setAttribute('content', token);
+            meta.content = token;
         }
-
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => { HtmxCsrf.init(); });
+HtmxCsrf.init();
 </script>
+<?php if ($toast = session()->getFlashdata('toast')): ?>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    Toast.init().show(
+        <?= json_encode($toast['type']) ?>,
+        <?= json_encode($toast['message']) ?>,
+        <?= json_encode($toast['title']) ?>
+    );
+});
+</script>
+<?php endif; ?>
    
   </body>
   <!--end::Body-->
